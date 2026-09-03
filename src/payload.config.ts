@@ -4,14 +4,20 @@ import path from 'path'
 import { buildConfig, PayloadRequest } from 'payload'
 import { fileURLToPath } from 'url'
 
+import { Cases } from './collections/Cases'
 import { Categories } from './collections/Categories'
 import { Entities } from './collections/Entities'
+import { Events } from './collections/Events'
+import { Guides } from './collections/Guides'
 import { Media } from './collections/Media'
+import { News } from './collections/News'
 import { Pages } from './collections/Pages'
 import { Posts } from './collections/Posts'
+import { PracticeAreas } from './collections/PracticeAreas'
 import { Roles } from './collections/Roles'
 import { Testimonials } from './collections/Testimonials'
 import { Users } from './collections/Users'
+import { Vacancies } from './collections/Vacancies'
 import { Footer } from './Footer/config'
 import { Header } from './Header/config'
 import { plugins } from './plugins'
@@ -66,7 +72,23 @@ export default buildConfig({
       connectionString: process.env.POSTGRES_URL || '',
     },
   }),
-  collections: [Pages, Posts, Media, Categories, Users, Roles, Entities, Testimonials],
+  collections: [
+    Pages,
+    Posts,
+    Media,
+    Categories,
+    Users,
+    Roles,
+    Entities,
+    Testimonials,
+    PracticeAreas,
+    Cases,
+    Guides,
+    News,
+    Events,
+    Vacancies,
+  ],
+
 
   cors: [getServerSideURL()].filter(Boolean),
   plugins: [
