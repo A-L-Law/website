@@ -255,7 +255,7 @@ html[data-theme='light'] {
 ==========================================================================*/
 .switch__tab {
   position: fixed;
-  font-weight: 500;
+  font-weight: 600;
   display: flex;
   align-items: center;
   right: 0;
@@ -267,9 +267,8 @@ html[data-theme='light'] {
 
 .light-mode-title,
 .dark-mode-title {
-  font-size: 14px;
+  font-size: 15px;
   font-weight: 600;
-  color: var(--brand-slate);
   display: flex;
   align-items: center;
   cursor: pointer;
@@ -277,40 +276,68 @@ html[data-theme='light'] {
   transition: color 0.3s ease;
 }
 
-.light-mode-title.active,
-.dark-mode-title.active {
-  color: var(--brand-crimson);
-  font-weight: 700;
+.light-mode-title.is-dark-theme,
+.dark-mode-title.is-dark-theme {
+  color: #ffffff;
+}
+
+.light-mode-title.is-light-theme,
+.dark-mode-title.is-light-theme {
+  color: #1a1a1a;
 }
 
 .mode__switch {
-  height: 28px;
-  width: 60px;
+  height: 34px;
+  width: 80px;
   display: inline-block;
   position: relative;
-  margin: 0 10px;
-  background: var(--brand-charcoal);
+  margin: 0 12px;
+  background: var(--brand-crimson);
   border-radius: 35px;
   cursor: pointer;
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border: none;
   transition: all 0.3s ease-out 0s;
 }
 
-.mode__switch::before {
-  content: '';
+.mode__switch-knob {
   position: absolute;
   left: 3px;
   top: 3px;
-  background: var(--brand-white);
-  width: 20px;
-  height: 20px;
-  z-index: 2;
+  background: #ffffff;
+  width: 28px;
+  height: 28px;
+  z-index: 5;
   border-radius: 50%;
-  transition: all 0.3s ease-out 0s;
+  transition: transform 0.3s ease-out;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
-.mode__switch.active::before {
-  transform: translateX(32px);
-  background: var(--brand-crimson);
+.mode__switch.dark-active .mode__switch-knob {
+  transform: translateX(46px);
 }
+
+.mode__switch.light-active .mode__switch-knob {
+  transform: translateX(0px);
+}
+
+.mode__icon {
+  position: absolute;
+  top: 3px;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  pointer-events: none;
+}
+
+.mode__icon-sun {
+  left: 3px;
+}
+
+.mode__icon-moon {
+  left: 49px;
+}
+
 
