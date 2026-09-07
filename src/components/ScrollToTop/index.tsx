@@ -5,8 +5,15 @@ import * as LucideIcons from 'lucide-react'
 
 export const ScrollToTop: React.FC<{ addClass?: string }> = ({ addClass = '' }) => {
   const [active, setActive] = useState(false)
+  const [mounted, setMounted] = useState(false)
 
   useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  useEffect(() => {
+    if (!mounted) return
+
     const handleScroll = () => {
       if (window.scrollY > 50) {
         setActive(true)
@@ -42,11 +49,13 @@ export const ScrollToTop: React.FC<{ addClass?: string }> = ({ addClass = '' }) 
     return () => {
       window.removeEventListener('scroll', updateScroll)
     }
-  }, [])
+  }, [mounted])
 
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' })
   }
+
+  if (!mounted) return null
 
   return (
     <div
@@ -55,8 +64,9 @@ export const ScrollToTop: React.FC<{ addClass?: string }> = ({ addClass = '' }) 
       role="button"
       tabIndex={0}
       aria-label="Scroll to top"
+      suppressHydrationWarning
     >
-      <LucideIcons.ArrowUp className="scroll-arrow w-5 h-5 text-brand-crimson" />
+      <LucideIcons.ArrowUp className="scroll-arrow w-5 h-5" />
       <svg className="scroll-circle svg-content" width="100%" height="100%" viewBox="-1 -1 102 102">
         <path d="M50,1 a49,49 0 0,1 0,98 a49,49 0 0,1 0,-98" />
       </svg>

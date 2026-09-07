@@ -1,12 +1,18 @@
 'use client'
 
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { useTheme } from '@/providers/Theme'
 import * as LucideIcons from 'lucide-react'
 
 export const SwitchTab: React.FC<{ addClass?: string }> = ({ addClass = '' }) => {
   const { theme, setTheme } = useTheme()
-  const isDarkMode = theme === 'dark'
+  const [mounted, setMounted] = useState(false)
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  const isDarkMode = mounted ? theme === 'dark' : false
 
   const toggleDark = () => {
     setTheme('dark')
@@ -17,10 +23,11 @@ export const SwitchTab: React.FC<{ addClass?: string }> = ({ addClass = '' }) =>
   }
 
   return (
-    <div className="switch__tab" aria-label="Dark Light Mode Switcher">
+    <div className="switch__tab" aria-label="Dark Light Mode Switcher" suppressHydrationWarning>
       <span
         className={`switch__tab-btn light-mode-title ${isDarkMode ? 'is-dark-theme' : 'is-light-theme'}`}
         onClick={toggleLight}
+        suppressHydrationWarning
       >
         Light
       </span>
@@ -31,6 +38,7 @@ export const SwitchTab: React.FC<{ addClass?: string }> = ({ addClass = '' }) =>
         role="button"
         tabIndex={0}
         aria-label="Toggle Theme"
+        suppressHydrationWarning
       >
         {/* White circle slider knob */}
         <span className="mode__switch-knob" />
@@ -49,6 +57,7 @@ export const SwitchTab: React.FC<{ addClass?: string }> = ({ addClass = '' }) =>
       <span
         className={`switch__tab-btn dark-mode-title ${isDarkMode ? 'is-dark-theme' : 'is-light-theme'}`}
         onClick={toggleDark}
+        suppressHydrationWarning
       >
         Dark
       </span>
