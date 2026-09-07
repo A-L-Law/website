@@ -9,6 +9,7 @@ import { AdminBar } from '@/components/AdminBar'
 import { Footer } from '@/Footer/Component'
 import { Header } from '@/Header/Component'
 import { SwitchTab } from '@/components/SwitchTab'
+import { ScrollToTop } from '@/components/ScrollToTop'
 import { Providers } from '@/providers'
 import { InitTheme } from '@/providers/Theme/InitTheme'
 import { mergeOpenGraph } from '@/utilities/mergeOpenGraph'
@@ -39,6 +40,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           {children}
           <Footer />
           <SwitchTab />
+          <ScrollToTop />
         </Providers>
       </body>
     </html>
