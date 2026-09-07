@@ -349,16 +349,16 @@ html[data-theme='light'] {
   align-items: center;
   justify-content: center;
   border-radius: 50px;
-  box-shadow: inset 0 0 0 2px rgba(190, 22, 34, 0.25);
+  box-shadow: inset 0 0 0 2px rgba(26, 26, 26, 0.15);
   z-index: 9999;
-  opacity: 1;
-  visibility: visible;
-  transform: translateY(0);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(15px);
   position: fixed;
   right: 20px;
   bottom: 20px;
-  height: 48px;
-  width: 48px;
+  height: 50px;
+  width: 50px;
   transition: all 200ms linear;
   background: var(--brand-white);
 }
@@ -366,6 +366,12 @@ html[data-theme='light'] {
 [data-theme='dark'] .scroll-up {
   background: var(--brand-charcoal);
   box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.2);
+}
+
+.scroll-up.active-scroll {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
 }
 
 .scroll-up .scroll-arrow {
@@ -378,6 +384,7 @@ html[data-theme='light'] {
   stroke: var(--brand-crimson);
   width: 20px;
   height: 20px;
+  pointer-events: none;
 }
 
 .scroll-up svg.scroll-circle {
@@ -400,6 +407,7 @@ html[data-theme='light'] {
   box-sizing: border-box;
   transition: stroke-dashoffset 10ms linear;
 }
+
 
 
 

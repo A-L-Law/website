@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react'
 import * as LucideIcons from 'lucide-react'
 
 export const ScrollToTop: React.FC<{ addClass?: string }> = ({ addClass = '' }) => {
-  const [active, setActive] = useState(true)
+  const [active, setActive] = useState(false)
   const [mounted, setMounted] = useState(false)
 
   useEffect(() => {
@@ -13,10 +13,6 @@ export const ScrollToTop: React.FC<{ addClass?: string }> = ({ addClass = '' }) 
 
   useEffect(() => {
     if (!mounted) return
-
-    const handleScroll = () => {
-      setActive(true)
-    }
 
     const scrollPath = document.querySelector<SVGPathElement>('.scroll-up path')
     if (!scrollPath) return
@@ -39,13 +35,20 @@ export const ScrollToTop: React.FC<{ addClass?: string }> = ({ addClass = '' }) 
       )
       const winHeight = window.innerHeight
       const height = docHeight - winHeight
+
+      // Toggle active class when scrolling past 50px
+      if (scroll > 50) {
+        setActive(true)
+      } else {
+        setActive(false)
+      }
+
       if (height > 0) {
         const progress = pathLength - (scroll * pathLength) / height
         scrollPath.style.strokeDashoffset = `${Math.max(0, Math.min(pathLength, progress))}`
       } else {
         scrollPath.style.strokeDashoffset = `${pathLength}`
       }
-      handleScroll()
     }
 
     updateScroll()
@@ -70,7 +73,7 @@ export const ScrollToTop: React.FC<{ addClass?: string }> = ({ addClass = '' }) 
       aria-label="Scroll to top"
       suppressHydrationWarning
     >
-      <LucideIcons.ArrowUp className="scroll-arrow w-5 h-5 text-brand-crimson" />
+      <LucideIcons.ArrowUp className="scroll-arrow w-5 h-5" />
       <svg className="scroll-circle svg-content" width="100%" height="100%" viewBox="-1 -1 102 102">
         <path d="M50,1 a49,49 0 0,1 0,98 a49,49 0 0,1 0,-98" />
       </svg>
