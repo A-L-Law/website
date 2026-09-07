@@ -249,3 +249,68 @@ html[data-theme='dark'],
 html[data-theme='light'] {
   opacity: initial;
 }
+
+/*==========================================================================
+1-to-1 Conbix Dark Light Switch CSS
+==========================================================================*/
+.switch__tab {
+  position: fixed;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  right: 0;
+  top: 52%;
+  transform: translateY(-50%) translateX(50px) rotate(90deg);
+  z-index: 50;
+  cursor: pointer;
+}
+
+.light-mode-title,
+.dark-mode-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--brand-slate);
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  user-select: none;
+  transition: color 0.3s ease;
+}
+
+.light-mode-title.active,
+.dark-mode-title.active {
+  color: var(--brand-crimson);
+  font-weight: 700;
+}
+
+.mode__switch {
+  height: 28px;
+  width: 60px;
+  display: inline-block;
+  position: relative;
+  margin: 0 10px;
+  background: var(--brand-charcoal);
+  border-radius: 35px;
+  cursor: pointer;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  transition: all 0.3s ease-out 0s;
+}
+
+.mode__switch::before {
+  content: '';
+  position: absolute;
+  left: 3px;
+  top: 3px;
+  background: var(--brand-white);
+  width: 20px;
+  height: 20px;
+  z-index: 2;
+  border-radius: 50%;
+  transition: all 0.3s ease-out 0s;
+}
+
+.mode__switch.active::before {
+  transform: translateX(32px);
+  background: var(--brand-crimson);
+}
+
