@@ -46,15 +46,15 @@ export async function Footer() {
             <Link href="/" className="inline-block mb-6">
               <Logo loading="lazy" />
             </Link>
-            <p className="text-brand-slate text-sm leading-relaxed mb-6">{flavorDesc}</p>
+            <p className="text-brand-ice text-sm leading-relaxed mb-6">{flavorDesc}</p>
             <div className="flex items-center gap-3">
-              <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="w-9 h-9 rounded-full bg-brand-slate/20 hover:bg-brand-crimson text-brand-white flex items-center justify-center transition-colors">
+              <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="w-9 h-9 rounded-full bg-brand-slate/30 hover:bg-brand-crimson text-brand-white flex items-center justify-center transition-colors">
                 <LucideIcons.Linkedin className="w-4 h-4" />
               </a>
-              <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="w-9 h-9 rounded-full bg-brand-slate/20 hover:bg-brand-crimson text-brand-white flex items-center justify-center transition-colors">
+              <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="w-9 h-9 rounded-full bg-brand-slate/30 hover:bg-brand-crimson text-brand-white flex items-center justify-center transition-colors">
                 <LucideIcons.Twitter className="w-4 h-4" />
               </a>
-              <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="w-9 h-9 rounded-full bg-brand-slate/20 hover:bg-brand-crimson text-brand-white flex items-center justify-center transition-colors">
+              <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="w-9 h-9 rounded-full bg-brand-slate/30 hover:bg-brand-crimson text-brand-white flex items-center justify-center transition-colors">
                 <LucideIcons.Facebook className="w-4 h-4" />
               </a>
             </div>
@@ -68,9 +68,9 @@ export async function Footer() {
               </h4>
               <ul className="space-y-3">
                 {col.links?.map(({ link }, i) => (
-                  <li key={i} className="flex items-center gap-2 text-sm text-brand-slate hover:text-brand-coral transition-colors">
+                  <li key={i} className="flex items-center gap-2 text-sm text-brand-ice hover:text-brand-coral transition-colors">
                     <LucideIcons.ChevronRight className="w-3.5 h-3.5 text-brand-crimson shrink-0" />
-                    <CMSLink {...link} className="text-brand-slate hover:text-brand-coral" />
+                    <CMSLink {...link} className="text-brand-ice hover:text-brand-coral" />
                   </li>
                 ))}
               </ul>
@@ -82,7 +82,7 @@ export async function Footer() {
             <h4 className="font-heading text-lg font-bold text-brand-white mb-6 border-b border-brand-slate/30 pb-2">
               Head Office
             </h4>
-            <div className="space-y-4 text-sm text-brand-slate mb-6">
+            <div className="space-y-4 text-sm text-brand-ice mb-6">
               <div className="flex items-start gap-3">
                 <LucideIcons.MapPin className="w-4 h-4 text-brand-crimson shrink-0 mt-1" />
                 <span>{headOffice}</span>
@@ -90,7 +90,7 @@ export async function Footer() {
             </div>
 
             <h5 className="font-heading text-sm font-bold text-brand-white mb-3">Branch Office</h5>
-            <div className="flex items-start gap-3 text-sm text-brand-slate">
+            <div className="flex items-start gap-3 text-sm text-brand-ice">
               <LucideIcons.MapPin className="w-4 h-4 text-brand-crimson shrink-0 mt-1" />
               <span>{branchOffice}</span>
             </div>
@@ -98,7 +98,7 @@ export async function Footer() {
         </div>
 
         {/* Copyright Bar matching Conbix copyright-one */}
-        <div className="pt-8 border-t border-brand-slate/20 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-brand-slate font-body">
+        <div className="pt-8 border-t border-brand-slate/20 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-brand-ice font-body">
           <p>{copyrightText}</p>
           <div className="flex items-center gap-6">
             <Link href="/privacy-policy" className="hover:text-brand-coral">Privacy Policy</Link>
