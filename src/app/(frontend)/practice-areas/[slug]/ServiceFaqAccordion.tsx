@@ -5,7 +5,7 @@ import * as LucideIcons from 'lucide-react'
 
 export interface FAQItem {
   question: string
-  answer: string
+  answer: React.ReactNode
 }
 
 interface ServiceFaqAccordionProps {
@@ -73,7 +73,7 @@ export const ServiceFaqAccordion: React.FC<ServiceFaqAccordionProps> = ({ items 
             </button>
             {isOpen && (
               <div className="px-6 pb-5 pt-1 border-t border-gray-100 dark:border-gray-800/60 text-brand-slate dark:text-gray-300 font-body text-sm md:text-base leading-relaxed animate-fadeIn">
-                <p>{faq.answer}</p>
+                {typeof faq.answer === 'string' ? <p>{faq.answer}</p> : faq.answer}
               </div>
             )}
           </div>

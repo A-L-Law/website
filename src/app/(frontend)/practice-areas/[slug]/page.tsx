@@ -19,6 +19,14 @@ type Args = {
   }>
 }
 
+type ExtendedPracticeArea = PracticeArea & {
+  highlights?: Array<{ text: string; id?: string | null }> | null
+  capabilitiesTitle?: string | null
+  capabilitiesDescription?: string | null
+  capabilities?: Array<{ item: string; id?: string | null }> | null
+  faqs?: Array<{ question: string; answer: any; id?: string | null }> | null
+}
+
 export default async function PracticeAreaDetailPage({ params: paramsPromise }: Args) {
   const { slug } = await paramsPromise
   if (!slug) return notFound()
@@ -30,7 +38,7 @@ export default async function PracticeAreaDetailPage({ params: paramsPromise }: 
 
   // 1. Fetch current practice area
   const {
-    docs: [area],
+    docs: [rawArea],
   } = await payload.find({
     collection: 'practice-areas',
     where: {
@@ -41,7 +49,8 @@ export default async function PracticeAreaDetailPage({ params: paramsPromise }: 
     limit: 1,
   })
 
-  if (!area) return notFound()
+  if (!rawArea) return notFound()
+  const area = rawArea as ExtendedPracticeArea
 
   // 2. Fetch all practice areas for the sidebar "Our Solutions" navigation list
   const { docs: allPracticeAreas } = await payload.find({
@@ -74,6 +83,56 @@ export default async function PracticeAreaDetailPage({ params: paramsPromise }: 
   ) {
     mainImageUrl = (area.heroImage as Media).url!
   }
+
+  // Editable Highlights (Ticks) with fallback
+  const highlights: string[] =
+    area.highlights && area.highlights.length > 0
+      ? (area.highlights.map((h) => h?.text).filter(Boolean) as string[])
+      : [
+          'Strategic legal counsel tailored to client commercial objectives and private interests.',
+          'Direct partner-led representation with extensive transaction, courtroom, and dispute experience.',
+          'Transparent fee structuring, proactive case updates, and rigorous compliance at every stage.',
+        ]
+
+  // Editable Capabilities & Scope with fallback
+  const capabilitiesTitle = area.capabilitiesTitle || 'Strategic Capabilities & Scope'
+  const capabilitiesDescription =
+    area.capabilitiesDescription !== undefined && area.capabilitiesDescription !== null
+      ? area.capabilitiesDescription
+      : "Our solicitors combine technical excellence with acute commercial acumen. Whether advising corporate entities on complex regulatory landscapes or resolving contentious disputes, we safeguard our clients' interests with focused precision."
+
+  // Editable Capabilities Checklist (Ticks) with fallback
+  const capabilitiesList: string[] =
+    area.capabilities && area.capabilities.length > 0
+      ? (area.capabilities.map((c) => c?.item).filter(Boolean) as string[])
+      : [
+          'Transaction & Contract Structuring',
+          'Regulatory & Statutory Compliance',
+          'Comprehensive Risk Advisory',
+          'Cross-Border Legal Advisory',
+          'Dispute Resolution & Arbitration',
+          'Asset Protection & Governance',
+        ]
+
+  // Editable FAQs with richText answer support
+  const faqItems =
+    area.faqs && area.faqs.length > 0
+      ? area.faqs
+          .filter((f) => f?.question)
+          .map((f) => ({
+            question: f.question,
+            answer:
+              f.answer && typeof f.answer === 'object' ? (
+                <RichText
+                  data={f.answer}
+                  enableGutter={false}
+                  className="prose dark:prose-invert max-w-none text-sm md:text-base leading-relaxed"
+                />
+              ) : (
+                <p>{String(f.answer || '')}</p>
+              ),
+          }))
+      : undefined
 
   return (
     <article className="practice-area-detail font-body">
@@ -247,89 +306,46 @@ export default async function PracticeAreaDetailPage({ params: paramsPromise }: 
                     </div>
                   )}
 
-                  {/* Key Highlights Checklist (services__details-left-content-list) */}
-                  <div className="services__details-left-content-list border-b border-gray-200 dark:border-gray-800 pb-8 mb-10 space-y-4">
-                    <div className="flex items-start gap-3">
-                      <div className="w-5 h-5 rounded-full bg-brand-crimson/10 text-brand-crimson flex items-center justify-center shrink-0 mt-0.5">
-                        <LucideIcons.Check className="w-3.5 h-3.5 stroke-[3]" />
-                      </div>
-                      <span className="font-body text-sm sm:text-base text-brand-charcoal dark:text-gray-200 font-semibold">
-                        Strategic legal counsel tailored to client commercial objectives and private interests.
-                      </span>
+                  {/* Key Highlights Checklist (Editable Ticks) */}
+                  {highlights.length > 0 && (
+                    <div className="services__details-left-content-list border-b border-gray-200 dark:border-gray-800 pb-8 mb-10 space-y-4">
+                      {highlights.map((point, idx) => (
+                        <div key={idx} className="flex items-start gap-3">
+                          <div className="w-5 h-5 rounded-full bg-brand-crimson/10 text-brand-crimson flex items-center justify-center shrink-0 mt-0.5">
+                            <LucideIcons.Check className="w-3.5 h-3.5 stroke-[3]" />
+                          </div>
+                          <span className="font-body text-sm sm:text-base text-brand-charcoal dark:text-gray-200 font-semibold">
+                            {point}
+                          </span>
+                        </div>
+                      ))}
                     </div>
+                  )}
 
-                    <div className="flex items-start gap-3">
-                      <div className="w-5 h-5 rounded-full bg-brand-crimson/10 text-brand-crimson flex items-center justify-center shrink-0 mt-0.5">
-                        <LucideIcons.Check className="w-3.5 h-3.5 stroke-[3]" />
-                      </div>
-                      <span className="font-body text-sm sm:text-base text-brand-charcoal dark:text-gray-200 font-semibold">
-                        Direct partner-led representation with extensive transaction, courtroom, and dispute experience.
-                      </span>
-                    </div>
-
-                    <div className="flex items-start gap-3">
-                      <div className="w-5 h-5 rounded-full bg-brand-crimson/10 text-brand-crimson flex items-center justify-center shrink-0 mt-0.5">
-                        <LucideIcons.Check className="w-3.5 h-3.5 stroke-[3]" />
-                      </div>
-                      <span className="font-body text-sm sm:text-base text-brand-charcoal dark:text-gray-200 font-semibold">
-                        Transparent fee structuring, proactive case updates, and rigorous compliance at every stage.
-                      </span>
-                    </div>
-                  </div>
-
-                  {/* 3. Working Challenge / Strategic Scope */}
+                  {/* 3. Strategic Capabilities & Scope (Editable) */}
                   <div className="mb-10">
                     <h3 className="font-heading text-2xl sm:text-3xl font-bold text-brand-charcoal dark:text-brand-white mb-4">
-                      Strategic Capabilities & Scope
+                      {capabilitiesTitle}
                     </h3>
-                    <p className="font-body text-sm sm:text-base text-brand-slate dark:text-gray-300 leading-relaxed mb-6">
-                      Our solicitors combine technical excellence with acute commercial acumen. Whether advising corporate entities on complex regulatory landscapes or resolving contentious disputes, we safeguard our clients&apos; interests with focused precision.
-                    </p>
+                    {capabilitiesDescription && (
+                      <p className="font-body text-sm sm:text-base text-brand-slate dark:text-gray-300 leading-relaxed mb-6">
+                        {capabilitiesDescription}
+                      </p>
+                    )}
 
-                    {/* 2-Column Bold Checklist Grid */}
-                    <div className="services__details-left-content-list bold grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
-                      <div className="space-y-3">
-                        <div className="flex items-center gap-3">
-                          <LucideIcons.Check className="w-4 h-4 text-brand-crimson shrink-0 stroke-[3]" />
-                          <span className="font-heading text-sm sm:text-base font-bold text-brand-charcoal dark:text-brand-white">
-                            Transaction & Contract Structuring
-                          </span>
-                        </div>
-                        <div className="flex items-center gap-3">
-                          <LucideIcons.Check className="w-4 h-4 text-brand-crimson shrink-0 stroke-[3]" />
-                          <span className="font-heading text-sm sm:text-base font-bold text-brand-charcoal dark:text-brand-white">
-                            Comprehensive Risk Advisory
-                          </span>
-                        </div>
-                        <div className="flex items-center gap-3">
-                          <LucideIcons.Check className="w-4 h-4 text-brand-crimson shrink-0 stroke-[3]" />
-                          <span className="font-heading text-sm sm:text-base font-bold text-brand-charcoal dark:text-brand-white">
-                            Dispute Resolution & Arbitration
-                          </span>
-                        </div>
+                    {/* Capabilities Checklist Grid (Editable Ticks) */}
+                    {capabilitiesList.length > 0 && (
+                      <div className="services__details-left-content-list bold grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
+                        {capabilitiesList.map((item, idx) => (
+                          <div key={idx} className="flex items-center gap-3">
+                            <LucideIcons.Check className="w-4 h-4 text-brand-crimson shrink-0 stroke-[3]" />
+                            <span className="font-heading text-sm sm:text-base font-bold text-brand-charcoal dark:text-brand-white">
+                              {item}
+                            </span>
+                          </div>
+                        ))}
                       </div>
-
-                      <div className="space-y-3">
-                        <div className="flex items-center gap-3">
-                          <LucideIcons.Check className="w-4 h-4 text-brand-crimson shrink-0 stroke-[3]" />
-                          <span className="font-heading text-sm sm:text-base font-bold text-brand-charcoal dark:text-brand-white">
-                            Regulatory & Statutory Compliance
-                          </span>
-                        </div>
-                        <div className="flex items-center gap-3">
-                          <LucideIcons.Check className="w-4 h-4 text-brand-crimson shrink-0 stroke-[3]" />
-                          <span className="font-heading text-sm sm:text-base font-bold text-brand-charcoal dark:text-brand-white">
-                            Cross-Border Legal Advisory
-                          </span>
-                        </div>
-                        <div className="flex items-center gap-3">
-                          <LucideIcons.Check className="w-4 h-4 text-brand-crimson shrink-0 stroke-[3]" />
-                          <span className="font-heading text-sm sm:text-base font-bold text-brand-charcoal dark:text-brand-white">
-                            Asset Protection & Governance
-                          </span>
-                        </div>
-                      </div>
-                    </div>
+                    )}
                   </div>
 
                   {/* 4. Related Representative Cases (if any) */}
@@ -367,7 +383,7 @@ export default async function PracticeAreaDetailPage({ params: paramsPromise }: 
                     </div>
                   )}
 
-                  {/* 5. Frequently Asked Questions Section */}
+                  {/* 5. Frequently Asked Questions Section (Editable with rich text answers) */}
                   <div className="mt-12 pt-6 border-t border-gray-200 dark:border-gray-800">
                     <h3 className="font-heading text-2xl sm:text-3xl font-bold text-brand-charcoal dark:text-brand-white mb-2">
                       Frequently Asked Questions
@@ -375,7 +391,7 @@ export default async function PracticeAreaDetailPage({ params: paramsPromise }: 
                     <p className="font-body text-sm text-brand-slate mb-4">
                       Common inquiries regarding our instruction, engagement terms, and procedural milestones.
                     </p>
-                    <ServiceFaqAccordion />
+                    <ServiceFaqAccordion items={faqItems} />
                   </div>
                 </div>
               </div>
