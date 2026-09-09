@@ -20,6 +20,7 @@ import { Users } from './collections/Users'
 import { Vacancies } from './collections/Vacancies'
 import { Footer } from './Footer/config'
 import { Header } from './Header/config'
+import { PageBanners } from './PageBanners/config'
 import { plugins } from './plugins'
 import { defaultLexical } from '@/fields/defaultLexical'
 import { getServerSideURL } from './utilities/getURL'
@@ -30,14 +31,6 @@ const dirname = path.dirname(filename)
 
 export default buildConfig({
   admin: {
-    components: {
-      // The `BeforeLogin` component renders a message that you see while logging into your admin panel.
-      // Feel free to delete this at any time. Simply remove the line below.
-      beforeLogin: ['@/components/BeforeLogin'],
-      // The `BeforeDashboard` component renders the 'welcome' block that you see after logging into your admin panel.
-      // Feel free to delete this at any time. Simply remove the line below.
-      beforeDashboard: ['@/components/BeforeDashboard'],
-    },
     importMap: {
       baseDir: path.resolve(dirname),
     },
@@ -71,6 +64,7 @@ export default buildConfig({
     pool: {
       connectionString: process.env.POSTGRES_URL || '',
     },
+    push: true,
   }),
   collections: [
     Pages,
@@ -100,7 +94,7 @@ export default buildConfig({
       token: process.env.BLOB_READ_WRITE_TOKEN || '',
     }),
   ],
-  globals: [Header, Footer],
+  globals: [Header, Footer, PageBanners],
   secret: process.env.PAYLOAD_SECRET,
   sharp,
   typescript: {
