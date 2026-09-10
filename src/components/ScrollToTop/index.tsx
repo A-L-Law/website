@@ -14,7 +14,7 @@ export const ScrollToTop: React.FC<{ addClass?: string }> = ({ addClass = '' }) 
   useEffect(() => {
     if (!mounted) return
 
-    const scrollPath = document.querySelector<SVGPathElement>('.scroll-up path')
+    const scrollPath = document.querySelector<SVGPathElement>('.scroll-up svg.scroll-circle path')
     if (!scrollPath) return
 
     const pathLength = scrollPath.getTotalLength()

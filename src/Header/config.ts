@@ -57,8 +57,34 @@ export const Header: GlobalConfig = {
         link({
           appearances: false,
         }),
+        {
+          name: 'subMenu',
+          type: 'array',
+          label: 'Sub Menu Items',
+          admin: {
+            description: 'Optional sub-menu dropdown links',
+          },
+          fields: [
+            link({
+              appearances: false,
+            }),
+            {
+              name: 'nestedSubMenu',
+              type: 'array',
+              label: 'Nested Sub Menu Items',
+              admin: {
+                description: 'Optional 2nd level split-out sub-menu links',
+              },
+              fields: [
+                link({
+                  appearances: false,
+                }),
+              ],
+            },
+          ],
+        },
       ],
-      maxRows: 8,
+      maxRows: 10,
       admin: {
         initCollapsed: true,
         components: {
@@ -83,6 +109,14 @@ export const Header: GlobalConfig = {
       name: 'ctaButtonLink',
       type: 'text',
       defaultValue: '/contact',
+    },
+    {
+      name: 'practiceAreasHeroMedia',
+      type: 'upload',
+      relationTo: 'media',
+      admin: {
+        description: 'Background media for the Practice Areas page top hero',
+      },
     },
   ],
   hooks: {

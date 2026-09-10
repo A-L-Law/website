@@ -120,11 +120,10 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
       ],
     },
     {
-      link: { label: 'Blog', url: '/posts' },
+      link: { label: 'Insights', url: '/guides' },
       subMenu: [
-        { link: { label: 'Blog Grid', url: '/posts' } },
-        { link: { label: 'Blog Standard', url: '/posts' } },
-        { link: { label: 'Blog Details', url: '/posts' } },
+        { link: { label: 'Legal Guides', url: '/guides' } },
+        { link: { label: 'Firm News', url: '/news' } },
       ],
     },
     {

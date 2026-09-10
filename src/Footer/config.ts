@@ -81,6 +81,14 @@ export const Footer: GlobalConfig = {
       type: 'text',
       defaultValue: 'Copyright 2026 A L Law — All Rights Reserved',
     },
+    {
+      name: 'subscribeBgMedia',
+      type: 'upload',
+      relationTo: 'media',
+      admin: {
+        description: 'Background image for the Subscribe banner above footer',
+      },
+    },
   ],
   hooks: {
     afterChange: [revalidateFooter],

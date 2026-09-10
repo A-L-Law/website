@@ -190,31 +190,6 @@ export const PageBanners: GlobalConfig = {
           ],
         },
         {
-          label: 'Blog / Posts',
-          name: 'posts',
-          fields: [
-            {
-              name: 'title',
-              type: 'text',
-              defaultValue: 'Blog & Legal Insights',
-              admin: { description: 'Banner title for /posts' },
-            },
-            {
-              name: 'innerTitle',
-              type: 'text',
-              defaultValue: 'Blog',
-              admin: { description: 'Breadcrumb label for /posts' },
-            },
-            {
-              name: 'media',
-              type: 'upload',
-              relationTo: 'media',
-              label: 'Banner Image',
-              admin: { description: 'Background image for Blog page banner' },
-            },
-          ],
-        },
-        {
           label: 'Search',
           name: 'search',
           fields: [

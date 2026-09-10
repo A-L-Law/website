@@ -17,7 +17,6 @@ export type PageBannersType = {
   events?: PageBannerSection
   news?: PageBannerSection
   vacancies?: PageBannerSection
-  posts?: PageBannerSection
   search?: PageBannerSection
   defaultBanner?: {
     media?: Media | string | null

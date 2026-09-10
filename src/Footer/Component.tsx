@@ -37,7 +37,7 @@ export async function Footer() {
   ]
 
   return (
-    <footer className="mt-auto bg-brand-charcoal text-brand-white pt-16 pb-8 border-t border-brand-slate/30 font-body">
+    <footer className="mt-auto bg-brand-charcoal text-brand-white pt-28 md:pt-36 pb-8 border-t border-brand-slate/30 font-body relative z-10">
       <div className="container">
         {/* Main Footer 4-Column Grid matching Conbix footer-one */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 mb-12">

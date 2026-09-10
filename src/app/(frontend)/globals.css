@@ -360,11 +360,11 @@ html[data-theme='light'] {
   height: 50px;
   width: 50px;
   transition: all 200ms linear;
-  background: var(--brand-white);
+  background: transparent;
 }
 
 [data-theme='dark'] .scroll-up {
-  background: var(--brand-charcoal);
+  background: transparent;
   box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.2);
 }
 
@@ -397,15 +397,269 @@ html[data-theme='light'] {
   pointer-events: none;
 }
 
-.scroll-up svg path {
-  fill: none;
-}
-
 .scroll-up svg.scroll-circle path {
+  fill: none;
   stroke: var(--brand-crimson);
   stroke-width: 4;
   box-sizing: border-box;
   transition: stroke-dashoffset 10ms linear;
+}
+
+/*==========================================================================
+1-to-1 Conbix Subtitle Style with Signature 2-Line Equal Accent Lines
+==========================================================================*/
+.subtitle-one,
+.subtitle-two,
+.subtitle-three {
+  position: relative;
+  text-transform: uppercase;
+  color: var(--brand-crimson);
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 24px;
+  padding-left: 55px;
+  display: inline-block;
+}
+
+.subtitle-one::before,
+.subtitle-two::before,
+.subtitle-three::before {
+  position: absolute;
+  content: '';
+  top: 6px;
+  left: 0;
+  width: 40px;
+  height: 2px;
+  background: var(--brand-crimson);
+}
+
+.subtitle-one::after,
+.subtitle-two::after,
+.subtitle-three::after {
+  position: absolute;
+  content: '';
+  bottom: 6px;
+  left: 0;
+  width: 40px;
+  height: 2px;
+  background: var(--brand-crimson);
+}
+
+@keyframes leftRight {
+  0% {
+    transform: translateX(0px);
+  }
+  50% {
+    transform: translateX(15px);
+  }
+  100% {
+    transform: translateX(0px);
+  }
+}
+
+.left-right-animate {
+  animation: leftRight 4s infinite ease-in-out;
+}
+
+@keyframes leftRight2 {
+  0% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-15px) rotate(2deg);
+  }
+  100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+}
+
+.left-right-animate2 {
+  animation: leftRight2 6s infinite ease-in-out;
+}
+
+@keyframes phoneShake {
+  0% { transform: rotate(0deg); }
+  15% { transform: rotate(-18deg); }
+  30% { transform: rotate(18deg); }
+  45% { transform: rotate(-12deg); }
+  60% { transform: rotate(12deg); }
+  75% { transform: rotate(-6deg); }
+  90% { transform: rotate(6deg); }
+  100% { transform: rotate(0deg); }
+}
+
+.icon-animation {
+  animation: phoneShake 2s infinite ease-in-out;
+}
+
+/*==========================================================================
+1-to-1 Conbix Button Styles matching Template Spacing and Design
+==========================================================================*/
+.btn-one,
+.btn-two,
+.btn-three,
+.btn-four,
+.btn-five {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  font-family: var(--font-heading, 'Montserrat', sans-serif);
+  font-weight: 800;
+  font-size: 13px;
+  letter-spacing: 0.05em;
+  line-height: 24px;
+  padding: 16px 36px;
+  text-transform: uppercase;
+  border-radius: 6px;
+  transition: all 0.4s ease;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.btn-one {
+  background-color: var(--brand-crimson);
+  color: #ffffff;
+}
+
+.btn-one:hover {
+  background-color: #1a1a1a;
+  color: #ffffff;
+}
+
+.btn-two {
+  background-color: var(--brand-crimson);
+  color: #ffffff;
+}
+
+.btn-two:hover {
+  background-color: #1a1a1a;
+  color: #ffffff;
+}
+
+.btn-four {
+  background-color: #161e2d;
+  color: #ffffff;
+}
+
+.btn-four:hover {
+  background-color: #000000;
+  color: #ffffff;
+}
+
+/*==========================================================================
+1-to-1 Conbix Services Three Cards CSS
+==========================================================================*/
+.services__three-item {
+  position: relative;
+  overflow: hidden;
+  border-radius: 12px;
+}
+
+.services__three-item > img {
+  width: 100%;
+  filter: grayscale(100%);
+  min-height: 420px;
+  object-fit: cover;
+  transition: filter 0.4s ease-in-out;
+}
+
+.services__three-item:hover > img {
+  filter: grayscale(0%);
+}
+
+.services__three-item.page {
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.services__three-item-content.page {
+  position: relative;
+  margin-top: auto;
+  padding: 30px;
+  padding-top: 45px;
+  z-index: 1;
+  background: var(--card, #ffffff);
+  color: var(--card-foreground, #1a1a1a);
+  border-bottom-left-radius: 12px;
+  border-bottom-right-radius: 12px;
+  border: 1px solid var(--border, rgba(0, 0, 0, 0.08));
+  border-top: none;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+[data-theme='dark'] .services__three-item-content.page {
+  background: var(--card, #1a1a1a);
+  color: #ffffff;
+  border-color: var(--border, rgba(255, 255, 255, 0.1));
+}
+
+.services__three-item-content-icon {
+  background: var(--brand-crimson, #BE1622);
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  border: 4px solid var(--card, #ffffff);
+  position: absolute;
+  top: -30px;
+  right: 20px;
+  color: #ffffff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transition: border-color 0.3s ease;
+}
+
+[data-theme='dark'] .services__three-item-content-icon {
+  border-color: var(--card, #1a1a1a);
+}
+
+/*==========================================================================
+High Impact Hero Swiper Pagination CSS matching template
+==========================================================================*/
+.banner_pagination {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 16px !important;
+  pointer-events: auto !important;
+}
+
+.banner_pagination .swiper-pagination-bullet {
+  width: 8px !important;
+  height: 8px !important;
+  background-color: var(--brand-crimson, #BE1622) !important;
+  opacity: 0.8 !important;
+  border-radius: 50% !important;
+  position: relative !important;
+  cursor: pointer !important;
+  margin: 0 !important;
+  transition: all 0.3s ease !important;
+}
+
+.banner_pagination .swiper-pagination-bullet::after {
+  content: '' !important;
+  position: absolute !important;
+  width: 24px !important;
+  height: 24px !important;
+  border: 1.5px solid var(--brand-crimson, #BE1622) !important;
+  border-radius: 50% !important;
+  top: 50% !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%) scale(0.5) !important;
+  opacity: 0 !important;
+  transition: all 0.3s ease !important;
+}
+
+.banner_pagination .swiper-pagination-bullet-active {
+  opacity: 1 !important;
+}
+
+.banner_pagination .swiper-pagination-bullet-active::after {
+  opacity: 1 !important;
+  transform: translate(-50%, -50%) scale(1) !important;
 }
 
 

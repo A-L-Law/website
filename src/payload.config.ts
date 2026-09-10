@@ -12,7 +12,6 @@ import { Guides } from './collections/Guides'
 import { Media } from './collections/Media'
 import { News } from './collections/News'
 import { Pages } from './collections/Pages'
-import { Posts } from './collections/Posts'
 import { PracticeAreas } from './collections/PracticeAreas'
 import { Roles } from './collections/Roles'
 import { Testimonials } from './collections/Testimonials'
@@ -68,7 +67,6 @@ export default buildConfig({
   }),
   collections: [
     Pages,
-    Posts,
     Media,
     Categories,
     Users,
