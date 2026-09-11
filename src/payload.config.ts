@@ -14,6 +14,7 @@ import { News } from './collections/News'
 import { Pages } from './collections/Pages'
 import { PracticeAreas } from './collections/PracticeAreas'
 import { Roles } from './collections/Roles'
+import { Team } from './collections/Team'
 import { Testimonials } from './collections/Testimonials'
 import { Users } from './collections/Users'
 import { Vacancies } from './collections/Vacancies'
@@ -79,6 +80,7 @@ export default buildConfig({
     News,
     Events,
     Vacancies,
+    Team,
   ],
 
 

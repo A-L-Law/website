@@ -1,13 +1,94 @@
 import React from 'react'
-import Link from 'next/link'
 import { getPayload } from 'payload'
 import configPromise from '@payload-config'
 
 import { MediumImpactHero } from '@/heros/MediumImpact'
 import { getCachedPageBanners } from '@/utilities/getPageBanners'
-import type { Media } from '@/payload-types'
+import type { Media, Team } from '@/payload-types'
+import { TeamDirectory, TeamMemberItem } from './TeamDirectory.client'
 
 export const revalidate = 60
+
+const fallbackTeamMembers: TeamMemberItem[] = [
+  {
+    id: 'amelia-clover',
+    name: 'Amelia Clover',
+    slug: 'amelia-clover',
+    jobTitle: 'Senior Advisor',
+    jobRole: 'founder',
+    imageUrl: '/assets/img/team/team-1.jpg',
+    socialLinks: {
+      facebook: 'https://www.facebook.com',
+      x: 'https://twitter.com',
+      linkedin: 'https://www.linkedin.com',
+    },
+  },
+  {
+    id: 'steve-rhodes',
+    name: 'Steve Rhodes',
+    slug: 'steve-rhodes',
+    jobTitle: 'Health Coach',
+    jobRole: 'writer',
+    imageUrl: '/assets/img/team/team-2.jpg',
+    socialLinks: {
+      facebook: 'https://www.facebook.com',
+      x: 'https://twitter.com',
+      linkedin: 'https://www.linkedin.com',
+    },
+  },
+  {
+    id: 'grace-elizabeth',
+    name: 'Grace Elizabeth',
+    slug: 'grace-elizabeth',
+    jobTitle: 'Underwriter',
+    jobRole: 'founder',
+    imageUrl: '/assets/img/team/team-3.jpg',
+    socialLinks: {
+      facebook: 'https://www.facebook.com',
+      x: 'https://twitter.com',
+      linkedin: 'https://www.linkedin.com',
+    },
+  },
+  {
+    id: 'michael-james',
+    name: 'Michael James',
+    slug: 'michael-james',
+    jobTitle: 'Claims Adjuster',
+    jobRole: 'writer',
+    imageUrl: '/assets/img/team/team-4.jpg',
+    socialLinks: {
+      facebook: 'https://www.facebook.com',
+      x: 'https://twitter.com',
+      linkedin: 'https://www.linkedin.com',
+    },
+  },
+  {
+    id: 'tommy-hilfiger',
+    name: 'Tommy Hilfiger',
+    slug: 'tommy-hilfiger',
+    jobTitle: 'Marketing Lead',
+    jobRole: 'designer',
+    imageUrl: '/assets/img/team/team-5.jpg',
+    socialLinks: {
+      facebook: 'https://www.facebook.com',
+      x: 'https://twitter.com',
+      linkedin: 'https://www.linkedin.com',
+    },
+  },
+  {
+    id: 'florence-welch',
+    name: 'Florence Welch',
+    slug: 'florence-welch',
+    jobTitle: 'Legal Director',
+    jobRole: 'manager',
+    imageUrl: '/assets/img/team/team-6.jpg',
+    socialLinks: {
+      facebook: 'https://www.facebook.com',
+      x: 'https://twitter.com',
+      linkedin: 'https://www.linkedin.com',
+    },
+  },
+]
 
 export default async function TeamHubPage() {
   const [payload, pageBanners] = await Promise.all([
@@ -15,11 +96,41 @@ export default async function TeamHubPage() {
     getCachedPageBanners(),
   ])
 
-  const { docs: teamMembers } = await payload.find({
-    collection: 'users',
-    sort: 'name',
-    limit: 100,
-  })
+  let teamMembers: TeamMemberItem[] = []
+
+  try {
+    const { docs } = await payload.find({
+      collection: 'team',
+      sort: 'name',
+      limit: 100,
+    })
+
+    if (docs && docs.length > 0) {
+      teamMembers = docs.map((doc: any) => {
+        let avatarUrl = '/assets/img/team/team-1.jpg'
+        if (doc.avatar && typeof doc.avatar === 'object' && doc.avatar.url) {
+          avatarUrl = doc.avatar.url
+        }
+
+        return {
+          id: String(doc.id),
+          name: doc.name,
+          slug: doc.slug,
+          jobTitle: doc.jobTitle,
+          jobRole: doc.jobRole,
+          imageUrl: avatarUrl,
+          socialLinks: doc.socialLinks,
+        }
+      })
+    }
+  } catch (err) {
+    console.error('Error fetching team members from Payload CMS:', err)
+  }
+
+  // Fallback to demo template members if no documents are published yet
+  if (teamMembers.length === 0) {
+    teamMembers = fallbackTeamMembers
+  }
 
   const bannerMedia = (pageBanners?.team?.media || pageBanners?.defaultBanner?.media) as Media
 
@@ -33,34 +144,8 @@ export default async function TeamHubPage() {
         media={bannerMedia}
       />
 
-      {/* 2. Team Directory Grid */}
-      <div className="container mx-auto px-4 py-16 lg:py-24">
-        <div className="mb-12 text-center max-w-2xl mx-auto">
-          <p className="font-body text-lg text-brand-slate">
-            Experienced London solicitors and legal experts dedicated to delivering strategic, results-focused advice.
-          </p>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {teamMembers.map((member) => (
-            <Link
-              key={member.id}
-              href={`/team/${member.id}`}
-              className="group p-6 rounded-xl bg-brand-white dark:bg-brand-charcoal border border-brand-ice dark:border-brand-slate hover:border-brand-crimson transition-all shadow-sm block"
-            >
-              <div className="w-20 h-20 rounded-full bg-brand-crimson text-brand-white flex items-center justify-center font-heading text-2xl font-bold mb-4 group-hover:scale-105 transition-transform">
-                {member.name ? member.name.charAt(0) : 'S'}
-              </div>
-              <h2 className="font-heading text-xl font-bold text-brand-charcoal dark:text-brand-white group-hover:text-brand-crimson mb-1 transition-colors">
-                {member.name || 'Solicitor'}
-              </h2>
-              <p className="font-body text-sm text-brand-slate">
-                {member.email}
-              </p>
-            </Link>
-          ))}
-        </div>
-      </div>
+      {/* 2. Interactive Team Directory with Role Filter & 3-Column Card Grid */}
+      <TeamDirectory members={teamMembers} />
     </article>
   )
 }
