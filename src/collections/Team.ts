@@ -9,6 +9,11 @@ import {
   OverviewField,
   PreviewField,
 } from '@payloadcms/plugin-seo/fields'
+import {
+  FixedToolbarFeature,
+  InlineToolbarFeature,
+  lexicalEditor,
+} from '@payloadcms/richtext-lexical'
 import { slugField } from 'payload'
 
 export const Team: CollectionConfig<'team'> = {
@@ -97,9 +102,16 @@ export const Team: CollectionConfig<'team'> = {
             {
               name: 'background',
               type: 'richText',
+              editor: lexicalEditor({
+                features: ({ rootFeatures }) => [
+                  ...rootFeatures,
+                  FixedToolbarFeature(),
+                  InlineToolbarFeature(),
+                ],
+              }),
               admin: {
                 description:
-                  'Professional background, career history, and legal biography (replaces Career Guidelines)',
+                  'Professional background, career history, and legal biography (replaces Career Guidelines). Supports bold, italics, links, ordered lists, and unordered lists.',
               },
             },
           ],

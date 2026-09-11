@@ -1415,7 +1415,7 @@ export interface Team {
    */
   user?: (number | null) | User;
   /**
-   * Professional background, career history, and legal biography (replaces Career Guidelines)
+   * Professional background, career history, and legal biography (replaces Career Guidelines). Supports bold, italics, links, ordered lists, and unordered lists.
    */
   background?: {
     root: {

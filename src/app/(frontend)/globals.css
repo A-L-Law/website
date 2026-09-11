@@ -1323,6 +1323,54 @@ Conbix Team Single Profile CSS
   }
 }
 
+/*==========================================================================
+RichText List, Formatting & Link Typography
+==========================================================================*/
+.payload-richtext ul,
+.team__single-right-experience ul {
+  list-style-type: disc !important;
+  padding-left: 1.5rem !important;
+  margin-top: 1rem !important;
+  margin-bottom: 1rem !important;
+}
+.payload-richtext ol,
+.team__single-right-experience ol {
+  list-style-type: decimal !important;
+  padding-left: 1.5rem !important;
+  margin-top: 1rem !important;
+  margin-bottom: 1rem !important;
+}
+.payload-richtext li,
+.team__single-right-experience li {
+  margin-top: 0.35rem;
+  margin-bottom: 0.35rem;
+  line-height: 1.7;
+}
+.payload-richtext strong,
+.team__single-right-experience strong {
+  font-weight: 700;
+  color: #111111;
+}
+[data-theme='dark'] .payload-richtext strong,
+[data-theme='dark'] .team__single-right-experience strong {
+  color: #ffffff;
+}
+.payload-richtext em,
+.team__single-right-experience em {
+  font-style: italic;
+}
+.payload-richtext a,
+.team__single-right-experience a {
+  color: var(--brand-crimson, #BE1622);
+  text-decoration: underline;
+  transition: opacity 0.2s;
+}
+.payload-richtext a:hover,
+.team__single-right-experience a:hover {
+  opacity: 0.8;
+}
+
+
 
 
 
