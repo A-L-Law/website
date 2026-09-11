@@ -2952,9 +2952,59 @@ export interface Footer {
         id?: string | null;
       }[]
     | null;
+  /**
+   * Add office locations one by one with customizable titles (e.g. Head Office Address, City Office Address)
+   */
+  addresses?:
+    | {
+        /**
+         * e.g. Head Office Address, London City Office, Branch Office
+         */
+        title: string;
+        address: string;
+        mapLink?: string | null;
+        id?: string | null;
+      }[]
+    | null;
   headOfficeAddress?: string | null;
   branchOfficeAddress?: string | null;
+  /**
+   * Copyright notice supporting rich text with links, bold, and italics
+   */
+  copyright?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
   copyrightText?: string | null;
+  /**
+   * Bottom legal links (e.g. Privacy Policy, Terms of Service, Cookies)
+   */
+  legalLinks?:
+    | {
+        link: {
+          type?: ('reference' | 'custom') | null;
+          newTab?: boolean | null;
+          reference?: {
+            relationTo: 'pages';
+            value: number | Page;
+          } | null;
+          url?: string | null;
+          label: string;
+        };
+        id?: string | null;
+      }[]
+    | null;
   /**
    * Background image for the Subscribe banner above footer
    */
@@ -3186,9 +3236,32 @@ export interface FooterSelect<T extends boolean = true> {
             };
         id?: T;
       };
+  addresses?:
+    | T
+    | {
+        title?: T;
+        address?: T;
+        mapLink?: T;
+        id?: T;
+      };
   headOfficeAddress?: T;
   branchOfficeAddress?: T;
+  copyright?: T;
   copyrightText?: T;
+  legalLinks?:
+    | T
+    | {
+        link?:
+          | T
+          | {
+              type?: T;
+              newTab?: T;
+              reference?: T;
+              url?: T;
+              label?: T;
+            };
+        id?: T;
+      };
   subscribeBgMedia?: T;
   updatedAt?: T;
   createdAt?: T;
