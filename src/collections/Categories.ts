@@ -21,6 +21,14 @@ export const Categories: CollectionConfig = {
       type: 'text',
       required: true,
     },
+    {
+      name: 'practiceArea',
+      type: 'relationship',
+      relationTo: 'practice-areas',
+      admin: {
+        description: 'Optionally link this category to a Practice Area.',
+      },
+    },
     slugField({
       position: undefined,
     }),

@@ -9,7 +9,7 @@ export type Props = {
 }
 
 export const CollectionArchive: React.FC<Props> = (props) => {
-  const { posts, relationTo = 'guides' } = props
+  const { posts, relationTo = 'posts' } = props
 
   return (
     <div className={cn('container')}>

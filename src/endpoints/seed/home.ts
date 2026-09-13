@@ -567,7 +567,7 @@ export const home: (args: HomeArgs) => RequiredDataFromCollectionSlug<'pages'> =
           },
         },
         populateBy: 'collection',
-        relationTo: 'guides',
+        relationTo: 'posts',
       },
       {
         blockName: 'CTA',

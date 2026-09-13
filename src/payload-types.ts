@@ -70,14 +70,14 @@ export interface Config {
     pages: Page;
     media: Media;
     categories: Category;
+    tags: Tag;
     users: User;
     roles: Role;
     entities: Entity;
     testimonials: Testimonial;
     'practice-areas': PracticeArea;
     cases: Case;
-    guides: Guide;
-    news: News;
+    posts: Post;
     events: Event;
     vacancies: Vacancy;
     team: Team;
@@ -101,14 +101,14 @@ export interface Config {
     pages: PagesSelect<false> | PagesSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     categories: CategoriesSelect<false> | CategoriesSelect<true>;
+    tags: TagsSelect<false> | TagsSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
     roles: RolesSelect<false> | RolesSelect<true>;
     entities: EntitiesSelect<false> | EntitiesSelect<true>;
     testimonials: TestimonialsSelect<false> | TestimonialsSelect<true>;
     'practice-areas': PracticeAreasSelect<false> | PracticeAreasSelect<true>;
     cases: CasesSelect<false> | CasesSelect<true>;
-    guides: GuidesSelect<false> | GuidesSelect<true>;
-    news: NewsSelect<false> | NewsSelect<true>;
+    posts: PostsSelect<false> | PostsSelect<true>;
     events: EventsSelect<false> | EventsSelect<true>;
     vacancies: VacanciesSelect<false> | VacanciesSelect<true>;
     team: TeamSelect<false> | TeamSelect<true>;
@@ -508,13 +508,13 @@ export interface ArchiveBlock {
     [k: string]: unknown;
   } | null;
   populateBy?: ('collection' | 'selection') | null;
-  relationTo?: ('guides' | 'news') | null;
+  relationTo?: 'posts' | null;
   categories?: (number | Category)[] | null;
   limit?: number | null;
   selectedDocs?:
     | {
-        relationTo: 'guides';
-        value: number | Guide;
+        relationTo: 'posts';
+        value: number | Post;
       }[]
     | null;
   id?: string | null;
@@ -529,6 +529,10 @@ export interface Category {
   id: number;
   title: string;
   /**
+   * Optionally link this category to a Practice Area.
+   */
+  practiceArea?: (number | null) | PracticeArea;
+  /**
    * When enabled, the slug will auto-generate from the title field on save and autosave.
    */
   generateSlug?: boolean | null;
@@ -542,91 +546,6 @@ export interface Category {
         id?: string | null;
       }[]
     | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "guides".
- */
-export interface Guide {
-  id: number;
-  title: string;
-  slug: string;
-  publishedAt: string;
-  author: number | User;
-  practiceArea: number | PracticeArea;
-  excerpt?: string | null;
-  content?: {
-    root: {
-      type: string;
-      children: {
-        type: any;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  } | null;
-  featuredImage?: (number | null) | Media;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "users".
- */
-export interface User {
-  id: number;
-  name?: string | null;
-  /**
-   * Assigned RBAC role determining access permissions
-   */
-  role?: (number | null) | Role;
-  updatedAt: string;
-  createdAt: string;
-  email: string;
-  resetPasswordToken?: string | null;
-  resetPasswordExpiration?: string | null;
-  salt?: string | null;
-  hash?: string | null;
-  loginAttempts?: number | null;
-  lockUntil?: string | null;
-  sessions?:
-    | {
-        id: string;
-        createdAt?: string | null;
-        expiresAt: string;
-      }[]
-    | null;
-  password?: string | null;
-  collection: 'users';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "roles".
- */
-export interface Role {
-  id: number;
-  /**
-   * Human-readable role name (e.g. Super Admin, Editor, Author)
-   */
-  name: string;
-  /**
-   * Role identifier slug (e.g. super-admin, editor, author)
-   */
-  slug: string;
-  description?: string | null;
-  permissions?: {
-    canPublishContent?: boolean | null;
-    canManageUsers?: boolean | null;
-    canManageGlobals?: boolean | null;
-    canAccessAdmin?: boolean | null;
-  };
   updatedAt: string;
   createdAt: string;
 }
@@ -732,6 +651,120 @@ export interface PracticeArea {
   updatedAt: string;
   createdAt: string;
   _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "posts".
+ */
+export interface Post {
+  id: number;
+  title: string;
+  /**
+   * When enabled, the slug will auto-generate from the title field on save and autosave.
+   */
+  generateSlug?: boolean | null;
+  slug: string;
+  postType: 'news' | 'guide';
+  publishedAt: string;
+  author: number | User;
+  categories?: (number | Category)[] | null;
+  tags?: (number | Tag)[] | null;
+  /**
+   * Link this post to a Practice Area for filtering on the News page.
+   */
+  practiceArea?: (number | null) | PracticeArea;
+  /**
+   * A short summary displayed on listing pages and in sidebars.
+   */
+  excerpt?: string | null;
+  content?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  featuredImage?: (number | null) | Media;
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "users".
+ */
+export interface User {
+  id: number;
+  name?: string | null;
+  /**
+   * Assigned RBAC role determining access permissions
+   */
+  role?: (number | null) | Role;
+  updatedAt: string;
+  createdAt: string;
+  email: string;
+  resetPasswordToken?: string | null;
+  resetPasswordExpiration?: string | null;
+  salt?: string | null;
+  hash?: string | null;
+  loginAttempts?: number | null;
+  lockUntil?: string | null;
+  sessions?:
+    | {
+        id: string;
+        createdAt?: string | null;
+        expiresAt: string;
+      }[]
+    | null;
+  password?: string | null;
+  collection: 'users';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "roles".
+ */
+export interface Role {
+  id: number;
+  /**
+   * Human-readable role name (e.g. Super Admin, Editor, Author)
+   */
+  name: string;
+  /**
+   * Role identifier slug (e.g. super-admin, editor, author)
+   */
+  slug: string;
+  description?: string | null;
+  permissions?: {
+    canPublishContent?: boolean | null;
+    canManageUsers?: boolean | null;
+    canManageGlobals?: boolean | null;
+    canAccessAdmin?: boolean | null;
+  };
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "tags".
+ */
+export interface Tag {
+  id: number;
+  title: string;
+  /**
+   * When enabled, the slug will auto-generate from the title field on save and autosave.
+   */
+  generateSlug?: boolean | null;
+  slug: string;
+  updatedAt: string;
+  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -974,8 +1007,8 @@ export interface BlogArchiveBlock {
   subtitle?: string | null;
   title?: string | null;
   populateBy?: ('collection' | 'selection') | null;
-  relationTo?: ('guides' | 'news') | null;
-  selectedGuides?: (number | Guide)[] | null;
+  relationTo?: 'posts' | null;
+  selectedPosts?: (number | Post)[] | null;
   limit?: number | null;
   buttonText?: string | null;
   buttonLink?: string | null;
@@ -1288,36 +1321,6 @@ export interface Entity {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "news".
- */
-export interface News {
-  id: number;
-  title: string;
-  slug: string;
-  publishedAt: string;
-  author: number | User;
-  excerpt?: string | null;
-  content?: {
-    root: {
-      type: string;
-      children: {
-        type: any;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  } | null;
-  featuredImage?: (number | null) | Media;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "events".
  */
 export interface Event {
@@ -1488,12 +1491,8 @@ export interface Redirect {
           value: number | Page;
         } | null)
       | ({
-          relationTo: 'guides';
-          value: number | Guide;
-        } | null)
-      | ({
-          relationTo: 'news';
-          value: number | News;
+          relationTo: 'posts';
+          value: number | Post;
         } | null);
     url?: string | null;
   };
@@ -1533,12 +1532,8 @@ export interface Search {
         value: number | Page;
       }
     | {
-        relationTo: 'guides';
-        value: number | Guide;
-      }
-    | {
-        relationTo: 'news';
-        value: number | News;
+        relationTo: 'posts';
+        value: number | Post;
       }
     | {
         relationTo: 'practice-areas';
@@ -1690,6 +1685,10 @@ export interface PayloadLockedDocument {
         value: number | Category;
       } | null)
     | ({
+        relationTo: 'tags';
+        value: number | Tag;
+      } | null)
+    | ({
         relationTo: 'users';
         value: number | User;
       } | null)
@@ -1714,12 +1713,8 @@ export interface PayloadLockedDocument {
         value: number | Case;
       } | null)
     | ({
-        relationTo: 'guides';
-        value: number | Guide;
-      } | null)
-    | ({
-        relationTo: 'news';
-        value: number | News;
+        relationTo: 'posts';
+        value: number | Post;
       } | null)
     | ({
         relationTo: 'events';
@@ -1994,7 +1989,7 @@ export interface BlogArchiveBlockSelect<T extends boolean = true> {
   title?: T;
   populateBy?: T;
   relationTo?: T;
-  selectedGuides?: T;
+  selectedPosts?: T;
   limit?: T;
   buttonText?: T;
   buttonLink?: T;
@@ -2287,6 +2282,7 @@ export interface MediaSelect<T extends boolean = true> {
  */
 export interface CategoriesSelect<T extends boolean = true> {
   title?: T;
+  practiceArea?: T;
   generateSlug?: T;
   slug?: T;
   parent?: T;
@@ -2298,6 +2294,17 @@ export interface CategoriesSelect<T extends boolean = true> {
         label?: T;
         id?: T;
       };
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "tags_select".
+ */
+export interface TagsSelect<T extends boolean = true> {
+  title?: T;
+  generateSlug?: T;
+  slug?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -2440,34 +2447,24 @@ export interface CasesSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "guides_select".
+ * via the `definition` "posts_select".
  */
-export interface GuidesSelect<T extends boolean = true> {
+export interface PostsSelect<T extends boolean = true> {
   title?: T;
+  generateSlug?: T;
   slug?: T;
+  postType?: T;
   publishedAt?: T;
   author?: T;
+  categories?: T;
+  tags?: T;
   practiceArea?: T;
   excerpt?: T;
   content?: T;
   featuredImage?: T;
   updatedAt?: T;
   createdAt?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "news_select".
- */
-export interface NewsSelect<T extends boolean = true> {
-  title?: T;
-  slug?: T;
-  publishedAt?: T;
-  author?: T;
-  excerpt?: T;
-  content?: T;
-  featuredImage?: T;
-  updatedAt?: T;
-  createdAt?: T;
+  _status?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

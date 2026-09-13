@@ -10,14 +10,14 @@ import { FixedToolbarFeature, HeadingFeature, lexicalEditor } from '@payloadcms/
 import { searchFields } from '@/search/fieldOverrides'
 import { beforeSyncWithSearch } from '@/search/beforeSync'
 
-import { Page, Guide, News } from '@/payload-types'
+import { Page, Post } from '@/payload-types'
 import { getServerSideURL } from '@/utilities/getURL'
 
-const generateTitle: GenerateTitle<Page | Guide | News> = ({ doc }) => {
+const generateTitle: GenerateTitle<Page | Post> = ({ doc }) => {
   return doc?.title ? `${doc.title} | A L Law` : 'A L Law'
 }
 
-const generateURL: GenerateURL<Page | Guide | News> = ({ doc }) => {
+const generateURL: GenerateURL<Page | Post> = ({ doc }) => {
   const url = getServerSideURL()
 
   return doc?.slug ? `${url}/${doc.slug}` : url
@@ -25,7 +25,7 @@ const generateURL: GenerateURL<Page | Guide | News> = ({ doc }) => {
 
 export const plugins: Plugin[] = [
   redirectsPlugin({
-    collections: ['pages', 'guides', 'news'],
+    collections: ['pages', 'posts'],
     overrides: {
       // @ts-expect-error - This is a valid override, mapped fields don't resolve to the same type
       fields: ({ defaultFields }) => {
@@ -81,7 +81,7 @@ export const plugins: Plugin[] = [
     },
   }),
   searchPlugin({
-    collections: ['pages', 'guides', 'news', 'practice-areas'],
+    collections: ['pages', 'posts', 'practice-areas'],
     beforeSync: beforeSyncWithSearch,
     searchOverrides: {
       fields: ({ defaultFields }) => {

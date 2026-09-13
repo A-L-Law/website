@@ -2,32 +2,31 @@ import React from 'react'
 import Link from 'next/link'
 import { getPayload } from 'payload'
 import configPromise from '@payload-config'
-import type { BlogArchiveBlock as BlogArchiveBlockProps, Guide, News } from '@/payload-types'
+import type { BlogArchiveBlock as BlogArchiveBlockProps, Post } from '@/payload-types'
 
 export const BlogArchiveBlock: React.FC<BlogArchiveBlockProps> = async ({
   subtitle,
   title,
   populateBy,
   relationTo,
-  selectedGuides,
+  selectedPosts,
   limit = 3,
   buttonText,
   buttonLink,
 }) => {
-  let posts: (Guide | News)[] = []
+  let posts: Post[] = []
 
-  if (populateBy === 'selection' && selectedGuides && Array.isArray(selectedGuides)) {
-    posts = selectedGuides.filter((item): item is Guide => typeof item === 'object' && item !== null) as (Guide | News)[]
+  if (populateBy === 'selection' && selectedPosts && Array.isArray(selectedPosts)) {
+    posts = selectedPosts.filter((item): item is Post => typeof item === 'object' && item !== null)
   } else {
     try {
       const payload = await getPayload({ config: configPromise })
-      const targetCollection = relationTo === 'news' ? 'news' : 'guides'
       const response = await payload.find({
-        collection: targetCollection,
+        collection: 'posts',
         limit: limit || 3,
         sort: '-publishedAt',
       })
-      posts = response.docs as (Guide | News)[]
+      posts = response.docs as Post[]
     } catch {
       posts = []
     }
@@ -70,7 +69,7 @@ export const BlogArchiveBlock: React.FC<BlogArchiveBlockProps> = async ({
                 ? data.author.name
                 : 'A L Law Legal Team'
 
-            const postSlug = relationTo === 'news' ? `/news/${data.slug}` : `/guides/${data.slug}`
+            const postSlug = data.postType === 'news' ? `/news/${data.slug}` : `/guides/${data.slug}`
 
             return (
               <div className="blog__one-item bg-card rounded-lg overflow-hidden border border-border shadow-sm flex flex-col" key={data.id}>

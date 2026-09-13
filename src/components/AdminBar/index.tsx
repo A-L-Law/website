@@ -19,13 +19,9 @@ const collectionLabels = {
     plural: 'Pages',
     singular: 'Page',
   },
-  guides: {
-    plural: 'Guides',
-    singular: 'Guide',
-  },
-  news: {
-    plural: 'News',
-    singular: 'News',
+  posts: {
+    plural: 'Posts',
+    singular: 'Post',
   },
   'practice-areas': {
     plural: 'Practice Areas',
@@ -37,6 +33,12 @@ const collectionLabels = {
   },
 }
 
+// Map frontend URL segments to collection slugs
+const segmentToCollection: Record<string, keyof typeof collectionLabels> = {
+  guides: 'posts',
+  news: 'posts',
+}
+
 const Title: React.FC = () => <span>Dashboard</span>
 
 export const AdminBar: React.FC<{
@@ -46,7 +48,8 @@ export const AdminBar: React.FC<{
   const segments = useSelectedLayoutSegments()
   const [show, setShow] = useState(false)
   const collection = (
-    collectionLabels[segments?.[1] as keyof typeof collectionLabels] ? segments[1] : 'pages'
+    segmentToCollection[segments?.[1] as string] ??
+    (collectionLabels[segments?.[1] as keyof typeof collectionLabels] ? segments[1] : 'pages')
   ) as keyof typeof collectionLabels
   const router = useRouter()
 

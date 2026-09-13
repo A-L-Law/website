@@ -26,7 +26,7 @@ export const Card: React.FC<{
   title?: string
 }> = (props) => {
   const { card, link } = useClickableCard({})
-  const { className, doc, relationTo = 'guides', showCategories, title: titleFromProps } = props
+  const { className, doc, relationTo = 'posts', showCategories, title: titleFromProps } = props
 
   const { slug, categories, meta, title } = doc || {}
   const { description, image: metaImage } = meta || {}

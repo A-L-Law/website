@@ -8,12 +8,12 @@ import { Cases } from './collections/Cases'
 import { Categories } from './collections/Categories'
 import { Entities } from './collections/Entities'
 import { Events } from './collections/Events'
-import { Guides } from './collections/Guides'
 import { Media } from './collections/Media'
-import { News } from './collections/News'
 import { Pages } from './collections/Pages'
+import { Posts } from './collections/Posts'
 import { PracticeAreas } from './collections/PracticeAreas'
 import { Roles } from './collections/Roles'
+import { Tags } from './collections/Tags'
 import { Team } from './collections/Team'
 import { Testimonials } from './collections/Testimonials'
 import { Users } from './collections/Users'
@@ -70,14 +70,14 @@ export default buildConfig({
     Pages,
     Media,
     Categories,
+    Tags,
     Users,
     Roles,
     Entities,
     Testimonials,
     PracticeAreas,
     Cases,
-    Guides,
-    News,
+    Posts,
     Events,
     Vacancies,
     Team,

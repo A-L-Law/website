@@ -34,29 +34,25 @@ export const BlogArchiveBlock: Block = {
     {
       name: 'relationTo',
       type: 'select',
-      defaultValue: 'guides',
+      defaultValue: 'posts',
       admin: {
         condition: (_, siblingData) => siblingData.populateBy === 'collection',
       },
       options: [
         {
-          label: 'Legal Guides',
-          value: 'guides',
-        },
-        {
-          label: 'Firm News',
-          value: 'news',
+          label: 'Posts',
+          value: 'posts',
         },
       ],
     },
     {
-      name: 'selectedGuides',
+      name: 'selectedPosts',
       type: 'relationship',
       admin: {
         condition: (_, siblingData) => siblingData.populateBy === 'selection',
       },
       hasMany: true,
-      relationTo: 'guides',
+      relationTo: 'posts',
     },
     {
       name: 'limit',
