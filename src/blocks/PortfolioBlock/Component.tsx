@@ -30,7 +30,7 @@ export const PortfolioBlock: React.FC<PortfolioBlockProps> = async ({
   }
 
   return (
-    <div className="portfolio__area dark__image section-padding pb-0 overflow-hidden font-body">
+    <div className="portfolio__area dark__image section-padding pb-0 overflow-hidden font-body min-h-[100vh] flex flex-col justify-center">
       <div className="container-fluid p-0">
         <div className="row mb-12 text-center">
           <div className="col-xl-12 flex flex-col items-center justify-center">
