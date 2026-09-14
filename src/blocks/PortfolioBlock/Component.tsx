@@ -32,9 +32,9 @@ export const PortfolioBlock: React.FC<PortfolioBlockProps> = async ({
   return (
     <div className="portfolio__area dark__image section-padding pb-0 overflow-hidden font-body">
       <div className="container-fluid p-0">
-        <div className="row mb-60">
-          <div className="col-xl-12">
-            <div className="portfolio__area-title t-center">
+        <div className="row mb-12 text-center">
+          <div className="col-xl-12 flex flex-col items-center justify-center">
+            <div className="portfolio__area-title">
               {subtitle && <span className="subtitle-one text-brand-crimson font-heading uppercase tracking-wider">{subtitle}</span>}
               <h2 className="font-heading font-bold text-4xl text-brand-charcoal dark:text-white">{title || 'Our Consulting Success'}</h2>
             </div>
