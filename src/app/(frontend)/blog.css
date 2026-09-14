@@ -1324,14 +1324,42 @@ Theme Pagination CSS
   color: #ffffff;
   border-color: var(--brand-crimson);
 }
+/* ==========================================
+   Dark Mode Support for News Standard Cards (.news__standard-left-item)
+   ========================================== */
+[data-theme='dark'] .news__standard-left-item {
+  box-shadow: 0px 9px 18px rgba(0, 0, 0, 0.4);
+}
+[data-theme='dark'] .news__standard-left-item-content {
+  background: #181C22 !important;
+  border-color: #2D333B !important;
+  box-shadow: 0px 9px 18px rgba(0, 0, 0, 0.4);
+}
+[data-theme='dark'] .news__standard-left-item-content-meta {
+  border-color: #2D333B !important;
+}
+[data-theme='dark'] .news__standard-left-item-content-meta ul li {
+  border-color: #2D333B !important;
+  color: #9ca3af;
+}
+[data-theme='dark'] .news__standard-left-item-content-meta ul li span {
+  color: #9ca3af;
+}
+[data-theme='dark'] .news__standard-left-item-content-meta ul li a {
+  color: #9ca3af;
+}
+[data-theme='dark'] .news__standard-left-item-content-meta ul li a:hover,
+[data-theme='dark'] .news__standard-left-item-content-meta ul li span:hover {
+  color: var(--brand-crimson);
+}
 [data-theme='dark'] .news__standard-left-item-content h3,
 [data-theme='dark'] .news__standard-left-item-content h3 a {
   color: #ffffff;
 }
-[data-theme='dark'] .news__standard-left-item-content p {
-  color: #9ca3af;
+[data-theme='dark'] .news__standard-left-item-content h3 a:hover {
+  color: var(--brand-crimson);
 }
-[data-theme='dark'] .news__standard-left-item-content-meta ul li span {
+[data-theme='dark'] .news__standard-left-item-content p {
   color: #9ca3af;
 }
 [data-theme='dark'] .blog__details-left-box {
