@@ -161,31 +161,31 @@ export default async function NewsDetailPage({ params: paramsPromise }: Args) {
                   </div>
                 </div>
                 
-                <h3 className="mb-6 text-3xl font-heading font-bold text-brand-charcoal">{item.title}</h3>
+                <h3 className="mb-6 text-3xl font-heading font-bold text-brand-charcoal dark:text-white">{item.title}</h3>
                 
                 {item.excerpt && (
-                  <div className="blog__details-left-box bg-brand-ice border border-gray-200 p-8 flex gap-6 my-8 rounded">
+                  <div className="blog__details-left-box bg-brand-ice dark:bg-[#181C22] border border-gray-200 dark:border-[#2D333B] p-8 flex gap-6 my-8 rounded">
                     <i className="fa-sharp fa-solid fa-quote-left text-5xl text-brand-crimson"></i>
                     <div>
-                      <h5 className="font-body text-xl font-medium m-0 text-brand-charcoal italic">{item.excerpt}</h5>                                
+                      <h5 className="font-body text-xl font-medium m-0 text-brand-charcoal dark:text-gray-200 italic">{item.excerpt}</h5>                                
                     </div>
                   </div>
                 )}
                 
-                <div className="prose dark:prose-invert max-w-none font-body text-brand-slate leading-relaxed mb-12">
+                <div className="prose dark:prose-invert max-w-none font-body text-brand-slate dark:text-gray-300 leading-relaxed mb-12">
                   <RichText data={item.content as any} enableGutter={false} />
                 </div>
                 
                 {tags.length > 0 && (
-                  <div className="blog__details-left-tag flex items-center gap-6 py-8 border-t border-gray-200 mb-12">
-                    <h6 className="font-heading font-bold text-xl m-0 whitespace-nowrap">Related Tags:</h6>
+                  <div className="blog__details-left-tag flex items-center gap-6 py-8 border-t border-gray-200 dark:border-[#2D333B] mb-12">
+                    <h6 className="font-heading font-bold text-xl m-0 whitespace-nowrap text-brand-charcoal dark:text-white">Related Tags:</h6>
                     <div className="all__sidebar-item-tag flex-1">
                       <ul className="flex flex-wrap gap-2 m-0 p-0">
                         {tags.map((tag: any) => (
                           <li key={tag.id} className="list-none">
                             <Link 
                               href={`/news?tag=${tag.slug || tag.title.toLowerCase().replace(/\s+/g, '-')}`}
-                              className="border border-gray-200 px-4 py-2 rounded font-medium hover:bg-brand-crimson hover:text-white transition-colors"
+                              className="border border-gray-200 dark:border-[#2D333B] dark:bg-[#181C22] dark:text-gray-300 px-4 py-2 rounded font-medium hover:bg-brand-crimson hover:text-white dark:hover:bg-brand-crimson dark:hover:text-white transition-colors"
                             >
                               {tag.title}
                             </Link>

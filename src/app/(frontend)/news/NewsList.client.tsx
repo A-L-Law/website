@@ -46,13 +46,13 @@ export default function NewsList({ initialNews }: Props) {
               <div className="news__standard-left-item-content-meta">
                 <ul>
                   <li>
-                    <span className="flex items-center text-brand-slate hover:text-brand-crimson transition-colors">
+                    <span className="flex items-center text-brand-slate dark:text-gray-400 hover:text-brand-crimson dark:hover:text-brand-crimson transition-colors">
                       <i className="fal fa-user mr-2 text-brand-crimson"></i>
                       {authorName}
                     </span>
                   </li>
                   <li>
-                    <span className="flex items-center text-brand-slate hover:text-brand-crimson transition-colors">
+                    <span className="flex items-center text-brand-slate dark:text-gray-400 hover:text-brand-crimson dark:hover:text-brand-crimson transition-colors">
                       <i className="fal fa-calendar-alt mr-2 text-brand-crimson"></i>
                       {date.getDate()}, {month} {year}
                     </span>
@@ -60,11 +60,11 @@ export default function NewsList({ initialNews }: Props) {
                 </ul>
               </div>
               
-              <h3 className="mb-10 text-3xl font-heading font-bold text-brand-charcoal group-hover:text-brand-crimson transition-colors">
+              <h3 className="mb-10 text-3xl font-heading font-bold text-brand-charcoal dark:text-white group-hover:text-brand-crimson dark:hover:text-brand-crimson transition-colors">
                 <Link href={`/news/${news.slug}`}>{news.title}</Link>
               </h3>
               
-              <p className="text-brand-slate mb-8 leading-relaxed">
+              <p className="text-brand-slate dark:text-gray-400 mb-8 leading-relaxed">
                 {news.excerpt || 'Read the latest updates and announcements from A L Law.'}
               </p>
               

@@ -27,7 +27,7 @@ export default function BlogPagination({ currentPage, totalPages, setCurrentPage
             <li className={currentPage === 0 ? "hidden" : "list-none"}>
               <span
                 onClick={handlePrevPage}
-                className="w-12 h-12 flex items-center justify-center border border-gray-200 rounded cursor-pointer hover:bg-brand-crimson hover:text-white hover:border-brand-crimson transition-colors"
+                className="w-12 h-12 flex items-center justify-center border border-gray-200 dark:border-[#2D333B] dark:bg-[#181C22] dark:text-gray-300 rounded cursor-pointer hover:bg-brand-crimson hover:text-white hover:border-brand-crimson dark:hover:bg-brand-crimson dark:hover:text-white dark:hover:border-brand-crimson transition-colors"
               >
                 <i className="fas fa-chevron-double-left text-sm"></i>
               </span>
@@ -40,7 +40,7 @@ export default function BlogPagination({ currentPage, totalPages, setCurrentPage
                   className={`w-12 h-12 flex items-center justify-center border rounded cursor-pointer transition-colors font-bold ${
                     currentPage === index 
                       ? "bg-brand-crimson text-white border-brand-crimson" 
-                      : "border-gray-200 hover:bg-brand-crimson hover:text-white hover:border-brand-crimson"
+                      : "border-gray-200 dark:border-[#2D333B] dark:bg-[#181C22] dark:text-gray-300 hover:bg-brand-crimson hover:text-white hover:border-brand-crimson dark:hover:bg-brand-crimson dark:hover:text-white dark:hover:border-brand-crimson"
                   }`}
                 >
                   {index + 1}
@@ -51,7 +51,7 @@ export default function BlogPagination({ currentPage, totalPages, setCurrentPage
             <li className={currentPage === totalPages - 1 ? "hidden" : "list-none"}>
               <span
                 onClick={handleNextPage}
-                className="w-12 h-12 flex items-center justify-center border border-gray-200 rounded cursor-pointer hover:bg-brand-crimson hover:text-white hover:border-brand-crimson transition-colors"
+                className="w-12 h-12 flex items-center justify-center border border-gray-200 dark:border-[#2D333B] dark:bg-[#181C22] dark:text-gray-300 rounded cursor-pointer hover:bg-brand-crimson hover:text-white hover:border-brand-crimson dark:hover:bg-brand-crimson dark:hover:text-white dark:hover:border-brand-crimson transition-colors"
               >
                 <i className="fas fa-chevron-double-right text-sm"></i>
               </span>

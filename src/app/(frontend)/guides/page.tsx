@@ -44,7 +44,7 @@ export default async function GuidesHubPage() {
       />
 
       {/* 2. Blog Grid Layout */}
-      <div className="blog__two section-padding py-24 bg-gray-50/50">
+      <div className="blog__two section-padding py-24">
         <div className="container">
           <GuidesGrid initialGuides={guides as Post[]} practiceAreas={practiceAreas as PracticeArea[]} />
         </div>

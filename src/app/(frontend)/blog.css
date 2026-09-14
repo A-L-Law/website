@@ -308,6 +308,42 @@ Blog Two CSS
   border-color: var(--brand-crimson);
 }
 
+/* ==========================================
+   Dark Mode Support for Blog Cards (.blog__two-item)
+   ========================================== */
+[data-theme='dark'] .blog__two-item {
+  box-shadow: 0px 9px 18px rgba(0, 0, 0, 0.4);
+}
+[data-theme='dark'] .blog__two-item-content {
+  background: #181C22 !important;
+  border-color: #2D333B !important;
+  box-shadow: 0px 9px 18px rgba(0, 0, 0, 0.4);
+}
+[data-theme='dark'] .blog__two-item-content-meta {
+  border-color: #2D333B !important;
+}
+[data-theme='dark'] .blog__two-item-content-meta ul li {
+  border-color: #2D333B !important;
+  color: #9ca3af;
+}
+[data-theme='dark'] .blog__two-item-content-meta ul li span {
+  color: #9ca3af;
+}
+[data-theme='dark'] .blog__two-item-content-meta ul li span:hover,
+[data-theme='dark'] .blog__two-item-content-meta ul li a:hover {
+  color: var(--brand-crimson);
+}
+[data-theme='dark'] .blog__two-item-content h4,
+[data-theme='dark'] .blog__two-item-content h4 a {
+  color: #ffffff;
+}
+[data-theme='dark'] .blog__two-item-content h4 a:hover {
+  color: var(--brand-crimson);
+}
+[data-theme='dark'] .blog__two-item-content p {
+  color: #9ca3af;
+}
+
 /*==========================================================================
 Blog Three CSS
 ==========================================================================*/
@@ -1206,4 +1242,92 @@ Theme Pagination CSS
     font-size: 17px;
     line-height: 27px;
   }
+}
+
+/* ==========================================
+   Dark Mode Support for Blog Pages, Sidebar, Details & Pagination
+   ========================================== */
+[data-theme='dark'] .all__sidebar-item {
+  background: #181C22;
+  border-color: #2D333B;
+}
+[data-theme='dark'] .all__sidebar-item h4 {
+  color: #ffffff;
+}
+[data-theme='dark'] .all__sidebar-item-search form input {
+  background: #111418;
+  border-color: #2D333B;
+  color: #ffffff;
+}
+[data-theme='dark'] .all__sidebar-item-post .post__item {
+  border-color: #2D333B;
+}
+[data-theme='dark'] .all__sidebar-item-post .post__item-title h6 a {
+  color: #ffffff;
+}
+[data-theme='dark'] .all__sidebar-item-tag ul li a {
+  border-color: #2D333B;
+  color: #9ca3af;
+  background: #181C22;
+}
+[data-theme='dark'] .all__sidebar-item-tag ul li a:hover {
+  color: #ffffff;
+  background: var(--brand-crimson);
+  border-color: var(--brand-crimson);
+}
+[data-theme='dark'] .theme__pagination ul li span {
+  border-color: #2D333B;
+  background: #181C22;
+  color: #e5e7eb;
+}
+[data-theme='dark'] .theme__pagination ul li span:hover,
+[data-theme='dark'] .theme__pagination ul li .active {
+  background: var(--brand-crimson);
+  color: #ffffff;
+  border-color: var(--brand-crimson);
+}
+[data-theme='dark'] .news__standard-left-item-content h3,
+[data-theme='dark'] .news__standard-left-item-content h3 a {
+  color: #ffffff;
+}
+[data-theme='dark'] .news__standard-left-item-content p {
+  color: #9ca3af;
+}
+[data-theme='dark'] .news__standard-left-item-content-meta ul li span {
+  color: #9ca3af;
+}
+[data-theme='dark'] .blog__details-left-box {
+  background: #181C22;
+  border-color: #2D333B;
+}
+[data-theme='dark'] .blog__details-left-box h5 {
+  color: #e5e7eb;
+}
+[data-theme='dark'] .blog__details-left-author {
+  background: #181C22;
+  border-color: #2D333B;
+}
+[data-theme='dark'] .blog__details-left-author-content h6 {
+  color: #ffffff;
+}
+[data-theme='dark'] .blog__details-left-author-content p {
+  color: #9ca3af;
+}
+[data-theme='dark'] .blog__details-left-meta {
+  border-color: #2D333B;
+}
+[data-theme='dark'] .blog__details-left-meta-content h6 {
+  color: #ffffff;
+}
+[data-theme='dark'] .blog__details-left-meta-content span {
+  color: #9ca3af;
+}
+[data-theme='dark'] .blog__details-left-tag {
+  border-color: #2D333B;
+}
+[data-theme='dark'] .blog__details-left-tag h6 {
+  color: #ffffff;
+}
+[data-theme='dark'] .blog__details-left > h3 {
+  color: #ffffff;
 }
