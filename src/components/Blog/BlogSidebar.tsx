@@ -30,7 +30,7 @@ export default async function BlogSidebar({ postType }: BlogSidebarProps) {
       <div className="all__sidebar-item">
         <h4 className="font-heading font-bold text-xl mb-4">Search</h4>
         <div className="all__sidebar-item-search">
-          <form action={`/${postType}s`} method="get">
+          <form action={postType === 'news' ? '/news' : '/guides'} method="get">
             <input 
               type="text" 
               name="search"
