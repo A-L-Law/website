@@ -1,14 +1,18 @@
 import React from 'react'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
+import type { Metadata } from 'next'
+import { draftMode } from 'next/headers'
 import { getPayload } from 'payload'
 import configPromise from '@payload-config'
 
 import { MediumImpactHero } from '@/heros/MediumImpact'
 import { getCachedPageBanners } from '@/utilities/getPageBanners'
-import type { Media, Post } from '@/payload-types'
+import type { Media, Post, User } from '@/payload-types'
 import BlogSidebar from '@/components/Blog/BlogSidebar'
 import RichText from '@/components/RichText'
+import { LivePreviewListener } from '@/components/LivePreviewListener'
+import { generateMeta } from '@/utilities/generateMeta'
 
 export const revalidate = 60
 
@@ -18,9 +22,51 @@ type Args = {
   }>
 }
 
+export async function generateStaticParams() {
+  const payload = await getPayload({ config: configPromise })
+  const posts = await payload.find({
+    collection: 'posts',
+    draft: false,
+    limit: 1000,
+    overrideAccess: false,
+    pagination: false,
+    where: {
+      postType: { equals: 'guide' },
+    },
+    select: {
+      slug: true,
+    },
+  })
+
+  return posts.docs.map(({ slug }) => ({ slug }))
+}
+
+export async function generateMetadata({ params: paramsPromise }: Args): Promise<Metadata> {
+  const { slug } = await paramsPromise
+  if (!slug) return {}
+
+  const { isEnabled: draft } = await draftMode()
+  const payload = await getPayload({ config: configPromise })
+
+  const { docs: [guide] } = await payload.find({
+    collection: 'posts',
+    draft,
+    overrideAccess: draft,
+    where: {
+      slug: { equals: slug },
+      postType: { equals: 'guide' },
+    },
+    limit: 1,
+  })
+
+  return generateMeta({ doc: guide })
+}
+
 export default async function GuideDetailPage({ params: paramsPromise }: Args) {
   const { slug } = await paramsPromise
   if (!slug) return notFound()
+
+  const { isEnabled: draft } = await draftMode()
 
   const [payload, pageBanners] = await Promise.all([
     getPayload({ config: configPromise }),
@@ -29,6 +75,8 @@ export default async function GuideDetailPage({ params: paramsPromise }: Args) {
 
   const { docs: [guide] } = await payload.find({
     collection: 'posts',
+    draft,
+    overrideAccess: draft,
     where: {
       slug: { equals: slug },
       postType: { equals: 'guide' },
@@ -44,13 +92,16 @@ export default async function GuideDetailPage({ params: paramsPromise }: Args) {
   const month = date.toLocaleString('default', { month: 'short' })
   const year = date.getFullYear()
   
-  const imageUrl = guide.featuredImage && typeof guide.featuredImage === 'object' && guide.featuredImage.url
-    ? guide.featuredImage.url
+  const heroImg = guide.heroImage as Media | undefined
+  const imageUrl = heroImg && typeof heroImg === 'object' && heroImg.url
+    ? heroImg.url
     : '/assets/img/blog/blog-details-1.jpg'
 
-  // Extract author info
-  const author = guide.author && typeof guide.author === 'object' ? guide.author : null
-  const authorName = author?.name || author?.email || 'Admin'
+  // Extract author info (support authors array or fallback)
+  const firstAuthor = guide.authors && Array.isArray(guide.authors) && guide.authors.length > 0 && typeof guide.authors[0] === 'object'
+    ? (guide.authors[0] as User)
+    : null
+  const authorName = firstAuthor?.name || firstAuthor?.email || 'Admin'
   const authorRole = 'Legal Author'
 
   // Categories
@@ -65,6 +116,8 @@ export default async function GuideDetailPage({ params: paramsPromise }: Args) {
 
   return (
     <article className="guide-detail font-body">
+      {draft && <LivePreviewListener />}
+
       <MediumImpactHero
         type="mediumImpact"
         title={guide.title}
@@ -153,8 +206,6 @@ export default async function GuideDetailPage({ params: paramsPromise }: Args) {
                     </p>
                   </div>
                 </div>
-                
-                {/* Note: Comments section removed per user request */}
                                       
               </div>
             </div>

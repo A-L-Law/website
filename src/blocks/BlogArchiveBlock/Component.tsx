@@ -56,18 +56,22 @@ export const BlogArchiveBlock: React.FC<BlogArchiveBlockProps> = async ({
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {posts.map((data) => {
+            const heroImg = data.heroImage || (data as any).featuredImage
             const mediaUrl =
-              data.featuredImage && typeof data.featuredImage === 'object' && 'url' in data.featuredImage && data.featuredImage.url
-                ? data.featuredImage.url
+              heroImg && typeof heroImg === 'object' && 'url' in heroImg && heroImg.url
+                ? heroImg.url
                 : '/assets/img/blog/blog-1.jpg'
 
             const pubDate = data.publishedAt ? new Date(data.publishedAt) : new Date()
             const day = pubDate.getDate()
             const month = pubDate.toLocaleString('default', { month: 'short' })
+            const firstAuthor = data.authors && Array.isArray(data.authors) && data.authors.length > 0 && typeof data.authors[0] === 'object'
+              ? data.authors[0]
+              : null
             const authorName =
-              data.author && typeof data.author === 'object' && 'name' in data.author
-                ? data.author.name
-                : 'A L Law Legal Team'
+              firstAuthor?.name ||
+              ((data as any).author && typeof (data as any).author === 'object' && (data as any).author.name) ||
+              'A L Law Legal Team'
 
             const postSlug = data.postType === 'news' ? `/news/${data.slug}` : `/guides/${data.slug}`
 

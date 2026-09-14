@@ -5,7 +5,7 @@ import { seoPlugin } from '@payloadcms/plugin-seo'
 import { searchPlugin } from '@payloadcms/plugin-search'
 import { Plugin } from 'payload'
 import { revalidateRedirects } from '@/hooks/revalidateRedirects'
-import { GenerateTitle, GenerateURL } from '@payloadcms/plugin-seo/types'
+import { GenerateDescription, GenerateImage, GenerateTitle, GenerateURL } from '@payloadcms/plugin-seo/types'
 import { FixedToolbarFeature, HeadingFeature, lexicalEditor } from '@payloadcms/richtext-lexical'
 import { searchFields } from '@/search/fieldOverrides'
 import { beforeSyncWithSearch } from '@/search/beforeSync'
@@ -17,10 +17,30 @@ const generateTitle: GenerateTitle<Page | Post> = ({ doc }) => {
   return doc?.title ? `${doc.title} | A L Law` : 'A L Law'
 }
 
+const generateDescription: GenerateDescription<Page | Post> = ({ doc }) => {
+  if (doc && 'excerpt' in doc && doc.excerpt) {
+    return doc.excerpt
+  }
+  return ''
+}
+
+const generateImage: GenerateImage<Page | Post> = ({ doc }) => {
+  if (doc && 'heroImage' in doc && doc.heroImage) {
+    return typeof doc.heroImage === 'object' ? doc.heroImage.id : doc.heroImage
+  }
+  return ''
+}
+
 const generateURL: GenerateURL<Page | Post> = ({ doc }) => {
   const url = getServerSideURL()
 
-  return doc?.slug ? `${url}/${doc.slug}` : url
+  if (!doc?.slug) return url
+
+  if ('postType' in doc && doc.postType) {
+    return doc.postType === 'guide' ? `${url}/guides/${doc.slug}` : `${url}/news/${doc.slug}`
+  }
+
+  return `${url}/${doc.slug}`
 }
 
 export const plugins: Plugin[] = [
@@ -52,6 +72,8 @@ export const plugins: Plugin[] = [
   }),
   seoPlugin({
     generateTitle,
+    generateDescription,
+    generateImage,
     generateURL,
   }),
   formBuilderPlugin({

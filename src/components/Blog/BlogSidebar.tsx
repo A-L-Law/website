@@ -52,20 +52,22 @@ export default async function BlogSidebar({ postType }: BlogSidebarProps) {
             const formattedDate = date.toLocaleDateString('en-GB', { 
               day: 'numeric', month: 'short', year: 'numeric' 
             })
-            const imageUrl = data.featuredImage && typeof data.featuredImage === 'object' && data.featuredImage.url
-              ? data.featuredImage.url
+            const heroImg = data.heroImage || (data as any).featuredImage
+            const imageUrl = heroImg && typeof heroImg === 'object' && heroImg.url
+              ? heroImg.url
               : '/assets/img/blog/blog-standard-1.jpg' // Fallback
+            const postLink = postType === 'news' ? `/news/${data.slug}` : `/guides/${data.slug}`
               
             return (
               <div className="post__item group" key={data.id}>
                 <div className="post__item-image">
-                  <Link href={`/${postType}s/${data.slug}`}>
+                  <Link href={postLink}>
                     <img src={imageUrl} alt={data.title} className="group-hover:opacity-80 transition-opacity" />
                   </Link>
                 </div>
                 <div className="post__item-title">
                   <h6 className="font-heading font-bold mb-1">
-                    <Link href={`/${postType}s/${data.slug}`}>{data.title}</Link>
+                    <Link href={postLink}>{data.title}</Link>
                   </h6>
                   <span className="text-sm text-gray-500">
                     <i className="far fa-calendar-alt text-brand-crimson mr-2"></i>

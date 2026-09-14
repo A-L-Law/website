@@ -77,14 +77,14 @@ export default function GuidesGrid({ initialGuides, practiceAreas }: Props) {
           const day = date.getDate().toString().padStart(2, '0')
           const month = date.toLocaleString('default', { month: 'short' })
           
-          const imageUrl = guide.featuredImage && typeof guide.featuredImage === 'object' && guide.featuredImage.url
-            ? guide.featuredImage.url
+          const heroImg = guide.heroImage || (guide as any).featuredImage
+          const imageUrl = heroImg && typeof heroImg === 'object' && heroImg.url
+            ? heroImg.url
             : '/assets/img/blog/blog-standard-1.jpg' // Fallback
 
           // Find author name
-          const authorName = guide.author && typeof guide.author === 'object' 
-            ? guide.author.name || guide.author.email || 'Admin' 
-            : 'Admin'
+          const author = (guide.authors && guide.authors.length > 0 && typeof guide.authors[0] === 'object' ? guide.authors[0] : null) || ((guide as any).author && typeof (guide as any).author === 'object' ? (guide as any).author : null)
+          const authorName = author?.name || author?.email || 'Admin'
 
           return (
             <div className="col-xl-4 col-lg-6 w-full md:w-1/2 xl:w-1/3 px-4 mb-8" key={guide.id}>

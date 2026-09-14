@@ -15,18 +15,24 @@ type Props = {
   collection: keyof typeof collectionPrefixMap
   slug: string
   req: PayloadRequest
+  postType?: string
 }
 
-export const generatePreviewPath = ({ collection, slug }: Props) => {
+export const generatePreviewPath = ({ collection, slug, postType }: Props) => {
   if (slug === undefined || slug === null) {
     return null
+  }
+
+  let prefix = collectionPrefixMap[collection] || ''
+  if (collection === 'posts') {
+    prefix = postType === 'guide' ? '/guides' : '/news'
   }
 
   // Encode to support slugs with special characters
   const encodedSlug = encodeURIComponent(slug)
 
   const encodedParams = new URLSearchParams({
-    path: `${collectionPrefixMap[collection]}/${encodedSlug}`,
+    path: `${prefix}/${encodedSlug}`,
     previewSecret: process.env.PREVIEW_SECRET || '',
   } satisfies PreviewSearchParams)
 

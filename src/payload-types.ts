@@ -659,25 +659,12 @@ export interface PracticeArea {
 export interface Post {
   id: number;
   title: string;
-  /**
-   * When enabled, the slug will auto-generate from the title field on save and autosave.
-   */
-  generateSlug?: boolean | null;
-  slug: string;
-  postType: 'news' | 'guide';
-  publishedAt: string;
-  author: number | User;
-  categories?: (number | Category)[] | null;
-  tags?: (number | Tag)[] | null;
-  /**
-   * Link this post to a Practice Area for filtering on the News page.
-   */
-  practiceArea?: (number | null) | PracticeArea;
+  heroImage?: (number | null) | Media;
   /**
    * A short summary displayed on listing pages and in sidebars.
    */
   excerpt?: string | null;
-  content?: {
+  content: {
     root: {
       type: string;
       children: {
@@ -691,11 +678,47 @@ export interface Post {
       version: number;
     };
     [k: string]: unknown;
-  } | null;
-  featuredImage?: (number | null) | Media;
+  };
+  categories?: (number | Category)[] | null;
+  /**
+   * Link this post to a Practice Area for filtering on the News/Guides page.
+   */
+  practiceArea?: (number | null) | PracticeArea;
+  postType: 'news' | 'guide';
+  tags?: (number | Tag)[] | null;
+  meta?: {
+    title?: string | null;
+    /**
+     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+     */
+    image?: (number | null) | Media;
+    description?: string | null;
+  };
+  authors?: (number | User)[] | null;
+  publishedAt?: string | null;
+  /**
+   * When enabled, the slug will auto-generate from the title field on save and autosave.
+   */
+  generateSlug?: boolean | null;
+  slug: string;
   updatedAt: string;
   createdAt: string;
   _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "tags".
+ */
+export interface Tag {
+  id: number;
+  title: string;
+  /**
+   * When enabled, the slug will auto-generate from the title field on save and autosave.
+   */
+  generateSlug?: boolean | null;
+  slug: string;
+  updatedAt: string;
+  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -748,21 +771,6 @@ export interface Role {
     canManageGlobals?: boolean | null;
     canAccessAdmin?: boolean | null;
   };
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "tags".
- */
-export interface Tag {
-  id: number;
-  title: string;
-  /**
-   * When enabled, the slug will auto-generate from the title field on save and autosave.
-   */
-  generateSlug?: boolean | null;
-  slug: string;
   updatedAt: string;
   createdAt: string;
 }
@@ -2451,17 +2459,24 @@ export interface CasesSelect<T extends boolean = true> {
  */
 export interface PostsSelect<T extends boolean = true> {
   title?: T;
-  generateSlug?: T;
-  slug?: T;
-  postType?: T;
-  publishedAt?: T;
-  author?: T;
-  categories?: T;
-  tags?: T;
-  practiceArea?: T;
+  heroImage?: T;
   excerpt?: T;
   content?: T;
-  featuredImage?: T;
+  categories?: T;
+  practiceArea?: T;
+  postType?: T;
+  tags?: T;
+  meta?:
+    | T
+    | {
+        title?: T;
+        image?: T;
+        description?: T;
+      };
+  authors?: T;
+  publishedAt?: T;
+  generateSlug?: T;
+  slug?: T;
   updatedAt?: T;
   createdAt?: T;
   _status?: T;
@@ -3360,11 +3375,40 @@ export interface TaskSchedulePublish {
       | ({
           relationTo: 'practice-areas';
           value: number | PracticeArea;
+        } | null)
+      | ({
+          relationTo: 'posts';
+          value: number | Post;
         } | null);
     global?: string | null;
     user?: (number | null) | User;
   };
   output?: unknown;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "BannerBlock".
+ */
+export interface BannerBlock {
+  style: 'info' | 'warning' | 'error' | 'success';
+  content: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'banner';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

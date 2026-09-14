@@ -26,14 +26,14 @@ export default function NewsList({ initialNews }: Props) {
         const month = date.toLocaleString('default', { month: 'short' })
         const year = date.getFullYear()
         
-        const imageUrl = news.featuredImage && typeof news.featuredImage === 'object' && news.featuredImage.url
-          ? news.featuredImage.url
+        const heroImg = news.heroImage || (news as any).featuredImage
+        const imageUrl = heroImg && typeof heroImg === 'object' && heroImg.url
+          ? heroImg.url
           : '/assets/img/blog/blog-standard-1.jpg' // Fallback
 
         // Find author name if populated
-        const authorName = news.author && typeof news.author === 'object' 
-          ? news.author.name || news.author.email || 'Admin' 
-          : 'Admin'
+        const author = (news.authors && news.authors.length > 0 && typeof news.authors[0] === 'object' ? news.authors[0] : null) || ((news as any).author && typeof (news as any).author === 'object' ? (news as any).author : null)
+        const authorName = author?.name || author?.email || 'Admin'
 
         return (
           <div className="news__standard-left-item mb-50 group" key={news.id}>
