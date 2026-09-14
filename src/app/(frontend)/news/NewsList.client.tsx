@@ -37,12 +37,12 @@ export default function NewsList({ initialNews }: Props) {
 
         return (
           <div className="news__standard-left-item mb-50 group" key={news.id}>
-            <div className="news__standard-left-item-image">
+            <div className="news__standard-left-item-image rounded-t-lg overflow-hidden">
               <Link href={`/news/${news.slug}`}>
-                <img src={imageUrl} alt={news.title} className="w-full" />
+                <img src={imageUrl} alt={news.title} className="w-full object-cover" />
               </Link>
             </div>
-            <div className="news__standard-left-item-content">
+            <div className="news__standard-left-item-content bg-white dark:bg-[#181C22] border border-gray-200 dark:border-[#2D333B] border-t-0 rounded-b-lg shadow-sm">
               <div className="news__standard-left-item-content-meta">
                 <ul>
                   <li>

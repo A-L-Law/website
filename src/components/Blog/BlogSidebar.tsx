@@ -26,26 +26,11 @@ export default async function BlogSidebar({ postType }: BlogSidebarProps) {
   ])
 
   return (
-    <div className="all__sidebar ml-25 xl-ml-0 font-body">
-      <div className="all__sidebar-item">
-        <h4 className="font-heading font-bold text-xl mb-4">Search</h4>
-        <div className="all__sidebar-item-search">
-          <form action={postType === 'news' ? '/news' : '/guides'} method="get">
-            <input 
-              type="text" 
-              name="search"
-              placeholder="Search....." 
-              className="w-full px-4 py-3 rounded border border-gray-200 focus:outline-none focus:border-brand-crimson transition-colors"
-            />
-            <button type="submit" className="bg-brand-crimson text-white hover:bg-black transition-colors">
-              <i className="fal fa-search"></i>
-            </button>
-          </form>
-        </div>
-      </div>
-      
-      <div className="all__sidebar-item">
-        <h4 className="font-heading font-bold text-xl mb-4">Recent {postType === 'news' ? 'News' : 'Guides'}</h4>
+    <div className="all__sidebar font-body">
+      <div className="all__sidebar-item bg-white dark:bg-[#181C22] border border-gray-200 dark:border-[#2D333B] rounded-lg shadow-sm mb-8 p-6 lg:p-8">
+        <h4 className="font-heading font-bold text-xl mb-6 text-brand-charcoal dark:text-white border-b border-gray-100 dark:border-[#2D333B] pb-3">
+          Recent {postType === 'news' ? 'News' : 'Guides'}
+        </h4>
         <div className="all__sidebar-item-post">
           {recentPosts.docs.map((data) => {
             const date = data.publishedAt ? new Date(data.publishedAt) : new Date()
@@ -59,18 +44,20 @@ export default async function BlogSidebar({ postType }: BlogSidebarProps) {
             const postLink = postType === 'news' ? `/news/${data.slug}` : `/guides/${data.slug}`
               
             return (
-              <div className="post__item group" key={data.id}>
-                <div className="post__item-image">
-                  <Link href={postLink}>
-                    <img src={imageUrl} alt={data.title} className="group-hover:opacity-80 transition-opacity" />
+              <div className="post__item group flex items-center gap-4 mb-5 pb-5 border-b border-gray-100 dark:border-[#2D333B] last:mb-0 last:pb-0 last:border-0" key={data.id}>
+                <div className="post__item-image shrink-0 w-20 h-20 rounded-md overflow-hidden bg-gray-100 dark:bg-gray-800">
+                  <Link href={postLink} className="block w-full h-full">
+                    <img src={imageUrl} alt={data.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
                   </Link>
                 </div>
-                <div className="post__item-title">
-                  <h6 className="font-heading font-bold mb-1">
-                    <Link href={postLink}>{data.title}</Link>
+                <div className="post__item-title flex-1 min-w-0">
+                  <h6 className="font-heading font-bold text-base mb-1.5 leading-snug line-clamp-2">
+                    <Link href={postLink} className="text-brand-charcoal dark:text-white hover:text-brand-crimson dark:hover:text-brand-crimson transition-colors line-clamp-2" title={data.title}>
+                      {data.title}
+                    </Link>
                   </h6>
-                  <span className="text-sm text-gray-500">
-                    <i className="far fa-calendar-alt text-brand-crimson mr-2"></i>
+                  <span className="text-xs text-brand-slate dark:text-gray-400 flex items-center">
+                    <i className="far fa-calendar-alt text-brand-crimson mr-1.5"></i>
                     {formattedDate}
                   </span>
                 </div>
@@ -81,15 +68,17 @@ export default async function BlogSidebar({ postType }: BlogSidebarProps) {
       </div>
 
       {allTags.docs.length > 0 && (
-        <div className="all__sidebar-item">
-          <h4 className="font-heading font-bold text-xl mb-4">Popular Tags</h4>
+        <div className="all__sidebar-item bg-white dark:bg-[#181C22] border border-gray-200 dark:border-[#2D333B] rounded-lg shadow-sm p-6 lg:p-8">
+          <h4 className="font-heading font-bold text-xl mb-6 text-brand-charcoal dark:text-white border-b border-gray-100 dark:border-[#2D333B] pb-3">
+            Popular Tags
+          </h4>
           <div className="all__sidebar-item-tag">
-            <ul className="flex flex-wrap gap-2">
+            <ul className="flex flex-wrap gap-2 m-0 p-0">
               {allTags.docs.map((tag) => (
-                <li key={tag.id}>
+                <li key={tag.id} className="list-none">
                   <Link 
-                    href={`/${postType}s?tag=${tag.slug || tag.title.toLowerCase().replace(/\s+/g, '-')}`}
-                    className="border border-gray-200 px-3 py-1 rounded text-sm hover:bg-brand-crimson hover:text-white transition-colors"
+                    href={`${postType === 'news' ? '/news' : '/guides'}?tag=${tag.slug || tag.title.toLowerCase().replace(/\s+/g, '-')}`}
+                    className="border border-gray-200 dark:border-[#2D333B] bg-white dark:bg-[#181C22] text-brand-slate dark:text-gray-300 px-3 py-1.5 rounded text-sm hover:bg-brand-crimson hover:text-white dark:hover:bg-brand-crimson dark:hover:text-white hover:border-brand-crimson dark:hover:border-brand-crimson transition-colors"
                   >
                     {tag.title}
                   </Link>

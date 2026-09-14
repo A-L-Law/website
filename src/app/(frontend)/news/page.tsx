@@ -41,7 +41,7 @@ export default async function NewsHubPage() {
       <div className="blog__standard section-padding py-24">
         <div className="container">
           <div className="row flex flex-wrap -mx-4">
-            <div className="col-xl-8 col-lg-8 w-full lg:w-2/3 px-4 lg-mb-50">
+            <div className="col-xl-8 col-lg-8 w-full lg:w-2/3 px-4 mb-12 lg:mb-0">
               <NewsList initialNews={newsItems as Post[]} />
             </div>
             <div className="col-xl-4 col-lg-4 w-full lg:w-1/3 px-4">
