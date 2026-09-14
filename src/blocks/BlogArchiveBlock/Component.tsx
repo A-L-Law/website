@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { getPayload } from 'payload'
 import configPromise from '@payload-config'
 import type { BlogArchiveBlock as BlogArchiveBlockProps, Post } from '@/payload-types'
+import BlogCard from '@/components/Blog/BlogCard'
 
 export const BlogArchiveBlock: React.FC<BlogArchiveBlockProps> = async ({
   subtitle,
@@ -33,7 +34,7 @@ export const BlogArchiveBlock: React.FC<BlogArchiveBlockProps> = async ({
   }
 
   return (
-    <div className="blog__one dark__image section-padding py-16">
+    <div className="blog__two dark__image section-padding py-16">
       <div className="container mx-auto px-4">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-12 gap-6">
           <div className="blog__one-title">
@@ -55,56 +56,9 @@ export const BlogArchiveBlock: React.FC<BlogArchiveBlockProps> = async ({
           )}
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {posts.map((data) => {
-            const heroImg = data.heroImage || (data as any).featuredImage
-            const mediaUrl =
-              heroImg && typeof heroImg === 'object' && 'url' in heroImg && heroImg.url
-                ? heroImg.url
-                : '/assets/img/blog/blog-1.jpg'
-
-            const pubDate = data.publishedAt ? new Date(data.publishedAt) : new Date()
-            const day = pubDate.getDate()
-            const month = pubDate.toLocaleString('default', { month: 'short' })
-            const firstAuthor = data.authors && Array.isArray(data.authors) && data.authors.length > 0 && typeof data.authors[0] === 'object'
-              ? data.authors[0]
-              : null
-            const authorName =
-              firstAuthor?.name ||
-              ((data as any).author && typeof (data as any).author === 'object' && (data as any).author.name) ||
-              'A L Law Legal Team'
-
-            const postSlug = data.postType === 'news' ? `/news/${data.slug}` : `/guides/${data.slug}`
-
-            return (
-              <div className="blog__one-item bg-card rounded-lg overflow-hidden border border-border shadow-sm flex flex-col" key={data.id}>
-                <div className="blog__one-item-image relative h-48 w-full overflow-hidden">
-                  <Link href={postSlug}>
-                    <img src={mediaUrl} alt={data.title} className="w-full h-full object-cover hover:scale-105 transition-transform duration-300" />
-                  </Link>
-                  <div className="blog__one-item-image-date absolute top-4 left-4 bg-brand-crimson text-white px-3 py-1 rounded text-center text-xs font-bold">
-                    <span className="block text-base leading-none">{day}</span>
-                    <span>{month}</span>
-                  </div>
-                </div>
-                <div className="blog__one-item-content p-6 flex-1 flex flex-col justify-between">
-                  <div>
-                    <div className="blog__one-item-content-meta flex items-center gap-4 text-xs text-muted-foreground mb-3">
-                      <span className="flex items-center gap-1">
-                        <i className="far fa-user"></i>
-                        {authorName}
-                      </span>
-                    </div>
-                    <h4 className="text-xl font-bold mb-3 hover:text-brand-crimson transition-colors line-clamp-2">
-                      <Link href={postSlug}>{data.title}</Link>
-                    </h4>
-                  </div>
-                  <Link href={postSlug} className="text-brand-crimson font-medium text-sm inline-flex items-center gap-1 mt-4 hover:underline">
-                    Read Details <i className="far fa-chevron-double-right text-xs"></i>
-                  </Link>
-                </div>
-              </div>
-            )
-          })}
+          {posts.map((post) => (
+            <BlogCard key={post.id} post={post} />
+          ))}
         </div>
       </div>
     </div>

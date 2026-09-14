@@ -1,8 +1,8 @@
 'use client'
 
 import React, { useState, useMemo } from 'react'
-import Link from 'next/link'
 import BlogPagination from '@/components/Blog/BlogPagination.client'
+import BlogCard from '@/components/Blog/BlogCard'
 import type { Post, PracticeArea } from '@/payload-types'
 
 type Props = {
@@ -55,9 +55,9 @@ export default function GuidesGrid({ initialGuides, practiceAreas }: Props) {
 
   return (
     <>
-      <div className="row mb-50">
-        <div className="col-xl-12">
-          <div className="filter_button font-heading text-center mb-12">
+      <div className="row mb-12">
+        <div className="col-12">
+          <div className="filter_button font-heading">
             {filterCategories.map(category => (
               <button 
                 key={category} 
@@ -72,61 +72,11 @@ export default function GuidesGrid({ initialGuides, practiceAreas }: Props) {
       </div>
       
       <div className="row flex flex-wrap -mx-4 font-body">
-        {currentGuides.map((guide) => {
-          const date = guide.publishedAt ? new Date(guide.publishedAt) : new Date()
-          const day = date.getDate().toString().padStart(2, '0')
-          const month = date.toLocaleString('default', { month: 'short' })
-          
-          const heroImg = guide.heroImage || (guide as any).featuredImage
-          const imageUrl = heroImg && typeof heroImg === 'object' && heroImg.url
-            ? heroImg.url
-            : '/assets/img/blog/blog-standard-1.jpg' // Fallback
-
-          // Find author name
-          const author = (guide.authors && guide.authors.length > 0 && typeof guide.authors[0] === 'object' ? guide.authors[0] : null) || ((guide as any).author && typeof (guide as any).author === 'object' ? (guide as any).author : null)
-          const authorName = author?.name || author?.email || 'Admin'
-
-          return (
-            <div className="col-xl-4 col-lg-6 w-full md:w-1/2 xl:w-1/3 px-4 mb-8" key={guide.id}>
-              <div className="blog__two-item page group">
-                <div className="blog__two-item-image rounded-t-lg overflow-hidden relative">
-                  <Link href={`/guides/${guide.slug}`}>
-                    <img src={imageUrl} alt={guide.title} className="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-700" />
-                  </Link>
-                  <div className="blog__two-item-image-date">
-                    <span className="text-three">{day}</span>
-                    <span className="text-five">{month}</span>
-                  </div>
-                </div>
-                <div className="blog__two-item-content border-t-0 rounded-b-lg border border-gray-200">
-                  <div className="blog__two-item-content-meta border-b border-gray-200 pb-4 mb-4">
-                    <ul className="flex items-center text-sm text-brand-slate">
-                      <li className="mr-4 pr-4 border-r border-gray-200">
-                        <span className="flex items-center hover:text-brand-crimson transition-colors">
-                          <i className="far fa-user text-brand-crimson mr-2"></i>By {authorName}
-                        </span>
-                      </li>
-                      <li>
-                        {guide.practiceArea && typeof guide.practiceArea === 'object' && (
-                          <span className="flex items-center text-brand-slate">
-                            <i className="far fa-briefcase text-brand-crimson mr-2"></i>
-                            {guide.practiceArea.title}
-                          </span>
-                        )}
-                      </li>
-                    </ul>
-                  </div>
-                  <h4 className="font-heading font-bold text-xl mb-4 group-hover:text-brand-crimson transition-colors line-clamp-2 min-h-[56px]">
-                    <Link href={`/guides/${guide.slug}`}>{guide.title}</Link>
-                  </h4>
-                  <Link className="btn-six inline-flex items-center text-brand-crimson hover:text-black font-semibold transition-colors" href={`/guides/${guide.slug}`}>
-                    Read More<i className="far fa-chevron-double-right ml-2"></i>
-                  </Link>
-                </div>
-              </div>
-            </div>
-          )
-        })}
+        {currentGuides.map((guide) => (
+          <div className="col-xl-4 col-lg-6 w-full md:w-1/2 xl:w-1/3 px-4 mb-8" key={guide.id}>
+            <BlogCard post={guide} />
+          </div>
+        ))}
       </div>
 
       <BlogPagination 
