@@ -375,7 +375,7 @@ export default async function PracticeAreaDetailPage({ params: paramsPromise }: 
                               {rc.title}
                             </h4>
                             <p className="font-body text-xs text-brand-slate line-clamp-2">
-                              {rc.caseSummary}
+                              {rc.excerpt}
                             </p>
                           </Link>
                         ))}

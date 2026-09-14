@@ -1108,17 +1108,12 @@ export interface Case {
    * Anonymized case title (e.g. Commercial Property Refinancing for UK Retail Group)
    */
   title: string;
-  slug: string;
-  practiceArea: number | PracticeArea;
+  heroImage?: (number | null) | Media;
   /**
-   * Lead solicitor from the firm handling the matter
+   * A short summary displayed on listing pages and in sidebars.
    */
-  leadSolicitor?: (number | null) | User;
-  /**
-   * Brief summary of the matter, legal issues resolved, and outcome
-   */
-  caseSummary: string;
-  details?: {
+  excerpt?: string | null;
+  aboutCase?: {
     root: {
       type: string;
       children: {
@@ -1133,6 +1128,42 @@ export interface Case {
     };
     [k: string]: unknown;
   } | null;
+  challenges?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  solutions?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  categories?: (number | Category)[] | null;
+  /**
+   * Link this case to a Practice Area.
+   */
+  practiceArea?: (number | null) | PracticeArea;
+  tags?: (number | Tag)[] | null;
   /**
    * Court, tribunal, or arbitration forum (e.g. High Court Chancery Division)
    */
@@ -1141,8 +1172,24 @@ export interface Case {
    * Matter transaction / dispute value (e.g. £12.5M)
    */
   value?: string | null;
+  meta?: {
+    title?: string | null;
+    /**
+     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+     */
+    image?: (number | null) | Media;
+    description?: string | null;
+  };
+  authors?: (number | User)[] | null;
+  publishedAt?: string | null;
+  /**
+   * When enabled, the slug will auto-generate from the title field on save and autosave.
+   */
+  generateSlug?: boolean | null;
+  slug: string;
   updatedAt: string;
   createdAt: string;
+  _status?: ('draft' | 'published') | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -2443,15 +2490,30 @@ export interface PracticeAreasSelect<T extends boolean = true> {
  */
 export interface CasesSelect<T extends boolean = true> {
   title?: T;
-  slug?: T;
+  heroImage?: T;
+  excerpt?: T;
+  aboutCase?: T;
+  challenges?: T;
+  solutions?: T;
+  categories?: T;
   practiceArea?: T;
-  leadSolicitor?: T;
-  caseSummary?: T;
-  details?: T;
+  tags?: T;
   forum?: T;
   value?: T;
+  meta?:
+    | T
+    | {
+        title?: T;
+        image?: T;
+        description?: T;
+      };
+  authors?: T;
+  publishedAt?: T;
+  generateSlug?: T;
+  slug?: T;
   updatedAt?: T;
   createdAt?: T;
+  _status?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -3375,6 +3437,10 @@ export interface TaskSchedulePublish {
       | ({
           relationTo: 'practice-areas';
           value: number | PracticeArea;
+        } | null)
+      | ({
+          relationTo: 'cases';
+          value: number | Case;
         } | null)
       | ({
           relationTo: 'posts';

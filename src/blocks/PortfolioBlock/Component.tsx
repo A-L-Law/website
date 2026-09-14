@@ -73,8 +73,8 @@ export const PortfolioBlock: React.FC<PortfolioBlockProps> = async ({
                     <h4 className="text-xl font-bold mb-2 group-hover:text-brand-crimson transition-colors">
                       <Link href={`/cases/${item.slug}`}>{item.title}</Link>
                     </h4>
-                    {item.caseSummary && (
-                      <p className="text-sm text-muted-foreground line-clamp-2 mb-4">{item.caseSummary}</p>
+                    {item.excerpt && (
+                      <p className="text-sm text-muted-foreground line-clamp-2 mb-4">{item.excerpt}</p>
                     )}
                   </div>
                   <Link
