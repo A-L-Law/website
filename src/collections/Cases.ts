@@ -138,6 +138,24 @@ export const Cases: CollectionConfig<'cases'> = {
               label: 'About Case',
             },
             {
+              name: 'caseImages',
+              type: 'array',
+              label: 'Case Images (Middle Section)',
+              minRows: 0,
+              maxRows: 3,
+              admin: {
+                description: 'Add up to 3 images to display after the About Case section.',
+              },
+              fields: [
+                {
+                  name: 'image',
+                  type: 'upload',
+                  relationTo: 'media',
+                  required: true,
+                },
+              ],
+            },
+            {
               name: 'challenges',
               type: 'richText',
               editor: restrictedLexicalEditor,
@@ -191,6 +209,14 @@ export const Cases: CollectionConfig<'cases'> = {
                 description: 'Matter transaction / dispute value (e.g. £12.5M)',
               },
             },
+            {
+              name: 'officialCaseLink',
+              type: 'text',
+              label: 'Official Case Link',
+              admin: {
+                description: 'External link to the official case document or judgment.',
+              },
+            },
           ],
         },
         {
@@ -222,13 +248,13 @@ export const Cases: CollectionConfig<'cases'> = {
       ],
     },
     {
-      name: 'authors',
+      name: 'teamMember',
       type: 'relationship',
-      relationTo: 'users',
-      hasMany: true,
-      label: 'Authors',
+      relationTo: 'team',
+      label: 'Team Member',
       admin: {
         position: 'sidebar',
+        description: 'The primary team member / solicitor who handled this case.',
       },
     },
     {

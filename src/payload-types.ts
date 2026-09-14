@@ -1128,6 +1128,15 @@ export interface Case {
     };
     [k: string]: unknown;
   } | null;
+  /**
+   * Add up to 3 images to display after the About Case section.
+   */
+  caseImages?:
+    | {
+        image: number | Media;
+        id?: string | null;
+      }[]
+    | null;
   challenges?: {
     root: {
       type: string;
@@ -1172,6 +1181,10 @@ export interface Case {
    * Matter transaction / dispute value (e.g. £12.5M)
    */
   value?: string | null;
+  /**
+   * External link to the official case document or judgment.
+   */
+  officialCaseLink?: string | null;
   meta?: {
     title?: string | null;
     /**
@@ -1180,7 +1193,10 @@ export interface Case {
     image?: (number | null) | Media;
     description?: string | null;
   };
-  authors?: (number | User)[] | null;
+  /**
+   * The primary team member / solicitor who handled this case.
+   */
+  teamMember?: (number | null) | Team;
   publishedAt?: string | null;
   /**
    * When enabled, the slug will auto-generate from the title field on save and autosave.
@@ -1190,6 +1206,97 @@ export interface Case {
   updatedAt: string;
   createdAt: string;
   _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "team".
+ */
+export interface Team {
+  id: number;
+  /**
+   * Full name of the team member / solicitor
+   */
+  name: string;
+  /**
+   * Specific written job title (e.g., Senior Advisor, Partner - Commercial Litigation)
+   */
+  jobTitle: string;
+  /**
+   * Role category used for filtering on the /team directory page
+   */
+  jobRole:
+    | 'founder'
+    | 'partner'
+    | 'senior-solicitor'
+    | 'associate'
+    | 'solicitor'
+    | 'consultant'
+    | 'manager'
+    | 'legal-assistant'
+    | 'trainee';
+  /**
+   * Portrait photo of the team member (used on directory cards and profile header)
+   */
+  avatar: number | Media;
+  /**
+   * Optional link to a system user account
+   */
+  user?: (number | null) | User;
+  /**
+   * Professional background, career history, and legal biography (replaces Career Guidelines). Supports bold, italics, links, ordered lists, and unordered lists.
+   */
+  background?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  /**
+   * Areas of legal expertise with proficiency percentage bars matching the Conbix experience layout
+   */
+  practiceAreas?:
+    | {
+        label: string;
+        percentage: number;
+        id?: string | null;
+      }[]
+    | null;
+  contact?: {
+    email?: string | null;
+    phone?: string | null;
+    officeLocation?: string | null;
+  };
+  socialLinks?: {
+    linkedin?: string | null;
+    instagram?: string | null;
+    facebook?: string | null;
+    x?: string | null;
+  };
+  meta?: {
+    title?: string | null;
+    /**
+     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+     */
+    image?: (number | null) | Media;
+    description?: string | null;
+  };
+  publishedAt?: string | null;
+  /**
+   * When enabled, the slug will auto-generate from the title field on save and autosave.
+   */
+  generateSlug?: boolean | null;
+  slug: string;
+  updatedAt: string;
+  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1434,97 +1541,6 @@ export interface Vacancy {
     [k: string]: unknown;
   } | null;
   closingDate?: string | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "team".
- */
-export interface Team {
-  id: number;
-  /**
-   * Full name of the team member / solicitor
-   */
-  name: string;
-  /**
-   * Specific written job title (e.g., Senior Advisor, Partner - Commercial Litigation)
-   */
-  jobTitle: string;
-  /**
-   * Role category used for filtering on the /team directory page
-   */
-  jobRole:
-    | 'founder'
-    | 'partner'
-    | 'senior-solicitor'
-    | 'associate'
-    | 'solicitor'
-    | 'consultant'
-    | 'manager'
-    | 'legal-assistant'
-    | 'trainee';
-  /**
-   * Portrait photo of the team member (used on directory cards and profile header)
-   */
-  avatar: number | Media;
-  /**
-   * Optional link to a system user account
-   */
-  user?: (number | null) | User;
-  /**
-   * Professional background, career history, and legal biography (replaces Career Guidelines). Supports bold, italics, links, ordered lists, and unordered lists.
-   */
-  background?: {
-    root: {
-      type: string;
-      children: {
-        type: any;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  } | null;
-  /**
-   * Areas of legal expertise with proficiency percentage bars matching the Conbix experience layout
-   */
-  practiceAreas?:
-    | {
-        label: string;
-        percentage: number;
-        id?: string | null;
-      }[]
-    | null;
-  contact?: {
-    email?: string | null;
-    phone?: string | null;
-    officeLocation?: string | null;
-  };
-  socialLinks?: {
-    linkedin?: string | null;
-    instagram?: string | null;
-    facebook?: string | null;
-    x?: string | null;
-  };
-  meta?: {
-    title?: string | null;
-    /**
-     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
-     */
-    image?: (number | null) | Media;
-    description?: string | null;
-  };
-  publishedAt?: string | null;
-  /**
-   * When enabled, the slug will auto-generate from the title field on save and autosave.
-   */
-  generateSlug?: boolean | null;
-  slug: string;
   updatedAt: string;
   createdAt: string;
 }
@@ -2493,6 +2509,12 @@ export interface CasesSelect<T extends boolean = true> {
   heroImage?: T;
   excerpt?: T;
   aboutCase?: T;
+  caseImages?:
+    | T
+    | {
+        image?: T;
+        id?: T;
+      };
   challenges?: T;
   solutions?: T;
   categories?: T;
@@ -2500,6 +2522,7 @@ export interface CasesSelect<T extends boolean = true> {
   tags?: T;
   forum?: T;
   value?: T;
+  officialCaseLink?: T;
   meta?:
     | T
     | {
@@ -2507,7 +2530,7 @@ export interface CasesSelect<T extends boolean = true> {
         image?: T;
         description?: T;
       };
-  authors?: T;
+  teamMember?: T;
   publishedAt?: T;
   generateSlug?: T;
   slug?: T;
