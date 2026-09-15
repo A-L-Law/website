@@ -5,147 +5,144 @@ import configPromise from '@payload-config'
 
 import { MediumImpactHero } from '@/heros/MediumImpact'
 import { getCachedPageBanners } from '@/utilities/getPageBanners'
-import type { Media } from '@/payload-types'
+import type { Media, Vacancy } from '@/payload-types'
+import { generateMeta } from '@/utilities/generateMeta'
+import { LivePreviewListener } from '@/components/LivePreviewListener'
+import RichText from '@/components/RichText'
+import ContactSection from '@/components/ContactSection/ContactSection'
 
 export const revalidate = 60
 
-type Args = {
-  params: Promise<{
-    slug?: string
-  }>
+export async function generateStaticParams() {
+  const payload = await getPayload({ config: configPromise })
+  const { docs } = await payload.find({
+    collection: 'vacancies',
+    limit: 1000,
+  })
+
+  return docs.map((doc) => ({
+    slug: doc.slug,
+  }))
 }
 
-export default async function VacancyDetailPage({ params: paramsPromise }: Args) {
+export async function generateMetadata({ params: paramsPromise }: { params: Promise<{ slug: string }> }) {
   const { slug } = await paramsPromise
-  if (!slug) return notFound()
+  const payload = await getPayload({ config: configPromise })
+  const { docs } = await payload.find({
+    collection: 'vacancies',
+    where: {
+      slug: { equals: slug },
+    },
+    limit: 1,
+  })
 
+  return generateMeta({ doc: docs[0] })
+}
+
+export default async function VacancyDetailsPage({ params: paramsPromise }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await paramsPromise
   const [payload, pageBanners] = await Promise.all([
     getPayload({ config: configPromise }),
     getCachedPageBanners(),
   ])
 
-  const { docs: [vacancy] } = await payload.find({
+  const { docs } = await payload.find({
     collection: 'vacancies',
     where: {
-      slug: {
-        equals: slug,
-      },
+      slug: { equals: slug },
     },
     limit: 1,
   })
 
-  if (!vacancy) return notFound()
+  const item = docs[0] as Vacancy
+  if (!item) return notFound()
 
   const bannerMedia = (pageBanners?.vacancies?.media || pageBanners?.defaultBanner?.media) as Media
 
+  const date = item.publishedAt ? new Date(item.publishedAt) : new Date()
+  const month = date.toLocaleString('default', { month: 'short' })
+  const year = date.getFullYear()
+
+  const heroImg = item.heroImage
+  const imageUrl = heroImg && typeof heroImg === 'object' && heroImg.url
+    ? heroImg.url
+    : '/assets/img/blog/blog-details-1.jpg' // Fallback
+
+  const contactSection = item.contactSection
+
   return (
-    <article className="vacancy-detail font-body">
-      {/* Vacancy Hero Header */}
+    <article className="vacancy-details">
+      <LivePreviewListener />
+
       <MediumImpactHero
         type="mediumImpact"
-        title={vacancy.title}
-        innerTitle={vacancy.title}
+        title={item.title}
+        innerTitle="Vacancy Details"
         breadcrumbs={[
-          { label: 'Careers', url: '/vacancies' },
-          { label: vacancy.title },
+          { label: 'Vacancies', url: '/vacancies' },
+          { label: item.title },
         ]}
         media={bannerMedia}
       />
 
-      <div className="container mx-auto px-4 py-16 lg:py-24">
-        <div className="bg-brand-ice dark:bg-brand-burgundy rounded-2xl p-6 md:p-8 mb-12 flex items-center gap-4">
-          <span className="font-heading text-xs font-bold px-3 py-1 rounded-full bg-brand-crimson text-brand-white">
-            {vacancy.employmentType || 'Full-Time'}
-          </span>
-          <span className="font-body text-sm text-brand-slate dark:text-brand-blush">
-            {vacancy.location || 'London, UK'}
-          </span>
-        </div>
+      <div className="blog__details dark__image section-padding py-24 font-body">
+        <div className="container mx-auto px-4">
+          <div className="row flex flex-wrap justify-center">
+            <div className="col-xl-10 col-lg-10 w-full px-4 mb-12 lg:mb-0">
+              <div className="blog__details-left dark_image">
+                <img className="img__full w-full rounded-lg mb-8 h-[400px] object-cover" src={imageUrl} alt={item.title} />
+                
+                <div className="blog__details-left-meta flex flex-wrap items-center justify-between border-b border-gray-200 pb-8 mb-8">
+                  <div className="blog__details-left-meta-left">
+                    <span className="text-sm text-brand-slate block">Role:</span>
+                    <h6 className="font-heading font-bold m-0 text-xl">{item.title}</h6>
+                  </div>
+                  
+                  {item.employmentType && (
+                    <div className="blog__details-left-meta-content flex flex-col items-end">
+                      <span className="text-sm text-brand-slate">Type:</span>
+                      <h6 className="font-heading font-bold m-0 text-brand-crimson">{item.employmentType}</h6>
+                    </div>
+                  )}
 
-        {/* Role Description & Application Form Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
-          {/* Left Column: Role Details */}
-          <div className="lg:col-span-2 prose dark:prose-invert font-body text-base leading-relaxed">
-            {vacancy.description ? (
-              typeof vacancy.description === 'string' ? (
-                <p>{vacancy.description}</p>
-              ) : (
-                JSON.stringify(vacancy.description)
-              )
-            ) : (
-              <p>Role details available upon application.</p>
-            )}
-          </div>
+                  {item.location && (
+                    <div className="blog__details-left-meta-content flex flex-col items-end">
+                      <span className="text-sm text-brand-slate">Location:</span>
+                      <h6 className="font-heading font-bold m-0">{item.location}</h6>
+                    </div>
+                  )}
 
-          {/* Right Column: Embedded Application Form */}
-          <div className="p-8 rounded-xl bg-brand-white dark:bg-brand-charcoal border border-brand-ice dark:border-brand-slate shadow-sm h-fit">
-            <h3 className="font-heading text-2xl font-bold text-brand-charcoal dark:text-brand-white mb-2">
-              Apply for this Role
-            </h3>
-            <p className="font-body text-sm text-brand-slate mb-6">
-              Submit your application directly to A L Law recruitment team.
-            </p>
+                  <div className="blog__details-left-meta-content flex flex-col items-end">
+                    <span className="text-sm text-brand-slate">Posted:</span>
+                    <h6 className="font-heading font-bold m-0">{month} {date.getDate()}, {year}</h6>
+                  </div>
+                </div>
+                
+                {item.excerpt && (
+                  <div className="blog__details-left-box bg-brand-ice dark:bg-[#181C22] border border-gray-200 dark:border-[#2D333B] p-8 flex gap-6 my-8 rounded">
+                    <i className="fa-sharp fa-solid fa-quote-left text-5xl text-brand-crimson"></i>
+                    <div>
+                      <h5 className="font-body text-xl font-medium m-0 text-brand-charcoal dark:text-gray-200 italic">{item.excerpt}</h5>                                
+                    </div>
+                  </div>
+                )}
+                
+                <div className="prose dark:prose-invert max-w-none font-body text-brand-slate dark:text-gray-300 leading-relaxed mb-12">
+                  {item.content && <RichText data={item.content} enableGutter={false} />}
+                </div>
 
-            <form className="flex flex-col gap-4">
-              <input type="hidden" name="jobRole" value={vacancy.title} />
-
-              <div>
-                <label className="block font-heading text-sm font-semibold text-brand-charcoal dark:text-brand-white mb-1">
-                  Full Name *
-                </label>
-                <input
-                  type="text"
-                  required
-                  placeholder="John Doe"
-                  className="w-full p-3 rounded-lg border border-brand-slate/30 bg-transparent text-brand-charcoal dark:text-brand-white font-body text-sm"
-                />
               </div>
-
-              <div>
-                <label className="block font-heading text-sm font-semibold text-brand-charcoal dark:text-brand-white mb-1">
-                  Email Address *
-                </label>
-                <input
-                  type="email"
-                  required
-                  placeholder="john@example.com"
-                  className="w-full p-3 rounded-lg border border-brand-slate/30 bg-transparent text-brand-charcoal dark:text-brand-white font-body text-sm"
-                />
-              </div>
-
-              <div>
-                <label className="block font-heading text-sm font-semibold text-brand-charcoal dark:text-brand-white mb-1">
-                  Phone Number
-                </label>
-                <input
-                  type="tel"
-                  placeholder="+44 20 1234 5678"
-                  className="w-full p-3 rounded-lg border border-brand-slate/30 bg-transparent text-brand-charcoal dark:text-brand-white font-body text-sm"
-                />
-              </div>
-
-              <div>
-                <label className="block font-heading text-sm font-semibold text-brand-charcoal dark:text-brand-white mb-1">
-                  Upload CV (.pdf, .doc, .docx) *
-                </label>
-                <input
-                  type="file"
-                  accept=".pdf,.doc,.docx"
-                  required
-                  className="w-full p-2 text-sm text-brand-slate font-body"
-                />
-              </div>
-
-              <button
-                type="submit"
-                className="w-full mt-4 p-4 rounded-lg bg-brand-crimson text-brand-white font-heading font-bold text-center hover:bg-brand-burgundy transition-colors"
-              >
-                Submit Application
-              </button>
-            </form>
+            </div>
           </div>
         </div>
       </div>
+
+      {/* Contact Section mapping */}
+      <ContactSection 
+        description={contactSection?.contactDescription} 
+        mapEmbedUrl={contactSection?.mapEmbed} 
+        formId={typeof contactSection?.contactForm === 'object' && contactSection.contactForm !== null ? contactSection.contactForm.id : (contactSection?.contactForm as number | null | undefined)} 
+      />
     </article>
   )
 }

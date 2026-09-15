@@ -1488,11 +1488,9 @@ export interface Entity {
 export interface Event {
   id: number;
   title: string;
-  slug: string;
-  eventDate: string;
-  location: string;
-  summary?: string | null;
-  details?: {
+  heroImage?: (number | null) | Media;
+  excerpt?: string | null;
+  content: {
     root: {
       type: string;
       children: {
@@ -1506,10 +1504,34 @@ export interface Event {
       version: number;
     };
     [k: string]: unknown;
-  } | null;
-  featuredImage?: (number | null) | Media;
+  };
+  /**
+   * Fields for the Contact/Map footer at the bottom of the page.
+   */
+  contactSection?: {
+    contactDescription?: string | null;
+    mapEmbed?: string | null;
+    contactForm?: (number | null) | Form;
+  };
+  eventDate: string;
+  location?: string | null;
+  meta?: {
+    title?: string | null;
+    /**
+     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+     */
+    image?: (number | null) | Media;
+    description?: string | null;
+  };
+  publishedAt?: string | null;
+  /**
+   * When enabled, the slug will auto-generate from the title field on save and autosave.
+   */
+  generateSlug?: boolean | null;
+  slug: string;
   updatedAt: string;
   createdAt: string;
+  _status?: ('draft' | 'published') | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1521,11 +1543,9 @@ export interface Vacancy {
    * Job role title (e.g. Senior Commercial Litigation Solicitor)
    */
   title: string;
-  slug: string;
-  department?: (number | null) | PracticeArea;
-  location?: string | null;
-  employmentType?: ('Full-Time' | 'Part-Time' | 'Contract') | null;
-  description?: {
+  heroImage?: (number | null) | Media;
+  excerpt?: string | null;
+  content: {
     root: {
       type: string;
       children: {
@@ -1539,10 +1559,35 @@ export interface Vacancy {
       version: number;
     };
     [k: string]: unknown;
-  } | null;
+  };
+  /**
+   * Fields for the Contact/Map footer at the bottom of the page.
+   */
+  contactSection?: {
+    contactDescription?: string | null;
+    mapEmbed?: string | null;
+    contactForm?: (number | null) | Form;
+  };
+  location?: string | null;
+  employmentType?: ('Full-Time' | 'Part-Time' | 'Contract') | null;
   closingDate?: string | null;
+  meta?: {
+    title?: string | null;
+    /**
+     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+     */
+    image?: (number | null) | Media;
+    description?: string | null;
+  };
+  publishedAt?: string | null;
+  /**
+   * When enabled, the slug will auto-generate from the title field on save and autosave.
+   */
+  generateSlug?: boolean | null;
+  slug: string;
   updatedAt: string;
   createdAt: string;
+  _status?: ('draft' | 'published') | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -2572,14 +2617,31 @@ export interface PostsSelect<T extends boolean = true> {
  */
 export interface EventsSelect<T extends boolean = true> {
   title?: T;
-  slug?: T;
+  heroImage?: T;
+  excerpt?: T;
+  content?: T;
+  contactSection?:
+    | T
+    | {
+        contactDescription?: T;
+        mapEmbed?: T;
+        contactForm?: T;
+      };
   eventDate?: T;
   location?: T;
-  summary?: T;
-  details?: T;
-  featuredImage?: T;
+  meta?:
+    | T
+    | {
+        title?: T;
+        image?: T;
+        description?: T;
+      };
+  publishedAt?: T;
+  generateSlug?: T;
+  slug?: T;
   updatedAt?: T;
   createdAt?: T;
+  _status?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -2587,14 +2649,32 @@ export interface EventsSelect<T extends boolean = true> {
  */
 export interface VacanciesSelect<T extends boolean = true> {
   title?: T;
-  slug?: T;
-  department?: T;
+  heroImage?: T;
+  excerpt?: T;
+  content?: T;
+  contactSection?:
+    | T
+    | {
+        contactDescription?: T;
+        mapEmbed?: T;
+        contactForm?: T;
+      };
   location?: T;
   employmentType?: T;
-  description?: T;
   closingDate?: T;
+  meta?:
+    | T
+    | {
+        title?: T;
+        image?: T;
+        description?: T;
+      };
+  publishedAt?: T;
+  generateSlug?: T;
+  slug?: T;
   updatedAt?: T;
   createdAt?: T;
+  _status?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -3468,6 +3548,14 @@ export interface TaskSchedulePublish {
       | ({
           relationTo: 'posts';
           value: number | Post;
+        } | null)
+      | ({
+          relationTo: 'events';
+          value: number | Event;
+        } | null)
+      | ({
+          relationTo: 'vacancies';
+          value: number | Vacancy;
         } | null);
     global?: string | null;
     user?: (number | null) | User;
