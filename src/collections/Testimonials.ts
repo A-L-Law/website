@@ -65,7 +65,7 @@ export const Testimonials: CollectionConfig = {
     {
       name: 'teamMember',
       type: 'relationship',
-      relationTo: 'users',
+      relationTo: 'team',
       admin: {
         description: 'Associated solicitor / team member (optional)',
       },

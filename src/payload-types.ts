@@ -1360,7 +1360,7 @@ export interface Testimonial {
   /**
    * Associated solicitor / team member (optional)
    */
-  teamMember?: (number | null) | User;
+  teamMember?: (number | null) | Team;
   updatedAt: string;
   createdAt: string;
 }
