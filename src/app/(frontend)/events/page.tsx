@@ -7,6 +7,7 @@ import { getCachedPageBanners } from '@/utilities/getPageBanners'
 import type { Media, Event } from '@/payload-types'
 import EventsSidebar from '@/components/Blog/EventsSidebar'
 import EventsList from './EventsList.client'
+import { Subscribe } from '@/components/Subscribe'
 
 export const revalidate = 60
 
@@ -47,6 +48,7 @@ export default async function EventsHubPage() {
           </div>
         </div>
       </div>
+      <Subscribe />
     </article>
   )
 }

@@ -11,6 +11,7 @@ import { generateMeta } from '@/utilities/generateMeta'
 import { LivePreviewListener } from '@/components/LivePreviewListener'
 import RichText from '@/components/RichText'
 import Image from 'next/image'
+import { Subscribe } from '@/components/Subscribe'
 
 export const revalidate = 60
 
@@ -278,6 +279,7 @@ export default async function CaseDetailsPage({ params: paramsPromise }: { param
           </div>
         </div>
       )}
+      <Subscribe />
     </article>
   )
 }

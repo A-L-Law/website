@@ -6,6 +6,7 @@ import { MediumImpactHero } from '@/heros/MediumImpact'
 import { getCachedPageBanners } from '@/utilities/getPageBanners'
 import type { Media, Case, PracticeArea } from '@/payload-types'
 import CasesGrid from './CasesGrid.client'
+import { Subscribe } from '@/components/Subscribe'
 
 export const revalidate = 60
 
@@ -46,6 +47,7 @@ export default async function CasesHubPage() {
           <CasesGrid initialCases={cases as Case[]} practiceAreas={practiceAreas as PracticeArea[]} />
         </div>
       </div>
+      <Subscribe />
     </article>
   )
 }

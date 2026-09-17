@@ -6,6 +6,7 @@ import { MediumImpactHero } from '@/heros/MediumImpact'
 import { getCachedPageBanners } from '@/utilities/getPageBanners'
 import type { Media, Vacancy } from '@/payload-types'
 import VacanciesGrid from './VacanciesGrid.client'
+import { Subscribe } from '@/components/Subscribe'
 
 export const revalidate = 60
 
@@ -39,6 +40,7 @@ export default async function VacanciesHubPage() {
           <VacanciesGrid initialVacancies={vacancies as Vacancy[]} />
         </div>
       </div>
+      <Subscribe />
     </article>
   )
 }

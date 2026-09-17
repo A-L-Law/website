@@ -10,6 +10,7 @@ import { generateMeta } from '@/utilities/generateMeta'
 import { LivePreviewListener } from '@/components/LivePreviewListener'
 import RichText from '@/components/RichText'
 import { FormBlock } from '@/blocks/Form/Component'
+import { Subscribe } from '@/components/Subscribe'
 
 export const revalidate = 60
 
@@ -148,6 +149,7 @@ export default async function VacancyDetailsPage({ params: paramsPromise }: { pa
           form={(contactSection as any).form as any} 
         />
       )}
+      <Subscribe />
     </article>
   )
 }

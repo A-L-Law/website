@@ -11,6 +11,7 @@ import { LivePreviewListener } from '@/components/LivePreviewListener'
 import RichText from '@/components/RichText'
 import EventsSidebar from '@/components/Blog/EventsSidebar'
 import { FormBlock } from '@/blocks/Form/Component'
+import { Subscribe } from '@/components/Subscribe'
 
 export const revalidate = 60
 
@@ -149,6 +150,7 @@ export default async function EventDetailsPage({ params: paramsPromise }: { para
           form={(contactSection as any).form as any} 
         />
       )}
+      <Subscribe />
     </article>
   )
 }

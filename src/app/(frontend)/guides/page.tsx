@@ -6,6 +6,7 @@ import { MediumImpactHero } from '@/heros/MediumImpact'
 import { getCachedPageBanners } from '@/utilities/getPageBanners'
 import type { Media, Post, PracticeArea } from '@/payload-types'
 import GuidesGrid from './GuidesGrid.client'
+import { Subscribe } from '@/components/Subscribe'
 
 export const revalidate = 60
 
@@ -49,6 +50,7 @@ export default async function GuidesHubPage() {
           <GuidesGrid initialGuides={guides as Post[]} practiceAreas={practiceAreas as PracticeArea[]} />
         </div>
       </div>
+      <Subscribe />
     </article>
   )
 }

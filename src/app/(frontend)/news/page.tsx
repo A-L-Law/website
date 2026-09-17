@@ -7,6 +7,7 @@ import { getCachedPageBanners } from '@/utilities/getPageBanners'
 import type { Media, Post } from '@/payload-types'
 import BlogSidebar from '@/components/Blog/BlogSidebar'
 import NewsList from './NewsList.client'
+import { Subscribe } from '@/components/Subscribe'
 
 export const revalidate = 60
 
@@ -50,6 +51,7 @@ export default async function NewsHubPage() {
           </div>
         </div>
       </div>
+      <Subscribe />
     </article>
   )
 }

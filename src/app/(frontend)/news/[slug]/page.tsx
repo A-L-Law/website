@@ -13,6 +13,7 @@ import BlogSidebar from '@/components/Blog/BlogSidebar'
 import RichText from '@/components/RichText'
 import { LivePreviewListener } from '@/components/LivePreviewListener'
 import { generateMeta } from '@/utilities/generateMeta'
+import { Subscribe } from '@/components/Subscribe'
 
 export const revalidate = 60
 
@@ -207,6 +208,7 @@ export default async function NewsDetailPage({ params: paramsPromise }: Args) {
           </div>
         </div>
       </div>          
+      <Subscribe />
     </article>
   )
 }
