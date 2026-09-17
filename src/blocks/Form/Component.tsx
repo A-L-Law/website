@@ -15,6 +15,7 @@ export type FormBlockType = {
   blockName?: string
   blockType?: 'formBlock'
   title?: string | null
+  formTitle?: string | null
   content?: DefaultTypedEditorState | null | any
   form: FormType
   location?: {
@@ -31,6 +32,7 @@ export const FormBlock: React.FC<
 > = (props) => {
   const {
     title,
+    formTitle,
     content,
     location,
     form: formFromProps,
@@ -119,13 +121,13 @@ export const FormBlock: React.FC<
   return (
     <>
       <div className="contact__page section-padding pb-0 font-body">
-        <div className="container mx-auto px-4">
+        <div className="container mx-auto px-4 relative z-10">
           <div className="row flex flex-wrap -mx-4">
             
             {/* Form Column */}
             <div className="col-xl-5 col-lg-5 w-full lg:w-5/12 px-4 order-last lg:order-first">
-              <div className="contact__page-form bg-white dark:bg-[#181C22] p-8 md:p-10 rounded-lg shadow-sm border border-gray-100 dark:border-[#2D333B]">
-                <h3 className="mb-8 font-heading font-bold text-2xl md:text-3xl text-brand-charcoal dark:text-white">Contact Us</h3>
+              <div className="contact__page-form bg-[#f4f4f4] dark:bg-[#181C22] p-8 md:p-10 rounded-lg shadow-sm border border-gray-100 dark:border-[#2D333B] translate-y-12 lg:translate-y-24">
+                <h3 className="mb-8 font-heading font-bold text-2xl md:text-3xl text-brand-charcoal dark:text-white">{formTitle || 'Contact Us'}</h3>
                 
                 <FormProvider {...formMethods}>
                   {!isLoading && hasSubmitted && confirmationType === 'message' && (
@@ -150,7 +152,7 @@ export const FormBlock: React.FC<
                                   {'name' in field && field.name === 'email' && <span className="far fa-envelope-open absolute left-4 top-1/2 -translate-y-1/2 text-brand-crimson z-10"></span>}
                                   {'name' in field && field.name === 'message' && <span className="far fa-comments absolute left-4 top-4 text-brand-crimson z-10"></span>}
                                   
-                                  <div className={`[&_input]:w-full [&_input]:bg-gray-50 [&_input]:dark:bg-[#1C2128] [&_input]:border [&_input]:border-gray-200 [&_input]:dark:border-[#2D333B] [&_input]:rounded [&_input]:py-3 ${'name' in field && (field.name === 'name' || field.name === 'email') ? '[&_input]:pl-10' : '[&_input]:px-4'} [&_input]:pr-4 [&_input]:text-brand-charcoal [&_input]:dark:text-white [&_input]:focus:outline-none [&_input]:focus:border-brand-crimson [&_input]:transition-colors [&_textarea]:w-full [&_textarea]:bg-gray-50 [&_textarea]:dark:bg-[#1C2128] [&_textarea]:border [&_textarea]:border-gray-200 [&_textarea]:dark:border-[#2D333B] [&_textarea]:rounded [&_textarea]:py-3 ${'name' in field && field.name === 'message' ? '[&_textarea]:pl-10' : '[&_textarea]:px-4'} [&_textarea]:pr-4 [&_textarea]:h-32 [&_textarea]:resize-none [&_textarea]:text-brand-charcoal [&_textarea]:dark:text-white [&_textarea]:focus:outline-none [&_textarea]:focus:border-brand-crimson [&_textarea]:transition-colors`}>
+                                  <div className={`[&_input]:w-full [&_input]:bg-white [&_input]:dark:bg-[#1C2128] [&_input]:border [&_input]:border-gray-200 [&_input]:dark:border-[#2D333B] [&_input]:rounded [&_input]:py-3 ${'name' in field && (field.name === 'name' || field.name === 'email') ? '[&_input]:pl-10' : '[&_input]:px-4'} [&_input]:pr-4 [&_input]:text-brand-charcoal [&_input]:dark:text-white [&_input]:focus:outline-none [&_input]:focus:border-brand-crimson [&_input]:transition-colors [&_textarea]:w-full [&_textarea]:bg-white [&_textarea]:dark:bg-[#1C2128] [&_textarea]:border [&_textarea]:border-gray-200 [&_textarea]:dark:border-[#2D333B] [&_textarea]:rounded [&_textarea]:py-3 ${'name' in field && field.name === 'message' ? '[&_textarea]:pl-10' : '[&_textarea]:px-4'} [&_textarea]:pr-4 [&_textarea]:h-32 [&_textarea]:resize-none [&_textarea]:text-brand-charcoal [&_textarea]:dark:text-white [&_textarea]:focus:outline-none [&_textarea]:focus:border-brand-crimson [&_textarea]:transition-colors`}>
                                     <Field
                                       form={formFromProps}
                                       {...field}
@@ -217,11 +219,11 @@ export const FormBlock: React.FC<
       </div>
       
       {location?.type === 'googleMaps' && location.mapEmbedUrl && (
-        <div className="contact__page-map mt-24">
+        <div className="contact__page-map relative z-0">
           <iframe 
             src={location.mapEmbedUrl} 
             loading="lazy"
-            className="w-full h-[450px] border-0"
+            className="w-full h-[450px] border-0 grayscale"
             allowFullScreen
           ></iframe>
         </div>

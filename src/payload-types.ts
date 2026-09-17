@@ -780,6 +780,7 @@ export interface Role {
  */
 export interface FormBlock {
   title?: string | null;
+  formTitle?: string | null;
   content?: {
     root: {
       type: string;
@@ -1515,6 +1516,7 @@ export interface Event {
    */
   contactSection: {
     title?: string | null;
+    formTitle?: string | null;
     content?: {
       root: {
         type: string;
@@ -1588,10 +1590,30 @@ export interface Vacancy {
   /**
    * Fields for the Contact/Map footer at the bottom of the page.
    */
-  contactSection?: {
-    contactDescription?: string | null;
-    mapEmbed?: string | null;
-    contactForm?: (number | null) | Form;
+  contactSection: {
+    title?: string | null;
+    formTitle?: string | null;
+    content?: {
+      root: {
+        type: string;
+        children: {
+          type: any;
+          version: number;
+          [k: string]: unknown;
+        }[];
+        direction: ('ltr' | 'rtl') | null;
+        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+        indent: number;
+        version: number;
+      };
+      [k: string]: unknown;
+    } | null;
+    form: number | Form;
+    location?: {
+      type?: ('googleMaps' | 'onlineLink' | 'remote') | null;
+      mapEmbedUrl?: string | null;
+      onlineLinkUrl?: string | null;
+    };
   };
   location?: string | null;
   employmentType?: ('Full-Time' | 'Part-Time' | 'Contract') | null;
@@ -2087,6 +2109,7 @@ export interface ArchiveBlockSelect<T extends boolean = true> {
  */
 export interface FormBlockSelect<T extends boolean = true> {
   title?: T;
+  formTitle?: T;
   content?: T;
   form?: T;
   location?:
@@ -2656,6 +2679,7 @@ export interface EventsSelect<T extends boolean = true> {
     | T
     | {
         title?: T;
+        formTitle?: T;
         content?: T;
         form?: T;
         location?:
@@ -2695,9 +2719,17 @@ export interface VacanciesSelect<T extends boolean = true> {
   contactSection?:
     | T
     | {
-        contactDescription?: T;
-        mapEmbed?: T;
-        contactForm?: T;
+        title?: T;
+        formTitle?: T;
+        content?: T;
+        form?: T;
+        location?:
+          | T
+          | {
+              type?: T;
+              mapEmbedUrl?: T;
+              onlineLinkUrl?: T;
+            };
       };
   location?: T;
   employmentType?: T;

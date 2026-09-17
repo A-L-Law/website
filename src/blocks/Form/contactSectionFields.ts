@@ -18,6 +18,12 @@ export const contactSectionFields: Field[] = [
     label: 'Title',
   },
   {
+    name: 'formTitle',
+    type: 'text',
+    defaultValue: 'Contact Us',
+    label: 'Form Title',
+  },
+  {
     name: 'content',
     type: 'richText',
     editor: lexicalEditor({
