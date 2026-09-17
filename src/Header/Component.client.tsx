@@ -405,7 +405,7 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
           <div className="w-full max-w-md bg-brand-charcoal text-brand-white p-8 h-full flex flex-col justify-between overflow-y-auto animate-slideLeft">
             <div>
               <div className="flex justify-between items-center mb-8">
-                <Logo loading="eager" priority="high" />
+                <Logo loading="eager" priority="high" variant="dark" />
                 <button
                   onClick={() => setSideDrawerOpen(false)}
                   className="text-brand-slate hover:text-brand-crimson"

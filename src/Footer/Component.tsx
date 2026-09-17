@@ -70,7 +70,7 @@ export async function Footer() {
           {/* Column 1: Logo & About Flavor Paragraph */}
           <div>
             <Link href="/" className="inline-block mb-6">
-              <Logo loading="lazy" />
+              <Logo loading="lazy" variant="dark" />
             </Link>
             <p className="text-brand-ice text-sm leading-relaxed mb-6">{flavorDesc}</p>
             <div className="flex items-center gap-3">

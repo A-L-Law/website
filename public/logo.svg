@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg width="100%" height="100%" viewBox="0 0 823 245" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;">
+    <g transform="matrix(1,0,0,1,-720,-3)">
+        <g id="Secondary-Logo--Default-" serif:id="Secondary Logo (Default)" transform="matrix(3.288367,0,0,1,-1112.8734,2.99537)">
+            <rect x="557.652" y="0" width="250" height="245" style="fill:none;"/>
+            <clipPath id="_clip1">
+                <rect x="557.652" y="0" width="250" height="245"/>
+            </clipPath>
+            <g clip-path="url(#_clip1)">
+                <g transform="matrix(0.740983,0,0,2.436623,515.348484,-5.140055)">
+                    <path d="M73.908,56.516C81.587,43.265 90.659,33.625 100.51,27.508C89.043,28.225 78.188,35.53 69.964,49.714C61.746,63.892 57.505,82.629 57.091,102.406C60.642,85.411 66.225,69.764 73.908,56.516Z" style="fill:rgb(190,30,45);"/>
+                    <path d="M111.381,82.923C96.018,82.923 83.107,79.919 72.861,74.48C79.217,84.01 90.995,89.724 107.44,89.724C123.878,89.724 142.283,84.01 159.692,74.48C143.14,79.919 126.743,82.923 111.381,82.923Z" style="fill:rgb(190,30,45);"/>
+                    <path d="M117.335,39.31C125.012,52.558 128.86,65.202 129.253,76.758C134.363,66.508 133.444,53.488 125.223,39.31C116.999,25.126 102.83,12.106 85.84,1.853C98.844,13.413 109.653,26.056 117.335,39.31Z" style="fill:rgb(190,30,45);"/>
+                </g>
+                <g transform="matrix(3.576979,0,0,11.762421,583.143279,-1917.090833)">
+                    <g transform="matrix(11.900762,0,0,11.900762,62.904333,174.216979)">
+                    </g>
+                    <text x="17.98px" y="174.217px" style="font-family:'HelveticaWorld-Bold', 'Helvetica World', sans-serif;font-weight:700;font-size:11.901px;fill:rgb(26,26,26);">A L La<tspan x="53.555px " y="174.217px ">w</tspan></text>
+                </g>
+                <g transform="matrix(2.191061,0,0,7.205014,608.284919,-1043.158927)">
+                    <g transform="matrix(11.103379,0,0,11.103379,71.713321,174.216979)">
+                    </g>
+                    <text x="17.98px" y="174.217px" style="font-family:'HelveticaWorld-Regular', 'Helvetica World', sans-serif;font-size:11.103px;fill:rgb(26,26,26);">Associates</text>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

@@ -31,6 +31,12 @@ const dirname = path.dirname(filename)
 
 export default buildConfig({
   admin: {
+    components: {
+      graphics: {
+        Icon: '@/components/Logo/Logo#Logo',
+        Logo: '@/components/Logo/Logo#Logo',
+      },
+    },
     importMap: {
       baseDir: path.resolve(dirname),
     },
