@@ -69,7 +69,7 @@ export const TestimonialSlider: React.FC<SliderProps> = ({ testimonials, title, 
 
               return (
                 <SwiperSlide key={item.id}>
-                  <div className="testimonial__area-item swiper-slide">
+                  <div className="testimonial__area-item swiper-slide rounded-xl">
                     <div className="testimonial__area-item-client">
                       <div className="testimonial__area-item-icon">
                         <i className="fal fa-quote-right"></i>
