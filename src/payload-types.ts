@@ -1344,6 +1344,10 @@ export interface Testimonial {
    * Name of the client or reviewer
    */
   reviewerName: string;
+  /**
+   * Avatar or photo of the reviewer (optional)
+   */
+  avatar?: (number | null) | Media;
   source: 'ReviewSolicitors' | 'Google Local Services' | 'Direct Client';
   /**
    * Rating out of 5 stars
@@ -2546,6 +2550,7 @@ export interface EntitiesSelect<T extends boolean = true> {
  */
 export interface TestimonialsSelect<T extends boolean = true> {
   reviewerName?: T;
+  avatar?: T;
   source?: T;
   rating?: T;
   reviewText?: T;

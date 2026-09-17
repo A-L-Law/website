@@ -25,6 +25,14 @@ export const Testimonials: CollectionConfig = {
       },
     },
     {
+      name: 'avatar',
+      type: 'upload',
+      relationTo: 'media',
+      admin: {
+        description: 'Avatar or photo of the reviewer (optional)',
+      },
+    },
+    {
       name: 'source',
       type: 'select',
       required: true,
