@@ -38,7 +38,9 @@ export async function generateStaticParams() {
     },
   })
 
-  return posts.docs.map(({ slug }) => ({ slug }))
+  return posts.docs
+    .filter(({ slug }) => typeof slug === 'string')
+    .map(({ slug }) => ({ slug: slug as string }))
 }
 
 export async function generateMetadata({ params: paramsPromise }: Args): Promise<Metadata> {

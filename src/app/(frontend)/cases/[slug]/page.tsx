@@ -21,9 +21,11 @@ export async function generateStaticParams() {
     limit: 1000,
   })
 
-  return docs.map((doc) => ({
-    slug: doc.slug,
-  }))
+  return docs
+    .filter((doc) => typeof doc.slug === 'string')
+    .map((doc) => ({
+      slug: doc.slug as string,
+    }))
 }
 
 export async function generateMetadata({ params: paramsPromise }: { params: Promise<{ slug: string }> }) {
