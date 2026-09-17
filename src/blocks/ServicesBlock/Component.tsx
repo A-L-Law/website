@@ -63,7 +63,7 @@ export const ServicesBlock: React.FC<ServicesBlockProps> = async ({
             return (
               <Link
                 href={`/practice-areas/${item.slug}`}
-                className="services__one-item group relative overflow-hidden bg-white dark:bg-card border border-slate-200 dark:border-slate-800 p-8 lg:p-10 rounded-xl transition-all duration-400 ease-out hover:-translate-y-2 hover:bg-brand-crimson hover:border-brand-crimson hover:shadow-2xl flex flex-col justify-between cursor-pointer no-underline block"
+                className="services__one-item group relative overflow-hidden bg-white dark:bg-card border border-slate-200 dark:border-slate-800 p-8 lg:p-10 rounded-xl transition-all duration-400 ease-out hover:-translate-y-2 hover:bg-brand-crimson hover:border-brand-crimson dark:hover:bg-brand-crimson dark:hover:border-brand-crimson hover:shadow-2xl flex flex-col justify-between cursor-pointer no-underline block"
                 key={item.id}
               >
                 {/* Top-right translucent corner circle shape on hover */}
@@ -71,22 +71,22 @@ export const ServicesBlock: React.FC<ServicesBlockProps> = async ({
 
                 <div>
                   {/* Clean icon without background box */}
-                  <div className="services__one-item-icon text-brand-crimson group-hover:text-white transition-colors duration-400 mb-6">
+                  <div className="services__one-item-icon text-brand-crimson group-hover:text-white dark:group-hover:text-white transition-colors duration-400 mb-6">
                     {IconComponent && <IconComponent className="w-14 h-14 stroke-[1.5]" />}
                   </div>
 
-                  <h4 className="text-xl font-bold mb-3 text-slate-900 dark:text-white group-hover:text-white transition-colors duration-400">
+                  <h4 className="text-xl font-bold mb-3 text-slate-900 dark:text-white group-hover:text-white dark:group-hover:text-white transition-colors duration-400">
                     {item.title}
                   </h4>
 
                   {item.summary && (
-                    <p className="text-sm text-slate-600 dark:text-slate-300 group-hover:text-white/90 line-clamp-3 leading-relaxed mb-6 transition-colors duration-400">
+                    <p className="text-sm text-slate-600 dark:text-slate-300 group-hover:text-white/90 dark:group-hover:text-white/90 line-clamp-3 leading-relaxed mb-6 transition-colors duration-400">
                       {item.summary}
                     </p>
                   )}
                 </div>
 
-                <div className="simple-btn-2 text-xs font-extrabold uppercase tracking-widest text-slate-900 dark:text-white group-hover:text-white inline-flex items-center gap-2 transition-colors duration-400 mt-auto">
+                <div className="simple-btn-2 text-xs font-extrabold uppercase tracking-widest text-slate-900 dark:text-white group-hover:text-white dark:group-hover:text-white inline-flex items-center gap-2 transition-colors duration-400 mt-auto">
                   READ MORE <i className="far fa-chevron-double-right text-xs"></i>
                 </div>
               </Link>
