@@ -179,6 +179,15 @@
 }
 
 @theme inline {
+  --color-brand-crimson: var(--brand-crimson);
+  --color-brand-burgundy: var(--brand-burgundy);
+  --color-brand-coral: var(--brand-coral);
+  --color-brand-blush: var(--brand-blush);
+  --color-brand-ice: var(--brand-ice);
+  --color-brand-slate: var(--brand-slate);
+  --color-brand-charcoal: var(--brand-charcoal);
+  --color-brand-white: var(--brand-white);
+
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);

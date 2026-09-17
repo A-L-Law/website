@@ -71,7 +71,7 @@ export const HighImpactHero: React.FC<Page['hero']> = (props) => {
                         <div className="banner__one-content-button flex items-center flex-wrap gap-5">
                           <div className="banner__one-content-button-item">
                             <Link
-                              className="btn-one bg-brand-crimson hover:bg-black text-white px-8 py-4 rounded-md font-extrabold uppercase text-xs tracking-wider inline-flex items-center gap-2.5 transition-all shadow-lg shrink-0 cursor-pointer"
+                              className="btn-one !bg-brand-crimson hover:!bg-black text-white px-8 py-4 rounded-md font-extrabold uppercase text-xs tracking-wider inline-flex items-center gap-2.5 transition-all shadow-lg shrink-0 cursor-pointer"
                               href={slide.buttonUrl || '/about'}
                             >
                               {slide.buttonText || 'Read More'}
