@@ -1,0 +1,199 @@
+/*==========================================================================
+1-to-1 Conbix Testimonial Area CSS
+==========================================================================*/
+.testimonial__area {
+    position: relative;
+    z-index: 1;
+    overflow: hidden;
+}
+.testimonial__area-shape {
+    position: absolute;
+    top: -210px;
+    right: 20px;
+    z-index: -1;        
+}
+.testimonial__area-item {
+    border: 1px solid var(--color-10, #e5e7eb);
+    padding: 50px;
+    padding-bottom: 45px;
+    transition: 0.4s;
+    position: relative;
+    background: var(--bg-card, #ffffff);
+}
+[data-theme='dark'] .testimonial__area-item {
+    border-color: #2D333B;
+    background: #181C22;
+}
+.testimonial__area-item-icon {
+    position: absolute;
+    right: 50px;
+    bottom: 45px;
+    color: var(--brand-charcoal, #1A1A1A);
+    opacity: 0.05;
+    font-size: 50px;
+}
+[data-theme='dark'] .testimonial__area-item-icon {
+    color: #ffffff;
+}
+.testimonial__area-item-client {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    margin-bottom: 30px;
+}
+.testimonial__area-item-client-image img {
+    width: 80px;
+    height: 80px;
+    max-width: 80px;
+    object-fit: cover;
+    border-radius: 50%;
+}
+.testimonial__area-item-client-title h5 {
+    transition: 0.4s;
+    font-weight: 700;
+    font-size: 20px;
+    margin-bottom: 5px;
+}
+.testimonial__area-item-client-title span {
+    color: var(--brand-slate, #666666);
+    transition: 0.4s;
+    font-size: 14px;
+}
+[data-theme='dark'] .testimonial__area-item-client-title span {
+    color: #a3a3a3;
+}
+.testimonial__area-item p {
+    font-size: 19px;
+    line-height: 34px;
+    transition: 0.4s;
+    color: var(--brand-slate, #666666);
+    font-style: italic;
+}
+[data-theme='dark'] .testimonial__area-item p {
+    color: #cccccc;
+}
+.testimonial__area-item-reviews {
+    margin-top: 30px;
+}
+.testimonial__area-item-reviews i {
+    color: var(--brand-crimson, #BE1622);
+    transition: 0.4s;
+}
+.testimonial__area-item:hover {
+    background: var(--brand-crimson, #BE1622);
+    border-color: var(--brand-crimson, #BE1622);
+}
+.testimonial__area-item:hover p {
+    color: #ffffff;
+}
+.testimonial__area-item:hover .testimonial__area-item-icon {
+    color: #ffffff;
+    opacity: 0.09;
+}
+.testimonial__area-item:hover .testimonial__area-item-client-title h5 {
+    color: #ffffff;                 
+}
+.testimonial__area-item:hover .testimonial__area-item-client-title span {
+    color: #f2f2f2;                 
+}
+.testimonial__area-item:hover .testimonial__area-item-reviews i {
+    color: #ffffff;
+}
+
+.testimonial__area-button {
+    padding-right: 23px;
+}
+.testimonial__area-button-next {			
+    display: inline-block;
+    position: static;
+    margin: 0;
+    margin-left: 10px;
+    cursor: pointer;
+}
+.testimonial__area-button-next i {
+    width: 60px;
+    height: 60px;
+    line-height: 60px;
+    display: inline-block;
+    text-align: center;
+    border: 1px solid var(--color-10, #e5e7eb);
+    font-size: 22px;
+    color: var(--brand-charcoal, #1A1A1A);
+    border-radius: 50%;
+    transition: 0.4s;	
+}
+[data-theme='dark'] .testimonial__area-button-next i {
+    border-color: #2D333B;
+    color: #ffffff;
+}
+.testimonial__area-button-next i:hover {
+    background: var(--brand-crimson, #BE1622);
+    color: #ffffff;
+    border-color: var(--brand-crimson, #BE1622);
+}  
+.testimonial__area-button-prev {		
+    display: inline-block;
+    position: static;
+    margin: 0;
+    cursor: pointer;
+}
+.testimonial__area-button-prev i {
+    width: 60px;
+    height: 60px;
+    line-height: 60px;
+    display: inline-block;
+    text-align: center;
+    border: 1px solid var(--color-10, #e5e7eb);
+    font-size: 22px;
+    color: var(--brand-charcoal, #1A1A1A);
+    border-radius: 50%;
+    transition: 0.4s;	
+} 
+[data-theme='dark'] .testimonial__area-button-prev i {
+    border-color: #2D333B;
+    color: #ffffff;
+}
+.testimonial__area-button-prev i:hover {
+    background: var(--brand-crimson, #BE1622);
+    color: #ffffff;
+    border-color: var(--brand-crimson, #BE1622);
+} 
+
+@media (max-width: 1399px) {
+    .testimonial__area-item {
+        padding: 40px 30px;
+        padding-bottom: 35px;
+    }
+    .testimonial__area-item-icon {
+        right: 30px;
+        bottom: 40px;
+    }
+    .testimonial__area-item-client {
+        margin-bottom: 25px;
+    }
+    .testimonial__area-item-reviews {
+        margin-top: 25px;
+    }
+}
+@media (max-width: 359px) {
+    .testimonial__area-item {
+        padding: 35px 30px;
+        padding-bottom: 30px;
+    }
+    .testimonial__area-item-icon {
+        right: 30px;
+        bottom: 35px;
+    }
+    .testimonial__area-item-client {
+        gap: 20px;
+    }
+    .testimonial__area-item-client-image img {
+        width: 65px;
+        height: 65px;
+        max-width: 65px;
+    }                
+    .testimonial__area-item p {
+        font-size: 15px;
+        line-height: 28px;
+    }
+}

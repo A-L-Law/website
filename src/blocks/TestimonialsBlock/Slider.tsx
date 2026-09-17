@@ -10,6 +10,8 @@ import type { Testimonial } from '@/payload-types'
 
 type SliderProps = {
   testimonials: Testimonial[]
+  title: string
+  subtitle?: string | null
 }
 
 const slideControl = {
@@ -37,21 +39,29 @@ const slideControl = {
   },
 }
 
-export const TestimonialSlider: React.FC<SliderProps> = ({ testimonials }) => {
+export const TestimonialSlider: React.FC<SliderProps> = ({ testimonials, title, subtitle }) => {
   return (
     <>
-      <div className="col-xl-4 col-lg-4">
-        <div className="testimonial__area-button t-right lg-t-center">
-          <div className="testimonial__area-button-prev testimonial-swiper-button-prev">
-            <i className="fal fa-long-arrow-left"></i>
+      <div className="flex flex-wrap items-end mb-[70px]">
+        <div className="w-full lg:w-2/3 lg:mb-[30px]">
+          <div className="testimonial__area-title text-center lg:text-left">
+            {subtitle && <span className="subtitle-one">{subtitle}</span>}
+            <h2 className="text-4xl font-bold font-heading mb-0">{title}</h2>
           </div>
-          <div className="testimonial__area-button-next testimonial-swiper-button-next">
-            <i className="fal fa-long-arrow-right"></i>
+        </div>
+        <div className="w-full lg:w-1/3">
+          <div className="testimonial__area-button text-center lg:text-right">
+            <div className="testimonial__area-button-prev testimonial-swiper-button-prev">
+              <i className="fal fa-long-arrow-left"></i>
+            </div>
+            <div className="testimonial__area-button-next testimonial-swiper-button-next">
+              <i className="fal fa-long-arrow-right"></i>
+            </div>
           </div>
         </div>
       </div>
-      <div className="row">
-        <div className="col-xl-12">
+      <div className="flex flex-wrap">
+        <div className="w-full">
           <Swiper modules={[EffectFade, Autoplay, Navigation]} {...slideControl}>
             {testimonials.map((item, idx) => {
               const avatarObj = item.avatar && typeof item.avatar === 'object' ? item.avatar : null

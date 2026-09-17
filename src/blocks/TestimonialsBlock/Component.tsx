@@ -30,20 +30,17 @@ export const TestimonialsBlock: React.FC<TestimonialsBlockProps> = async ({
   }
 
   return (
-    <div className="testimonial__area section-padding">
-      <img className="testimonial__area-shape dark-n" src="/assets/img/shape/testimonial.png" alt="shape" />
-      <img className="testimonial__area-shape light-n" src="/assets/img/shape/testimonial-dark.png" alt="shape" />
-      <div className="container">
-        <div className="row mb-70 align-items-end">
-          <div className="col-xl-8 col-lg-8 lg-mb-30">
-            <div className="testimonial__area-title lg-t-center">
-              {subtitle && <span className="subtitle-one">{subtitle}</span>}
-              <h2>{title || 'Customer Experiences'}</h2>
-            </div>
-          </div>
-          <TestimonialSlider testimonials={testimonials} />
-        </div>
+    <div className="testimonial__area section-padding py-24">
+      <img className="testimonial__area-shape dark:hidden absolute top-[-210px] right-[20px] -z-10" src="/assets/img/shape/testimonial.png" alt="shape" />
+      <img className="testimonial__area-shape hidden dark:block absolute top-[-210px] right-[20px] -z-10" src="/assets/img/shape/testimonial-dark.png" alt="shape" />
+      <div className="container mx-auto px-4">
+        <TestimonialSlider 
+          testimonials={testimonials} 
+          title={title || 'Customer Experiences'}
+          subtitle={subtitle}
+        />
       </div>
     </div>
   )
 }
+
