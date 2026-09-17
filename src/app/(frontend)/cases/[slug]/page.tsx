@@ -113,7 +113,7 @@ export default async function CaseDetailsPage({ params: paramsPromise }: { param
                 <img src={imageUrl} alt={item.title} className="w-full rounded-lg h-auto" />
                 
                 {/* Meta Bar */}
-                <div className="portfolio__details-meta bg-white dark:bg-[#181C22] border border-gray-200 dark:border-[#2D333B] p-8 rounded shadow-lg md:mx-8 -mt-16 md:-mt-20 relative z-10 flex flex-wrap items-center gap-8 justify-between">
+                <div className="portfolio__details-meta bg-white dark:bg-background border border-gray-200 dark:border-brand-slate/30 p-8 rounded shadow-lg md:mx-8 -mt-16 md:-mt-20 relative z-10 flex flex-wrap items-center gap-8 justify-between">
                   <div className="portfolio__details-meta-item flex items-center gap-4">
                     {teamMemberAvatar && (
                       <div className="w-12 h-12 rounded-full overflow-hidden shrink-0">

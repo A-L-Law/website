@@ -63,7 +63,7 @@ export const ServicesBlock: React.FC<ServicesBlockProps> = async ({
             return (
               <Link
                 href={`/practice-areas/${item.slug}`}
-                className="services__one-item group relative overflow-hidden bg-white dark:bg-card border border-slate-200 dark:border-slate-800 p-8 lg:p-10 rounded-xl transition-all duration-400 ease-out hover:-translate-y-2 hover:bg-brand-crimson hover:border-brand-crimson dark:hover:bg-brand-crimson dark:hover:border-brand-crimson hover:shadow-2xl flex flex-col justify-between cursor-pointer no-underline block"
+                className="services__one-item group relative overflow-hidden bg-white dark:bg-card border border-slate-200 dark:border-brand-slate/30 p-8 lg:p-10 rounded-xl transition-all duration-400 ease-out hover:-translate-y-2 hover:bg-brand-crimson hover:border-brand-crimson dark:hover:bg-brand-crimson dark:hover:border-brand-crimson hover:shadow-2xl flex flex-col justify-between cursor-pointer no-underline block"
                 key={item.id}
               >
                 {/* Top-right translucent corner circle shape on hover */}

@@ -97,8 +97,8 @@ export default async function EventDetailsPage({ params: paramsPromise }: { para
                 <div className="blog__details-left-image rounded-t-lg overflow-hidden">
                   <img src={imageUrl} alt={item.title} className="w-full h-auto object-cover" />
                 </div>
-                <div className="blog__details-left-content bg-white dark:bg-[#181C22] border border-gray-200 dark:border-[#2D333B] border-t-0 rounded-b-lg shadow-sm p-8 md:p-12">
-                  <div className="blog__details-left-content-meta mb-6 border-b border-gray-100 dark:border-[#2D333B] pb-6">
+                <div className="blog__details-left-content bg-white dark:bg-background border border-gray-200 dark:border-brand-slate/30 border-t-0 rounded-b-lg shadow-sm p-8 md:p-12">
+                  <div className="blog__details-left-content-meta mb-6 border-b border-gray-100 dark:border-brand-slate/30 pb-6">
                     <ul className="flex flex-wrap gap-6 m-0 p-0 list-none">
                       <li>
                         <span className="flex items-center text-brand-slate dark:text-gray-400">

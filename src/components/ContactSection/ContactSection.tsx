@@ -18,26 +18,26 @@ export default function ContactSection({ description, mapEmbedUrl, formId }: Con
         <div className="container mx-auto px-4">
           <div className="row flex flex-wrap -mx-4">
             <div className="col-xl-5 col-lg-5 w-full lg:w-5/12 px-4 order-last lg:order-first">
-              <div className="contact__page-form bg-white dark:bg-[#181C22] p-8 md:p-10 rounded-lg shadow-sm border border-gray-100 dark:border-[#2D333B]">
+              <div className="contact__page-form bg-white dark:bg-background p-8 md:p-10 rounded-lg shadow-sm border border-gray-100 dark:border-brand-slate/30">
                 <h3 className="mb-8 font-heading font-bold text-2xl md:text-3xl text-brand-charcoal dark:text-white">Contact Us</h3>
                 <form action="#">	
                   <div className="row flex flex-wrap -mx-2">
                     <div className="col-sm-12 w-full px-2 mb-5"> 
                       <div className="contact__page-form-item contact-item relative">
                         <span className="fal fa-user absolute left-4 top-1/2 -translate-y-1/2 text-brand-crimson"></span>
-                        <input type="text" name="name" placeholder="Full Name" required className="w-full bg-gray-50 dark:bg-[#1C2128] border border-gray-200 dark:border-[#2D333B] rounded py-3 pl-10 pr-4 text-brand-charcoal dark:text-white focus:outline-none focus:border-brand-crimson transition-colors" />
+                        <input type="text" name="name" placeholder="Full Name" required className="w-full bg-gray-50 dark:bg-background border border-gray-200 dark:border-brand-slate/30 rounded py-3 pl-10 pr-4 text-brand-charcoal dark:text-white focus:outline-none focus:border-brand-crimson transition-colors" />
                       </div>										
                     </div>
                     <div className="col-sm-12 w-full px-2 mb-5">
                       <div className="contact__page-form-item contact-item relative">
                         <span className="far fa-envelope-open absolute left-4 top-1/2 -translate-y-1/2 text-brand-crimson"></span>
-                        <input type="email" name="email" placeholder="Email Address" required className="w-full bg-gray-50 dark:bg-[#1C2128] border border-gray-200 dark:border-[#2D333B] rounded py-3 pl-10 pr-4 text-brand-charcoal dark:text-white focus:outline-none focus:border-brand-crimson transition-colors" />											
+                        <input type="email" name="email" placeholder="Email Address" required className="w-full bg-gray-50 dark:bg-background border border-gray-200 dark:border-brand-slate/30 rounded py-3 pl-10 pr-4 text-brand-charcoal dark:text-white focus:outline-none focus:border-brand-crimson transition-colors" />											
                       </div>									
                     </div>
                     <div className="col-sm-12 w-full px-2 mb-8"> 
                       <div className="contact__page-form-item contact-item relative">
                         <span className="far fa-comments absolute left-4 top-4 text-brand-crimson"></span>
-                        <textarea name="message" placeholder="Type your comments...." className="w-full bg-gray-50 dark:bg-[#1C2128] border border-gray-200 dark:border-[#2D333B] rounded py-3 pl-10 pr-4 h-32 resize-none text-brand-charcoal dark:text-white focus:outline-none focus:border-brand-crimson transition-colors"></textarea>
+                        <textarea name="message" placeholder="Type your comments...." className="w-full bg-gray-50 dark:bg-background border border-gray-200 dark:border-brand-slate/30 rounded py-3 pl-10 pr-4 h-32 resize-none text-brand-charcoal dark:text-white focus:outline-none focus:border-brand-crimson transition-colors"></textarea>
                       </div>										
                     </div>
                     <div className="col-lg-12 w-full px-2">										

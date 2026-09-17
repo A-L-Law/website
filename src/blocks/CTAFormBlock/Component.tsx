@@ -82,21 +82,21 @@ export const CTAFormBlock: React.FC<CTAFormBlockProps> = ({
                         name="name"
                         placeholder="Full Name"
                         required
-                        className="w-full px-4 py-3.5 rounded-md border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-slate-900 dark:text-white placeholder:text-slate-400 text-sm font-medium outline-none focus:ring-2 focus:ring-brand-crimson/30"
+                        className="w-full px-4 py-3.5 rounded-md border border-slate-200 dark:border-brand-slate/30 bg-white dark:bg-background text-slate-900 dark:text-white placeholder:text-slate-400 text-sm font-medium outline-none focus:ring-2 focus:ring-brand-crimson/30"
                       />
                       <input
                         type="email"
                         name="email"
                         placeholder="Email Address"
                         required
-                        className="w-full px-4 py-3.5 rounded-md border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-slate-900 dark:text-white placeholder:text-slate-400 text-sm font-medium outline-none focus:ring-2 focus:ring-brand-crimson/30"
+                        className="w-full px-4 py-3.5 rounded-md border border-slate-200 dark:border-brand-slate/30 bg-white dark:bg-background text-slate-900 dark:text-white placeholder:text-slate-400 text-sm font-medium outline-none focus:ring-2 focus:ring-brand-crimson/30"
                       />
                       <input
                         type="text"
                         name="subject"
                         placeholder="Subject"
                         required
-                        className="w-full px-4 py-3.5 rounded-md border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-slate-900 dark:text-white placeholder:text-slate-400 text-sm font-medium outline-none focus:ring-2 focus:ring-brand-crimson/30"
+                        className="w-full px-4 py-3.5 rounded-md border border-slate-200 dark:border-brand-slate/30 bg-white dark:bg-background text-slate-900 dark:text-white placeholder:text-slate-400 text-sm font-medium outline-none focus:ring-2 focus:ring-brand-crimson/30"
                       />
                       <button
                         className="btn-one w-full bg-brand-crimson hover:bg-black text-white py-4 rounded-md font-bold uppercase text-xs tracking-wider transition-colors shadow-md cursor-pointer mt-2"

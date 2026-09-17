@@ -50,11 +50,11 @@ export default function BlogCard({ post }: BlogCardProps) {
           <span className="text-five">{month}</span>
         </div>
       </div>
-      <div className="blog__two-item-content border-t-0 rounded-b-lg border border-gray-200 dark:border-[#2D333B] dark:bg-[#181C22] flex-1 flex flex-col justify-between">
+      <div className="blog__two-item-content border-t-0 rounded-b-lg border border-gray-200 dark:border-brand-slate/30 dark:bg-background flex-1 flex flex-col justify-between">
         <div>
-          <div className="blog__two-item-content-meta border-b border-gray-200 dark:border-[#2D333B] pb-4 mb-4">
+          <div className="blog__two-item-content-meta border-b border-gray-200 dark:border-brand-slate/30 pb-4 mb-4">
             <ul className="flex items-center text-sm text-brand-slate dark:text-gray-400">
-              <li className="mr-4 pr-4 border-r border-gray-200 dark:border-[#2D333B]">
+              <li className="mr-4 pr-4 border-r border-gray-200 dark:border-brand-slate/30">
                 <span className="flex items-center hover:text-brand-crimson dark:hover:text-brand-crimson transition-colors dark:text-gray-400">
                   <i className="far fa-user text-brand-crimson mr-2"></i>By {authorName}
                 </span>

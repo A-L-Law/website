@@ -15,8 +15,8 @@ export default async function EventsSidebar() {
 
   return (
     <div className="all__sidebar font-body">
-      <div className="all__sidebar-item bg-white dark:bg-[#181C22] border border-gray-200 dark:border-[#2D333B] rounded-lg shadow-sm mb-8 p-6 lg:p-8">
-        <h4 className="font-heading font-bold text-xl mb-6 text-brand-charcoal dark:text-white border-b border-gray-100 dark:border-[#2D333B] pb-3">
+      <div className="all__sidebar-item bg-white dark:bg-background border border-gray-200 dark:border-brand-slate/30 rounded-lg shadow-sm mb-8 p-6 lg:p-8">
+        <h4 className="font-heading font-bold text-xl mb-6 text-brand-charcoal dark:text-white border-b border-gray-100 dark:border-brand-slate/30 pb-3">
           Upcoming Events
         </h4>
         <div className="all__sidebar-item-post">
@@ -31,7 +31,7 @@ export default async function EventsSidebar() {
               : '/assets/img/blog/blog-standard-1.jpg' // Fallback
               
             return (
-              <div className="post__item group flex items-center gap-4 mb-5 pb-5 border-b border-gray-100 dark:border-[#2D333B] last:mb-0 last:pb-0 last:border-0" key={data.id}>
+              <div className="post__item group flex items-center gap-4 mb-5 pb-5 border-b border-gray-100 dark:border-brand-slate/30 last:mb-0 last:pb-0 last:border-0" key={data.id}>
                 <div className="post__item-image shrink-0 w-20 h-20 rounded-md overflow-hidden bg-gray-100 dark:bg-gray-800">
                   <Link href={`/events/${data.slug}`} className="block w-full h-full">
                     <img src={imageUrl} alt={data.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />

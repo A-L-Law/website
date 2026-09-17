@@ -69,7 +69,7 @@ export default function CasesGrid({ initialCases, practiceAreas }: Props) {
             <div className="col-xl-4 col-lg-4 col-md-6 w-full lg:w-1/3 md:w-1/2 px-4 mt-8" key={data.id}>
               <div className="project__one-item group relative overflow-hidden rounded-lg">
                 <img src={imageUrl} alt={data.title} className="w-full h-80 object-cover transition-transform duration-500 group-hover:scale-105" />
-                <div className="project__one-item-content absolute bottom-6 left-6 right-6 bg-white dark:bg-[#181C22] p-6 rounded shadow-lg transform translate-y-0 opacity-100 transition-all duration-300 z-10">
+                <div className="project__one-item-content absolute bottom-6 left-6 right-6 bg-white dark:bg-background p-6 rounded shadow-lg transform translate-y-0 opacity-100 transition-all duration-300 z-10">
                   <span className="block text-brand-crimson font-medium text-sm mb-2 font-heading tracking-wide uppercase">
                     {subtitle}
                   </span>

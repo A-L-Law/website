@@ -122,7 +122,7 @@ export default async function VacancyDetailsPage({ params: paramsPromise }: { pa
                 </div>
                 
                 {item.excerpt && (
-                  <div className="blog__details-left-box bg-brand-ice dark:bg-[#181C22] border border-gray-200 dark:border-[#2D333B] p-8 flex gap-6 my-8 rounded">
+                  <div className="blog__details-left-box bg-brand-ice dark:bg-background border border-gray-200 dark:border-brand-slate/30 p-8 flex gap-6 my-8 rounded">
                     <i className="fa-sharp fa-solid fa-quote-left text-5xl text-brand-crimson"></i>
                     <div>
                       <h5 className="font-body text-xl font-medium m-0 text-brand-charcoal dark:text-gray-200 italic">{item.excerpt}</h5>                                

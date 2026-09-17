@@ -64,7 +64,7 @@ export default function PortfolioSlider({ cases }: Props) {
                 />
                 
                 {/* Active Title Overlay - mimicking /cases grid layout exactly */}
-                <div className="project__one-item-content absolute bottom-6 left-6 right-6 bg-white dark:bg-[#181C22] p-6 rounded shadow-lg opacity-100 z-10 transition-all duration-300 group-hover:-translate-y-2">
+                <div className="project__one-item-content absolute bottom-6 left-6 right-6 bg-white dark:bg-background p-6 rounded shadow-lg opacity-100 z-10 transition-all duration-300 group-hover:-translate-y-2">
                   <span className="block text-brand-crimson font-medium text-sm mb-2 font-heading tracking-wide uppercase">
                     {subtitle}
                   </span>

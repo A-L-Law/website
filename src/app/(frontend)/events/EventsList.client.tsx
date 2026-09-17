@@ -38,7 +38,7 @@ export default function EventsList({ initialEvents }: Props) {
                 <img src={imageUrl} alt={event.title} className="w-full object-cover" />
               </Link>
             </div>
-            <div className="news__standard-left-item-content bg-white dark:bg-[#181C22] border border-gray-200 dark:border-[#2D333B] border-t-0 rounded-b-lg shadow-sm">
+            <div className="news__standard-left-item-content bg-white dark:bg-background border border-gray-200 dark:border-brand-slate/30 border-t-0 rounded-b-lg shadow-sm">
               <div className="news__standard-left-item-content-meta">
                 <ul>
                   <li>
