@@ -328,8 +328,8 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
               <LucideIcons.Search className="w-5 h-5 stroke-[1.5]" />
             </button>
 
-            {/* Grid Menu Icon with divider — template: margin-left: 70px, padding-left: 70px, 1px divider 40px tall at 0.1 opacity, icon 25px primary red */}
-            <div className="relative hidden sm:flex items-center" style={{ marginLeft: '70px', paddingLeft: '70px' }}>
+            {/* Grid Menu Icon with divider — reduced gap on desktop */}
+            <div className="relative hidden sm:flex items-center ml-5 lg:ml-7 pl-5 lg:pl-7">
               {/* Vertical divider line (::before equivalent) */}
               <div
                 className="absolute left-0 top-1/2 -translate-y-1/2 bg-brand-charcoal dark:bg-white"
@@ -347,8 +347,8 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
             {/* CTA Button — template: padding 17px 43px, font-size 16px, font-weight 700, border-radius 6px */}
             <Link
               href={ctaLink}
-              className="hidden sm:inline-flex items-center gap-2 bg-brand-crimson hover:bg-black text-white font-heading uppercase tracking-wider transition-all shadow-md shrink-0 cursor-pointer"
-              style={{ padding: '17px 43px', fontSize: '16px', fontWeight: 700, borderRadius: '6px', marginLeft: '70px' }}
+              className="hidden sm:inline-flex items-center gap-2 bg-brand-crimson hover:bg-black text-white font-heading uppercase tracking-wider transition-all shadow-md shrink-0 cursor-pointer ml-5 lg:ml-7"
+              style={{ padding: '17px 43px', fontSize: '16px', fontWeight: 700, borderRadius: '6px' }}
             >
               <span>{ctaText}</span>
               <LucideIcons.ChevronsRight className="w-5 h-5" />
