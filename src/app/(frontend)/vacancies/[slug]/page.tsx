@@ -9,7 +9,7 @@ import type { Media, Vacancy } from '@/payload-types'
 import { generateMeta } from '@/utilities/generateMeta'
 import { LivePreviewListener } from '@/components/LivePreviewListener'
 import RichText from '@/components/RichText'
-import ContactSection from '@/components/ContactSection/ContactSection'
+import { FormBlock } from '@/blocks/Form/Component'
 
 export const revalidate = 60
 
@@ -139,12 +139,15 @@ export default async function VacancyDetailsPage({ params: paramsPromise }: { pa
         </div>
       </div>
 
-      {/* Contact Section mapping */}
-      <ContactSection 
-        description={contactSection?.contactDescription} 
-        mapEmbedUrl={contactSection?.mapEmbed} 
-        formId={typeof contactSection?.contactForm === 'object' && contactSection.contactForm !== null ? contactSection.contactForm.id : (contactSection?.contactForm as number | null | undefined)} 
-      />
+      {/* FormBlock mapping */}
+      {(contactSection as any)?.form && typeof (contactSection as any).form === 'object' && (
+        <FormBlock 
+          title={(contactSection as any).title}
+          content={(contactSection as any).content}
+          location={(contactSection as any).location}
+          form={(contactSection as any).form as any} 
+        />
+      )}
     </article>
   )
 }

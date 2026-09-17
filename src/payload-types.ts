@@ -779,9 +779,8 @@ export interface Role {
  * via the `definition` "FormBlock".
  */
 export interface FormBlock {
-  form: number | Form;
-  enableIntro?: boolean | null;
-  introContent?: {
+  title?: string | null;
+  content?: {
     root: {
       type: string;
       children: {
@@ -796,6 +795,12 @@ export interface FormBlock {
     };
     [k: string]: unknown;
   } | null;
+  form: number | Form;
+  location?: {
+    type?: ('googleMaps' | 'onlineLink' | 'remote') | null;
+    mapEmbedUrl?: string | null;
+    onlineLinkUrl?: string | null;
+  };
   id?: string | null;
   blockName?: string | null;
   blockType: 'formBlock';
@@ -1508,12 +1513,32 @@ export interface Event {
   /**
    * Fields for the Contact/Map footer at the bottom of the page.
    */
-  contactSection?: {
-    contactDescription?: string | null;
-    mapEmbed?: string | null;
-    contactForm?: (number | null) | Form;
+  contactSection: {
+    title?: string | null;
+    content?: {
+      root: {
+        type: string;
+        children: {
+          type: any;
+          version: number;
+          [k: string]: unknown;
+        }[];
+        direction: ('ltr' | 'rtl') | null;
+        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+        indent: number;
+        version: number;
+      };
+      [k: string]: unknown;
+    } | null;
+    form: number | Form;
+    location?: {
+      type?: ('googleMaps' | 'onlineLink' | 'remote') | null;
+      mapEmbedUrl?: string | null;
+      onlineLinkUrl?: string | null;
+    };
   };
   eventDate: string;
+  endDate?: string | null;
   location?: string | null;
   meta?: {
     title?: string | null;
@@ -2061,9 +2086,16 @@ export interface ArchiveBlockSelect<T extends boolean = true> {
  * via the `definition` "FormBlock_select".
  */
 export interface FormBlockSelect<T extends boolean = true> {
+  title?: T;
+  content?: T;
   form?: T;
-  enableIntro?: T;
-  introContent?: T;
+  location?:
+    | T
+    | {
+        type?: T;
+        mapEmbedUrl?: T;
+        onlineLinkUrl?: T;
+      };
   id?: T;
   blockName?: T;
 }
@@ -2623,11 +2655,19 @@ export interface EventsSelect<T extends boolean = true> {
   contactSection?:
     | T
     | {
-        contactDescription?: T;
-        mapEmbed?: T;
-        contactForm?: T;
+        title?: T;
+        content?: T;
+        form?: T;
+        location?:
+          | T
+          | {
+              type?: T;
+              mapEmbedUrl?: T;
+              onlineLinkUrl?: T;
+            };
       };
   eventDate?: T;
+  endDate?: T;
   location?: T;
   meta?:
     | T

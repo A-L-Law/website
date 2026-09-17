@@ -32,7 +32,7 @@ export const CTAInlineBlock: React.FC<CTAInlineBlockProps> = ({
             <div className="lg:col-span-7">
               <div className="cta__area-form">
                 {form && typeof form === 'object' ? (
-                  <FormBlock form={form as unknown as Parameters<typeof FormBlock>[0]['form']} enableIntro={false} />
+                  <FormBlock form={form as unknown as Parameters<typeof FormBlock>[0]['form']} />
                 ) : (
                   <form onSubmit={(e) => e.preventDefault()} className="flex flex-col sm:flex-row gap-3 sm:gap-4 items-center justify-end">
                     <div className="w-full sm:w-auto flex-1">

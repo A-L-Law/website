@@ -32,6 +32,7 @@ import { populatePublishedAt } from '../hooks/populatePublishedAt'
 import { revalidateDelete, revalidatePost } from '../hooks/revalidatePost'
 import { generatePreviewPath } from '../utilities/generatePreviewPath'
 import { slugField } from 'payload'
+import { contactSectionFields } from '../blocks/Form/contactSectionFields'
 
 export const Events: CollectionConfig<'events'> = {
   slug: 'events',
@@ -140,24 +141,7 @@ export const Events: CollectionConfig<'events'> = {
               admin: {
                 description: 'Fields for the Contact/Map footer at the bottom of the page.',
               },
-              fields: [
-                {
-                  name: 'contactDescription',
-                  type: 'textarea',
-                  label: 'Descriptive Text',
-                },
-                {
-                  name: 'mapEmbed',
-                  type: 'text',
-                  label: 'Google Maps Embed URL (src)',
-                },
-                {
-                  name: 'contactForm',
-                  type: 'relationship',
-                  relationTo: 'forms',
-                  label: 'Contact Form',
-                }
-              ]
+              fields: contactSectionFields
             }
           ],
         },
@@ -168,6 +152,15 @@ export const Events: CollectionConfig<'events'> = {
               name: 'eventDate',
               type: 'date',
               required: true,
+              admin: {
+                date: {
+                  pickerAppearance: 'dayAndTime',
+                },
+              },
+            },
+            {
+              name: 'endDate',
+              type: 'date',
               admin: {
                 date: {
                   pickerAppearance: 'dayAndTime',

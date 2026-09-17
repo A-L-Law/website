@@ -74,7 +74,7 @@ export const CTAFormBlock: React.FC<CTAFormBlockProps> = ({
                 </div>
                 <div className="getIn__touch-left-form">
                   {form && typeof form === 'object' ? (
-                    <FormBlock form={form as unknown as Parameters<typeof FormBlock>[0]['form']} enableIntro={false} />
+                    <FormBlock form={form as unknown as Parameters<typeof FormBlock>[0]['form']} />
                   ) : (
                     <form onSubmit={(e) => e.preventDefault()} className="space-y-4">
                       <input
