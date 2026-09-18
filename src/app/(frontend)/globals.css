@@ -673,6 +673,53 @@ High Impact Hero Swiper Pagination CSS matching template
 }
 
 /*==========================================================================
+High Impact Hero Curved Overlay Shape CSS matching Conbix template
+==========================================================================*/
+.banner__one-shape {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url('/assets/img/shape/banner-bg.png');
+  background-repeat: no-repeat;
+  background-size: auto 100%;
+  background-position: left top;
+  z-index: 1;
+  pointer-events: none;
+}
+
+@media (min-width: 1921px) {
+  .banner__one-shape {
+    background-size: 52vw 100%;
+  }
+}
+
+@media (max-width: 1599px) {
+  .banner__one-shape {
+    left: -160px;
+  }
+}
+
+@media (max-width: 1399px) {
+  .banner__one-shape {
+    left: -200px;
+  }
+}
+
+@media (max-width: 1099px) {
+  .banner__one-shape {
+    left: -280px;
+  }
+}
+
+@media (max-width: 991px) {
+  .banner__one-shape {
+    display: none;
+  }
+}
+
+/*==========================================================================
 Error Page CSS (Conbix 1-to-1)
 ==========================================================================*/
 .error.section-padding {

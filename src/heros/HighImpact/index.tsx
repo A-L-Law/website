@@ -49,12 +49,9 @@ export const HighImpactHero: React.FC<Page['hero']> = (props) => {
                 style={{ backgroundImage: `url(${bgUrl})` }}
               >
                 {/* Curved black overlay shape matching template banner-bg.png */}
-                <div
-                  className="absolute inset-0 bg-cover bg-no-repeat z-0 hidden lg:block"
-                  style={{ backgroundImage: `url('/assets/img/shape/banner-bg.png')` }}
-                />
+                <div className="banner__one-shape hidden lg:block" />
                 {/* Dark overlay for mobile/tablets */}
-                <div className="absolute inset-0 bg-black/50 lg:hidden z-0" />
+                <div className="absolute inset-0 bg-black/60 lg:hidden z-0" />
 
                 <div className="container relative z-10">
                   <div className="row">
