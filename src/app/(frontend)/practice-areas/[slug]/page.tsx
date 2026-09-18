@@ -84,6 +84,16 @@ export default async function PracticeAreaDetailPage({ params: paramsPromise }: 
     mainImageUrl = (area.heroImage as Media).url!
   }
 
+  let sidebarCtaImageUrl = '/assets/img/pages/help.jpg'
+  if (
+    area.sidebarCtaImage &&
+    typeof area.sidebarCtaImage === 'object' &&
+    'url' in area.sidebarCtaImage &&
+    area.sidebarCtaImage.url
+  ) {
+    sidebarCtaImageUrl = (area.sidebarCtaImage as Media).url!
+  }
+
   // Editable Highlights (Ticks) with fallback
   const highlights: string[] =
     area.highlights && area.highlights.length > 0
@@ -155,10 +165,10 @@ export default async function PracticeAreaDetailPage({ params: paramsPromise }: 
             {/* Sidebar Column (Left on Desktop, Bottom on Mobile) */}
             <aside className="lg:col-span-4 order-last lg:order-first">
               <div className="all__sidebar sticky top-32 space-y-8">
-                {/* Sidebar Item 1: Our Solutions / Practice Areas List */}
-                <div className="all__sidebar-item p-8 bg-gray-50 dark:bg-brand-charcoal border border-gray-200 dark:border-gray-800 rounded-xl shadow-sm">
+                {/* Sidebar Item 1: Our Practice Areas List */}
+                <div className="all__sidebar-item p-8 bg-gray-50 dark:bg-background border border-gray-200 dark:border-gray-800 rounded-xl shadow-sm">
                   <h4 className="font-heading text-xl font-bold text-brand-charcoal dark:text-brand-white mb-6 pb-3 border-b border-gray-200 dark:border-gray-800">
-                    Our Solutions
+                    Our Practice Areas
                   </h4>
                   <div className="all__sidebar-item-solution">
                     <ul className="space-y-2">
@@ -176,7 +186,7 @@ export default async function PracticeAreaDetailPage({ params: paramsPromise }: 
                                   : 'text-brand-charcoal dark:text-gray-200 hover:bg-brand-crimson hover:text-white border-b border-gray-100 dark:border-gray-800/80 last:border-b-0'
                               }`}
                             >
-                              <div className="flex items-center gap-2.5">
+                              <div className="flex items-center gap-2.5 min-w-0 pr-2">
                                 <LucideIcons.ChevronsRight
                                   className={`w-4 h-4 shrink-0 transition-transform ${
                                     isActive
@@ -184,13 +194,13 @@ export default async function PracticeAreaDetailPage({ params: paramsPromise }: 
                                       : 'text-brand-crimson group-hover:text-white group-hover:translate-x-1'
                                   }`}
                                 />
-                                <span>{item.title}</span>
+                                <span className="truncate leading-normal">{item.title}</span>
                               </div>
                               <span
-                                className={`text-xs font-semibold ${
+                                className={`solution-num text-xs font-semibold shrink-0 ${
                                   isActive
-                                    ? 'text-white/80'
-                                    : 'text-brand-slate dark:text-gray-400 group-hover:text-white/80'
+                                    ? 'text-white/90'
+                                    : 'text-brand-slate dark:text-gray-400 group-hover:text-white/90'
                                 }`}
                               >
                                 ({numStr})
@@ -204,7 +214,7 @@ export default async function PracticeAreaDetailPage({ params: paramsPromise }: 
                 </div>
 
                 {/* Sidebar Item 2: Company Profile / Document Downloads */}
-                <div className="all__sidebar-item p-8 bg-gray-50 dark:bg-brand-charcoal border border-gray-200 dark:border-gray-800 rounded-xl shadow-sm">
+                <div className="all__sidebar-item p-8 bg-gray-50 dark:bg-background border border-gray-200 dark:border-gray-800 rounded-xl shadow-sm">
                   <h4 className="font-heading text-xl font-bold text-brand-charcoal dark:text-brand-white mb-6 pb-3 border-b border-gray-200 dark:border-gray-800">
                     Company Profile
                   </h4>
@@ -238,15 +248,14 @@ export default async function PracticeAreaDetailPage({ params: paramsPromise }: 
                 </div>
 
                 {/* Sidebar Item 3: Need Help Box matching template all__sidebar-help */}
-                <div className="all__sidebar-help relative rounded-xl overflow-hidden shadow-md">
+                <div className="all__sidebar-help relative pb-8">
                   <div className="all__sidebar-help-image relative">
                     <img
-                      className="w-full h-72 object-cover"
-                      src="/assets/img/pages/help.jpg"
+                      className="w-full h-80 sm:h-[350px] object-cover rounded-2xl"
+                      src={sidebarCtaImageUrl}
                       alt="A L Law Client Support"
                     />
-                    <div className="absolute inset-0 bg-black/40" />
-                    <div className="all__sidebar-help-image-content -mt-32 relative z-10 mx-5 mb-5 bg-white dark:bg-brand-charcoal p-6 text-center rounded-xl shadow-2xl border border-gray-100 dark:border-gray-800">
+                    <div className="all__sidebar-help-image-content relative z-10 -mt-36 sm:-mt-40 mx-4 sm:mx-6 bg-white dark:bg-background p-6 sm:p-7 text-center rounded-2xl shadow-xl border border-gray-100 dark:border-gray-800">
                       <div className="w-12 h-12 mx-auto mb-3 rounded-full bg-brand-crimson/10 text-brand-crimson flex items-center justify-center">
                         <LucideIcons.PhoneCall className="w-6 h-6 animate-pulse" />
                       </div>

@@ -591,6 +591,10 @@ export interface PracticeArea {
    */
   heroImage?: (number | null) | Media;
   /**
+   * Background photo displayed behind the sidebar "Need Help" callout box (defaults to standard support image if unassigned)
+   */
+  sidebarCtaImage?: (number | null) | Media;
+  /**
    * Bullet points with red checkmark ticks displayed below the overview
    */
   highlights?:
@@ -2570,6 +2574,7 @@ export interface PracticeAreasSelect<T extends boolean = true> {
   summary?: T;
   description?: T;
   heroImage?: T;
+  sidebarCtaImage?: T;
   highlights?:
     | T
     | {

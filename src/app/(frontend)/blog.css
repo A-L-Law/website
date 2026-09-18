@@ -938,41 +938,29 @@ All Side Bar CSS
   margin-left: 0;
 }
 .all__sidebar-item-solution ul li a {
-  display: block;
-  transition: all 0.4s ease-out 0s;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: all 0.3s ease-out 0s;
   font-weight: 700;
-  font-size: 16px;
-  line-height: 26px;
-  padding: 16px 20px;
-  padding-left: 0;
-  border-bottom: 1px solid #e5e7eb;
-  overflow: hidden;
-  border-radius: 6px;
+  font-size: 15px;
+  line-height: 1.4;
+  border-radius: 8px;
 }
 .all__sidebar-item-solution ul li a i {
   font-size: 14px;
-  margin-right: 10px;
-  opacity: 0;
-  margin-left: -20px;
-  transition: all 0.4s ease-out 0s;
+  margin-right: 8px;
+  transition: all 0.3s ease-out 0s;
 }
-.all__sidebar-item-solution ul li a span {
-  float: right;
-  position: relative;
-  top: 5px;
+.all__sidebar-item-solution ul li a span.solution-num {
   font-weight: 600;
-  font-size: 16px;
-  line-height: 16px;
+  font-size: 13px;
+  line-height: 1;
 }
 .all__sidebar-item-solution ul li a:hover {
   color: #ffffff;
   background: var(--brand-crimson);
   border-color: var(--brand-crimson);
-  padding-left: 20px;
-}
-.all__sidebar-item-solution ul li a:hover i {
-  opacity: 1;
-  margin-left: 0;
 }
 .all__sidebar-item-solution ul li:last-child a {
   margin-bottom: 0;
@@ -1220,18 +1208,8 @@ Theme Pagination CSS
   .all__sidebar-item-solution ul li {
     list-style: none;
   }
-  .all__sidebar-item-solution ul li .active {
-    padding-left: 15px;
-  }
   .all__sidebar-item-solution ul li a {
-    padding: 16px 15px;
-  }
-  .all__sidebar-item-solution ul li a i {
-    margin-right: 8px;
-    margin-left: -15px;
-  }
-  .all__sidebar-item-solution ul li a:hover {
-    padding-left: 15px;
+    padding: 12px 14px;
   }
   .all__sidebar-item-post .post__item {
     gap: 15px;

@@ -23,6 +23,7 @@ export const PracticeAreas: CollectionConfig<'practice-areas'> = {
     title: true,
     slug: true,
     summary: true,
+    sidebarCtaImage: true,
     meta: {
       image: true,
       description: true,
@@ -93,6 +94,16 @@ export const PracticeAreas: CollectionConfig<'practice-areas'> = {
               relationTo: 'media',
               admin: {
                 description: 'Feature photo displayed at the top of the detail page',
+              },
+            },
+            {
+              name: 'sidebarCtaImage',
+              type: 'relationship',
+              relationTo: 'media',
+              label: 'Sidebar CTA Image',
+              admin: {
+                description:
+                  'Background photo displayed behind the sidebar "Need Help" callout box (defaults to standard support image if unassigned)',
               },
             },
             {
