@@ -46,6 +46,8 @@ export const Posts: CollectionConfig<'posts'> = {
     title: true,
     slug: true,
     postType: true,
+    excerpt: true,
+    heroImage: true,
   },
   admin: {
     useAsTitle: 'title',

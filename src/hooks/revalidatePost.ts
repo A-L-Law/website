@@ -14,9 +14,13 @@ export const revalidatePost: CollectionAfterChangeHook<Post> = ({
 
       payload.logger.info(`Revalidating post at path: ${path}`)
 
-      revalidatePath(path)
-      revalidatePath(parentPath)
-      revalidateTag('posts-sitemap', 'max')
+      try {
+        revalidatePath(path)
+        revalidatePath(parentPath)
+        revalidateTag('posts-sitemap', 'max')
+      } catch (err) {
+        payload.logger.warn(`Could not revalidate path ${path}: ${err}`)
+      }
     }
 
     if (previousDoc?._status === 'published' && doc._status !== 'published') {
@@ -25,9 +29,13 @@ export const revalidatePost: CollectionAfterChangeHook<Post> = ({
 
       payload.logger.info(`Revalidating old post at path: ${oldPath}`)
 
-      revalidatePath(oldPath)
-      revalidatePath(oldParentPath)
-      revalidateTag('posts-sitemap', 'max')
+      try {
+        revalidatePath(oldPath)
+        revalidatePath(oldParentPath)
+        revalidateTag('posts-sitemap', 'max')
+      } catch (err) {
+        payload.logger.warn(`Could not revalidate path ${oldPath}: ${err}`)
+      }
     }
   }
   return doc
@@ -37,9 +45,13 @@ export const revalidateDelete: CollectionAfterDeleteHook<Post> = ({ doc, req: { 
   if (!context.disableRevalidate && doc) {
     const parentPath = doc.postType === 'guide' ? '/guides' : '/news'
     const path = `${parentPath}/${doc.slug}`
-    revalidatePath(path)
-    revalidatePath(parentPath)
-    revalidateTag('posts-sitemap', 'max')
+    try {
+      revalidatePath(path)
+      revalidatePath(parentPath)
+      revalidateTag('posts-sitemap', 'max')
+    } catch (err) {
+      // Ignored outside Next.js request context
+    }
   }
 
   return doc

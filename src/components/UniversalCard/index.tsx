@@ -27,47 +27,55 @@ export function resolveUniversalCardData(item: any): UniversalCardData {
 
   const relationTo = item.doc?.relationTo
   const docVal = typeof item.doc?.value === 'object' && item.doc?.value !== null ? item.doc.value : null
-  const postType = docVal?.postType || item.postType
+  const slug = item.slug || docVal?.slug || ''
+  const searchContext = `${rawTitle} ${slug}`.toLowerCase()
+
+  let postType = docVal?.postType || item.postType
+  if (!postType) {
+    if (searchContext.includes('guide')) {
+      postType = 'guide'
+    } else if (searchContext.includes('news')) {
+      postType = 'news'
+    }
+  }
 
   // 1. Resolve Resource Type Label
   let resourceType = item.resourceType
   if (!resourceType) {
-    if (relationTo === 'cases') {
+    if (relationTo === 'cases' || searchContext.includes('case-')) {
       resourceType = 'Case'
-    } else if (relationTo === 'events') {
+    } else if (relationTo === 'events' || searchContext.includes('event-')) {
       resourceType = 'Event'
-    } else if (relationTo === 'vacancies') {
+    } else if (relationTo === 'vacancies' || searchContext.includes('vacancy-')) {
       resourceType = 'Vacancy'
     } else if (relationTo === 'practice-areas') {
       resourceType = 'Practice Area'
     } else if (relationTo === 'pages') {
       resourceType = 'Page'
-    } else if (relationTo === 'posts') {
+    } else if (relationTo === 'posts' || postType) {
       resourceType = postType === 'guide' ? 'Guide' : 'News'
     } else {
-      if (item.slug?.startsWith('case-')) resourceType = 'Case'
-      else if (item.slug?.startsWith('event-')) resourceType = 'Event'
-      else if (item.slug?.startsWith('vacancy-')) resourceType = 'Vacancy'
+      if (searchContext.includes('guide')) resourceType = 'Guide'
+      else if (searchContext.includes('news')) resourceType = 'News'
       else resourceType = 'Resource'
     }
   }
 
   // 2. Resolve Canonical URL
   let url = item.url
-  const slug = item.slug || docVal?.slug
   if (!url && slug) {
-    if (relationTo === 'cases') {
+    if (relationTo === 'cases' || resourceType === 'Case') {
       url = `/cases/${slug}`
-    } else if (relationTo === 'events') {
+    } else if (relationTo === 'events' || resourceType === 'Event') {
       url = `/events/${slug}`
-    } else if (relationTo === 'vacancies') {
+    } else if (relationTo === 'vacancies' || resourceType === 'Vacancy') {
       url = `/vacancies/${slug}`
-    } else if (relationTo === 'practice-areas') {
+    } else if (relationTo === 'practice-areas' || resourceType === 'Practice Area') {
       url = `/practice-areas/${slug}`
     } else if (relationTo === 'pages') {
       url = slug === 'home' ? '/' : `/${slug}`
-    } else if (relationTo === 'posts') {
-      url = postType === 'guide' ? `/guides/${slug}` : `/news/${slug}`
+    } else if (relationTo === 'posts' || resourceType === 'Guide' || resourceType === 'News') {
+      url = resourceType === 'Guide' || postType === 'guide' ? `/guides/${slug}` : `/news/${slug}`
     } else {
       url = `/${slug}`
     }
@@ -88,13 +96,40 @@ export function resolveUniversalCardData(item: any): UniversalCardData {
     excerpt = ''
   }
 
-  // 4. Resolve Image URL
+  // 4. Resolve Image URL from candidate images
   let imageUrl: string | null = null
-  const metaImg = item.meta?.image || docVal?.meta?.image || docVal?.heroImage || item.heroImage
-  if (metaImg && typeof metaImg === 'object' && 'url' in metaImg && metaImg.url) {
-    imageUrl = metaImg.url
-  } else if (typeof metaImg === 'string' && metaImg.startsWith('http')) {
-    imageUrl = metaImg
+  const candidateImages = [
+    item.imageUrl,
+    item.meta?.image,
+    docVal?.heroImage,
+    docVal?.meta?.image,
+    item.heroImage,
+  ]
+
+  for (const img of candidateImages) {
+    if (!img) continue
+    if (typeof img === 'string' && (img.startsWith('http') || img.startsWith('/'))) {
+      imageUrl = img
+      break
+    }
+    if (typeof img === 'object') {
+      if (img.url) {
+        imageUrl = img.url
+        break
+      }
+      if (img.sizes?.medium?.url) {
+        imageUrl = img.sizes.medium.url
+        break
+      }
+      if (img.sizes?.large?.url) {
+        imageUrl = img.sizes.large.url
+        break
+      }
+      if (img.sizes?.small?.url) {
+        imageUrl = img.sizes.small.url
+        break
+      }
+    }
   }
 
   return {

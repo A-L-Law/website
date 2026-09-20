@@ -13,9 +13,13 @@ export const revalidateCase: CollectionAfterChangeHook<Case> = ({
 
       payload.logger.info(`Revalidating case at path: ${path}`)
 
-      revalidatePath(path)
-      revalidatePath('/cases')
-      revalidateTag('cases-sitemap', 'max')
+      try {
+        revalidatePath(path)
+        revalidatePath('/cases')
+        revalidateTag('cases-sitemap', 'max')
+      } catch (err) {
+        payload.logger.warn(`Could not revalidate path ${path}: ${err}`)
+      }
     }
 
     if (previousDoc?._status === 'published' && doc._status !== 'published') {
@@ -23,9 +27,13 @@ export const revalidateCase: CollectionAfterChangeHook<Case> = ({
 
       payload.logger.info(`Revalidating old case at path: ${oldPath}`)
 
-      revalidatePath(oldPath)
-      revalidatePath('/cases')
-      revalidateTag('cases-sitemap', 'max')
+      try {
+        revalidatePath(oldPath)
+        revalidatePath('/cases')
+        revalidateTag('cases-sitemap', 'max')
+      } catch (err) {
+        payload.logger.warn(`Could not revalidate path ${oldPath}: ${err}`)
+      }
     }
   }
   return doc
@@ -34,9 +42,13 @@ export const revalidateCase: CollectionAfterChangeHook<Case> = ({
 export const revalidateDelete: CollectionAfterDeleteHook<Case> = ({ doc, req: { context } }) => {
   if (!context.disableRevalidate && doc) {
     const path = `/cases/${doc.slug}`
-    revalidatePath(path)
-    revalidatePath('/cases')
-    revalidateTag('cases-sitemap', 'max')
+    try {
+      revalidatePath(path)
+      revalidatePath('/cases')
+      revalidateTag('cases-sitemap', 'max')
+    } catch (err) {
+      // Ignored outside Next.js request context
+    }
   }
 
   return doc

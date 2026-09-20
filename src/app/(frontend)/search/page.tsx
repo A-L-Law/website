@@ -81,8 +81,77 @@ export default async function Page({ searchParams: searchParamsPromise }: Args) 
       : {}),
   })
 
+  // Enrich search results from posts to guarantee postType, excerpt, URL, and heroImage
+  const postDocIds = searchResults.docs
+    .filter((d: any) => d.doc?.relationTo === 'posts')
+    .map((d: any) => (typeof d.doc?.value === 'object' ? d.doc.value?.id : d.doc?.value))
+    .filter(Boolean)
+
+  if (postDocIds.length > 0) {
+    try {
+      const postsBatch = await payload.find({
+        collection: 'posts',
+        where: {
+          id: {
+            in: postDocIds,
+          },
+        },
+        depth: 1,
+        pagination: false,
+      })
+
+      const postMap = new Map(postsBatch.docs.map((p) => [p.id, p]))
+
+      for (const d of searchResults.docs as any[]) {
+        if (d.doc?.relationTo === 'posts') {
+          const postVal = typeof d.doc?.value === 'object' ? d.doc.value?.id : d.doc?.value
+          const post = postMap.get(postVal)
+          if (post) {
+            d.doc.value = post
+            d.postType = post.postType
+            if (!d.resourceType) {
+              d.resourceType = post.postType === 'guide' ? 'Guide' : 'News'
+            }
+            if (!d.url) {
+              d.url = post.postType === 'guide' ? `/guides/${post.slug}` : `/news/${post.slug}`
+            }
+            if (!d.excerpt) {
+              d.excerpt = post.excerpt || post.meta?.description || ''
+            }
+            if (!d.meta?.image && post.heroImage) {
+              if (!d.meta) d.meta = {}
+              d.meta.image = post.heroImage
+            }
+            if (!d.heroImage && post.heroImage) {
+              d.heroImage = post.heroImage
+            }
+          }
+        }
+      }
+    } catch {
+      // Continue gracefully if batch fetch fails
+    }
+  }
+
   // Normalize search docs into UniversalCardData
   const combinedDocs: UniversalCardData[] = searchResults.docs.map(resolveUniversalCardData)
+
+  const extractImageUrl = (mediaItem: any): string | null => {
+    if (!mediaItem) return null
+    if (typeof mediaItem === 'string' && (mediaItem.startsWith('http') || mediaItem.startsWith('/'))) {
+      return mediaItem
+    }
+    if (typeof mediaItem === 'object') {
+      return (
+        mediaItem.url ||
+        mediaItem.sizes?.medium?.url ||
+        mediaItem.sizes?.large?.url ||
+        mediaItem.sizes?.small?.url ||
+        null
+      )
+    }
+    return null
+  }
 
   // 2. Supplemental live search across collections if a query is active
   // This guarantees existing unindexed documents in cases, events, vacancies, etc. are found seamlessly
@@ -101,6 +170,7 @@ export default async function Page({ searchParams: searchParamsPromise }: Args) 
               { slug: { like: query } },
             ],
           },
+          depth: 1,
           limit: 10,
         })
         .catch(() => ({ docs: [] })),
@@ -115,6 +185,7 @@ export default async function Page({ searchParams: searchParamsPromise }: Args) 
               { slug: { like: query } },
             ],
           },
+          depth: 1,
           limit: 10,
         })
         .catch(() => ({ docs: [] })),
@@ -128,6 +199,7 @@ export default async function Page({ searchParams: searchParamsPromise }: Args) 
               { slug: { like: query } },
             ],
           },
+          depth: 1,
           limit: 10,
         })
         .catch(() => ({ docs: [] })),
@@ -141,6 +213,7 @@ export default async function Page({ searchParams: searchParamsPromise }: Args) 
               { slug: { like: query } },
             ],
           },
+          depth: 1,
           limit: 10,
         })
         .catch(() => ({ docs: [] })),
@@ -154,6 +227,7 @@ export default async function Page({ searchParams: searchParamsPromise }: Args) 
               { slug: { like: query } },
             ],
           },
+          depth: 1,
           limit: 10,
         })
         .catch(() => ({ docs: [] })),
@@ -161,69 +235,44 @@ export default async function Page({ searchParams: searchParamsPromise }: Args) 
 
     const supplemental: UniversalCardData[] = [
       ...casesRes.docs.map((c: any) => ({
-        id: String(c.id),
+        id: `case-${c.id}`,
         title: c.title,
         excerpt: c.excerpt || c.meta?.description || '',
         resourceType: 'Case',
         url: `/cases/${c.slug}`,
-        imageUrl:
-          typeof c.heroImage === 'object' && c.heroImage?.url
-            ? c.heroImage.url
-            : typeof c.meta?.image === 'object' && c.meta?.image?.url
-              ? c.meta.image.url
-              : null,
+        imageUrl: extractImageUrl(c.heroImage) || extractImageUrl(c.meta?.image),
       })),
       ...eventsRes.docs.map((e: any) => ({
-        id: String(e.id),
+        id: `event-${e.id}`,
         title: e.title,
         excerpt: e.excerpt || e.meta?.description || '',
         resourceType: 'Event',
         url: `/events/${e.slug}`,
-        imageUrl:
-          typeof e.heroImage === 'object' && e.heroImage?.url
-            ? e.heroImage.url
-            : typeof e.meta?.image === 'object' && e.meta?.image?.url
-              ? e.meta.image.url
-              : null,
+        imageUrl: extractImageUrl(e.heroImage) || extractImageUrl(e.meta?.image),
       })),
       ...vacanciesRes.docs.map((v: any) => ({
-        id: String(v.id),
+        id: `vacancy-${v.id}`,
         title: v.title,
         excerpt: v.excerpt || v.meta?.description || '',
         resourceType: 'Vacancy',
         url: `/vacancies/${v.slug}`,
-        imageUrl:
-          typeof v.heroImage === 'object' && v.heroImage?.url
-            ? v.heroImage.url
-            : typeof v.meta?.image === 'object' && v.meta?.image?.url
-              ? v.meta.image.url
-              : null,
+        imageUrl: extractImageUrl(v.heroImage) || extractImageUrl(v.meta?.image),
       })),
       ...postsRes.docs.map((p: any) => ({
-        id: String(p.id),
+        id: `post-${p.id}`,
         title: p.title,
         excerpt: p.excerpt || p.meta?.description || '',
         resourceType: p.postType === 'guide' ? 'Guide' : 'News',
         url: p.postType === 'guide' ? `/guides/${p.slug}` : `/news/${p.slug}`,
-        imageUrl:
-          typeof p.heroImage === 'object' && p.heroImage?.url
-            ? p.heroImage.url
-            : typeof p.meta?.image === 'object' && p.meta?.image?.url
-              ? p.meta.image.url
-              : null,
+        imageUrl: extractImageUrl(p.heroImage) || extractImageUrl(p.meta?.image),
       })),
       ...practiceRes.docs.map((pa: any) => ({
-        id: String(pa.id),
+        id: `practice-${pa.id}`,
         title: pa.title,
         excerpt: pa.summary || pa.meta?.description || '',
         resourceType: 'Practice Area',
         url: `/practice-areas/${pa.slug}`,
-        imageUrl:
-          typeof pa.heroImage === 'object' && pa.heroImage?.url
-            ? pa.heroImage.url
-            : typeof pa.meta?.image === 'object' && pa.meta?.image?.url
-              ? pa.meta.image.url
-              : null,
+        imageUrl: extractImageUrl(pa.heroImage) || extractImageUrl(pa.meta?.image),
       })),
     ]
 
