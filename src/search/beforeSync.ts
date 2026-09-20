@@ -7,14 +7,59 @@ export const beforeSyncWithSearch: BeforeSync = async ({ req, originalDoc, searc
 
   const { slug, id, categories, title, meta } = originalDoc
 
+  // Determine human-readable resource type, URL, and relevant excerpt
+  let resourceType = 'Page'
+  let url = `/${slug || ''}`
+  let excerpt = originalDoc.excerpt || originalDoc.meta?.description || ''
+
+  if (collection === 'posts') {
+    if (originalDoc.postType === 'guide') {
+      resourceType = 'Guide'
+      url = `/guides/${slug}`
+    } else {
+      resourceType = 'News'
+      url = `/news/${slug}`
+    }
+  } else if (collection === 'cases') {
+    resourceType = 'Case'
+    url = `/cases/${slug}`
+  } else if (collection === 'events') {
+    resourceType = 'Event'
+    url = `/events/${slug}`
+  } else if (collection === 'vacancies') {
+    resourceType = 'Vacancy'
+    url = `/vacancies/${slug}`
+  } else if (collection === 'practice-areas') {
+    resourceType = 'Practice Area'
+    excerpt = originalDoc.summary || originalDoc.meta?.description || ''
+    url = `/practice-areas/${slug}`
+  } else if (collection === 'pages') {
+    resourceType = 'Page'
+    url = slug === 'home' ? '/' : `/${slug}`
+  }
+
+  const heroImageId =
+    typeof originalDoc?.heroImage === 'object' && originalDoc?.heroImage !== null
+      ? originalDoc.heroImage.id
+      : originalDoc?.heroImage
+  const metaImageId =
+    typeof meta?.image === 'object' && meta?.image !== null
+      ? meta.image.id
+      : meta?.image
+
+  const imageToUse = metaImageId || heroImageId
+
   const modifiedDoc: DocToSync = {
     ...searchDoc,
     slug,
+    resourceType,
+    excerpt,
+    url,
     meta: {
       ...meta,
       title: meta?.title || title,
-      image: meta?.image?.id || meta?.image,
-      description: meta?.description,
+      image: imageToUse,
+      description: excerpt,
     },
     categories: [],
   }

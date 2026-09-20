@@ -103,7 +103,7 @@ export const plugins: Plugin[] = [
     },
   }),
   searchPlugin({
-    collections: ['pages', 'posts', 'practice-areas'],
+    collections: ['pages', 'posts', 'practice-areas', 'cases', 'events', 'vacancies'],
     beforeSync: beforeSyncWithSearch,
     searchOverrides: {
       fields: ({ defaultFields }) => {

@@ -1709,8 +1709,23 @@ export interface Search {
     | {
         relationTo: 'practice-areas';
         value: number | PracticeArea;
+      }
+    | {
+        relationTo: 'cases';
+        value: number | Case;
+      }
+    | {
+        relationTo: 'events';
+        value: number | Event;
+      }
+    | {
+        relationTo: 'vacancies';
+        value: number | Vacancy;
       };
   slug?: string | null;
+  resourceType?: string | null;
+  excerpt?: string | null;
+  url?: string | null;
   meta?: {
     title?: string | null;
     description?: string | null;
@@ -2978,6 +2993,9 @@ export interface SearchSelect<T extends boolean = true> {
   priority?: T;
   doc?: T;
   slug?: T;
+  resourceType?: T;
+  excerpt?: T;
+  url?: T;
   meta?:
     | T
     | {

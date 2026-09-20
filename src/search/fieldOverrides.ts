@@ -10,6 +10,31 @@ export const searchFields: Field[] = [
     },
   },
   {
+    name: 'resourceType',
+    label: 'Resource Type',
+    type: 'text',
+    index: true,
+    admin: {
+      readOnly: true,
+    },
+  },
+  {
+    name: 'excerpt',
+    label: 'Excerpt',
+    type: 'textarea',
+    admin: {
+      readOnly: true,
+    },
+  },
+  {
+    name: 'url',
+    label: 'URL',
+    type: 'text',
+    admin: {
+      readOnly: true,
+    },
+  },
+  {
     name: 'meta',
     label: 'Meta',
     type: 'group',
