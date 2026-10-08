@@ -23,3 +23,11 @@ node_modules/
 
 .vercel
 .env*.local
+
+# Local reference template & planning files (not published)
+corporate-business-consulting-nextjs-template-2025-04-08-06-03-12-utc/
+.agents/
+.planning/
+add_subscribe.mjs
+AGENTS.md
+
