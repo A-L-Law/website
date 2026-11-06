@@ -11,6 +11,8 @@ import { LivePreviewListener } from '@/components/LivePreviewListener'
 import RichText from '@/components/RichText'
 import { FormBlock } from '@/blocks/Form/Component'
 import { Subscribe } from '@/components/Subscribe'
+import { JsonLdScript, buildGraphSchema, getJobPostingSchema } from '@/utilities/schemaGenerator'
+import { getServerSideURL } from '@/utilities/getURL'
 
 export const revalidate = 60
 
@@ -75,6 +77,13 @@ export default async function VacancyDetailsPage({ params: paramsPromise }: { pa
 
   return (
     <article className="vacancy-details">
+      <JsonLdScript
+        schema={buildGraphSchema({
+          pageUrl: `${getServerSideURL()}/vacancies/${slug}`,
+          pageTitle: `${item.title} | A L Law`,
+          primaryNode: getJobPostingSchema(item, getServerSideURL(), `${getServerSideURL()}/vacancies/${slug}`),
+        })}
+      />
       <LivePreviewListener />
 
       <MediumImpactHero

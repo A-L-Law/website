@@ -1,3 +1,4 @@
+import { afterFormSubmission } from '@/integrations/clio/formHook'
 import { formBuilderPlugin } from '@payloadcms/plugin-form-builder'
 import { nestedDocsPlugin } from '@payloadcms/plugin-nested-docs'
 import { redirectsPlugin } from '@payloadcms/plugin-redirects'
@@ -79,10 +80,67 @@ export const plugins: Plugin[] = [
   formBuilderPlugin({
     fields: {
       payment: false,
+      upload: true,
+    },
+    uploadCollections: ['media'],
+    beforeEmail: async (emails, beforeChangeParams) => {
+      const { data, req } = beforeChangeParams
+      const submissionUploads =
+        (data as any)?.submissionUploads || (beforeChangeParams as any)?.doc?.submissionUploads || []
+
+      if (!submissionUploads || submissionUploads.length === 0) {
+        return emails
+      }
+
+      const attachments: Array<{ filename: string; path?: string; contentType?: string }> = []
+
+      for (const uploadItem of submissionUploads) {
+        const fileItems = Array.isArray(uploadItem.value) ? uploadItem.value : [uploadItem.value]
+        for (const item of fileItems) {
+          const fileId = typeof item === 'object' && item !== null ? item.value || item.id : item
+          const relationTo = (typeof item === 'object' && item !== null ? item.relationTo : null) || 'media'
+
+          if (fileId) {
+            try {
+              const mediaDoc: any = await req.payload.findByID({
+                collection: relationTo,
+                id: fileId,
+                req,
+              })
+
+              if (mediaDoc) {
+                attachments.push({
+                  filename: mediaDoc.filename || `document-${fileId}.pdf`,
+                  path: mediaDoc.url || undefined,
+                  contentType: mediaDoc.mimeType || undefined,
+                })
+              }
+            } catch (err) {
+              req.payload.logger.warn({
+                msg: `Failed to attach media doc ${fileId} to email: ${(err as Error).message}`,
+              })
+            }
+          }
+        }
+      }
+
+      if (attachments.length > 0) {
+        return emails.map((email) => ({
+          ...email,
+          attachments: [...((email as any).attachments || []), ...attachments],
+        }))
+      }
+
+      return emails
+    },
+    formSubmissionOverrides: {
+      hooks: {
+        afterChange: [afterFormSubmission],
+      },
     },
     formOverrides: {
       fields: ({ defaultFields }) => {
-        return defaultFields.map((field) => {
+        const mapped = defaultFields.map((field) => {
           if ('name' in field && field.name === 'confirmationMessage') {
             return {
               ...field,
@@ -99,6 +157,33 @@ export const plugins: Plugin[] = [
           }
           return field
         })
+
+        return [
+          ...mapped,
+          {
+            name: 'layout',
+            type: 'select',
+            label: 'Form Layout',
+            defaultValue: 'stacked',
+            options: [
+              { label: 'Stacked (Single Column)', value: 'stacked' },
+              { label: 'Responsive 2-Column Grid', value: 'grid-2col' },
+            ],
+            admin: {
+              description: 'Choose layout arrangement for form fields on desktop viewports.',
+            },
+          },
+          {
+            name: 'resendAudienceId',
+            type: 'text',
+            label: 'Resend Audience ID',
+            defaultValue: 'General',
+            admin: {
+              description:
+                'Target Resend Audience ID for contacts who opt-in to marketing updates (defaults to "General").',
+            },
+          },
+        ]
       },
     },
   }),

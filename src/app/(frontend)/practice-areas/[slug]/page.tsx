@@ -10,6 +10,8 @@ import { getCachedPageBanners } from '@/utilities/getPageBanners'
 import RichText from '@/components/RichText'
 import type { Media, PracticeArea } from '@/payload-types'
 import { ServiceFaqAccordion } from './ServiceFaqAccordion'
+import { JsonLdScript, buildGraphSchema, getServiceSchema } from '@/utilities/schemaGenerator'
+import { getServerSideURL } from '@/utilities/getURL'
 
 export const revalidate = 60
 
@@ -146,6 +148,13 @@ export default async function PracticeAreaDetailPage({ params: paramsPromise }: 
 
   return (
     <article className="practice-area-detail font-body">
+      <JsonLdScript
+        schema={buildGraphSchema({
+          pageUrl: `${getServerSideURL()}/practice-areas/${slug}`,
+          pageTitle: `${area.title} | A L Law`,
+          primaryNode: getServiceSchema(area, getServerSideURL(), `${getServerSideURL()}/practice-areas/${slug}`),
+        })}
+      />
       {/* 1. Medium Impact Hero Banner matching Conbix template */}
       <MediumImpactHero
         type="mediumImpact"

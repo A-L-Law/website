@@ -18,6 +18,7 @@ export type FormBlockType = {
   formTitle?: string | null
   content?: DefaultTypedEditorState | null | any
   form: FormType
+  layout?: 'stacked' | 'grid-2col' | null
   location?: {
     type?: 'googleMaps' | 'onlineLink' | 'remote' | null
     mapEmbedUrl?: string | null
@@ -35,6 +36,7 @@ export const FormBlock: React.FC<
     formTitle,
     content,
     location,
+    layout: blockLayoutOverride,
     form: formFromProps,
     form: { id: formID, confirmationMessage, confirmationType, redirect, submitButtonLabel } = {},
   } = props
@@ -54,16 +56,36 @@ export const FormBlock: React.FC<
   const [error, setError] = useState<{ message: string; status?: string } | undefined>()
   const router = useRouter()
 
+  const formLayout = blockLayoutOverride || (formFromProps as any)?.layout || 'stacked'
+
   const onSubmit = useCallback(
-    (data: FormFieldBlock[]) => {
+    (data: Record<string, any>) => {
       let loadingTimerID: ReturnType<typeof setTimeout>
       const submitForm = async () => {
         setError(undefined)
 
-        const dataToSend = Object.entries(data).map(([name, value]) => ({
-          field: name,
-          value,
-        }))
+        let hasFiles = false
+        const nonFileEntries: Array<{ field: string; value: any }> = []
+        const fileEntries: Array<{ name: string; file: File }> = []
+
+        for (const [name, val] of Object.entries(data)) {
+          if (typeof File !== 'undefined' && val instanceof File) {
+            hasFiles = true
+            fileEntries.push({ name, file: val })
+          } else if (typeof FileList !== 'undefined' && val instanceof FileList) {
+            if (val.length > 0) {
+              hasFiles = true
+              for (let i = 0; i < val.length; i++) {
+                fileEntries.push({ name, file: val[i] })
+              }
+            }
+          } else {
+            nonFileEntries.push({
+              field: name,
+              value: val,
+            })
+          }
+        }
 
         // delay loading indicator by 1s
         loadingTimerID = setTimeout(() => {
@@ -71,16 +93,37 @@ export const FormBlock: React.FC<
         }, 1000)
 
         try {
-          const req = await fetch(`${getClientSideURL()}/api/form-submissions`, {
-            body: JSON.stringify({
-              form: formID,
-              submissionData: dataToSend,
-            }),
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            method: 'POST',
-          })
+          let req: Response
+
+          if (hasFiles) {
+            const formData = new FormData()
+            formData.append(
+              '_payload',
+              JSON.stringify({
+                form: formID,
+                submissionData: nonFileEntries,
+              }),
+            )
+            for (const { name, file } of fileEntries) {
+              formData.append(name, file)
+            }
+
+            req = await fetch(`${getClientSideURL()}/api/form-submissions`, {
+              body: formData,
+              method: 'POST',
+            })
+          } else {
+            req = await fetch(`${getClientSideURL()}/api/form-submissions`, {
+              body: JSON.stringify({
+                form: formID,
+                submissionData: nonFileEntries,
+              }),
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              method: 'POST',
+            })
+          }
 
           const res = await req.json()
 
@@ -144,8 +187,18 @@ export const FormBlock: React.FC<
                         {formFromProps && formFromProps.fields && formFromProps.fields.map((field, index) => {
                           const Field: React.FC<any> = fields?.[field.blockType as keyof typeof fields]
                           if (Field) {
+                            const fieldWidth = 'width' in field ? (field as any).width : undefined
+                            const isHalf =
+                              fieldWidth === 50 ||
+                              fieldWidth === '50' ||
+                              (formLayout === 'grid-2col' &&
+                                fieldWidth !== 100 &&
+                                fieldWidth !== '100' &&
+                                field.blockType !== 'textarea' &&
+                                field.blockType !== 'message')
+
                             return (
-                              <div className="col-sm-12 w-full px-2 mb-5" key={index}>
+                              <div className={`col-sm-12 ${isHalf ? 'md:w-1/2' : 'w-full'} px-2 mb-5`} key={index}>
                                 <div className="contact__page-form-item contact-item relative">
                                   {/* Inject icons based on field names if possible, else standard styling */}
                                   {'name' in field && field.name === 'name' && <span className="fal fa-user absolute left-4 top-1/2 -translate-y-1/2 text-brand-crimson z-10"></span>}
@@ -157,6 +210,7 @@ export const FormBlock: React.FC<
                                       form={formFromProps}
                                       {...field}
                                       {...formMethods}
+                                      width="100"
                                       control={control}
                                       errors={errors}
                                       register={register}

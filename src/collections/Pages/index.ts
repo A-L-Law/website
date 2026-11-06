@@ -1,3 +1,4 @@
+import { richResultsField } from '@/fields/richResults'
 import type { CollectionConfig } from 'payload'
 
 import { authenticated } from '../../access/authenticated'
@@ -156,6 +157,7 @@ export const Pages: CollectionConfig<'pages'> = {
         description: 'Enable subscribe__area newsletter banner above footer on this page',
       },
     },
+    richResultsField('pages'),
     slugField(),
   ],
   hooks: {

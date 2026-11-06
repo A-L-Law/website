@@ -48,6 +48,20 @@ export const contactSectionFields: Field[] = [
     required: true,
   },
   {
+    name: 'layout',
+    type: 'select',
+    label: 'Form Layout Override',
+    defaultValue: 'stacked',
+    options: [
+      { label: 'Stacked (Single Column)', value: 'stacked' },
+      { label: 'Responsive 2-Column Grid', value: 'grid-2col' },
+    ],
+    admin: {
+      description: 'Override layout arrangement for form fields on desktop viewports.',
+    },
+  },
+
+  {
     name: 'location',
     type: 'group',
     fields: [

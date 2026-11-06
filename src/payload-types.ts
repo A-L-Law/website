@@ -131,11 +131,13 @@ export interface Config {
     header: Header;
     footer: Footer;
     'page-banners': PageBanner;
+    'cookie-consent': CookieConsent;
   };
   globalsSelect: {
     header: HeaderSelect<false> | HeaderSelect<true>;
     footer: FooterSelect<false> | FooterSelect<true>;
     'page-banners': PageBannersSelect<false> | PageBannersSelect<true>;
+    'cookie-consent': CookieConsentSelect<false> | CookieConsentSelect<true>;
   };
   locale: null;
   widgets: {
@@ -3418,6 +3420,23 @@ export interface PageBanner {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "cookie-consent".
+ */
+export interface CookieConsent {
+  id: number;
+  title: string;
+  description: string;
+  privacyPolicyUrl?: string | null;
+  cookiePolicyUrl?: string | null;
+  /**
+   * Override for Google Analytics 4 Measurement ID (e.g., G-XXXXXXXXXX). If left empty, NEXT_PUBLIC_GA_MEASUREMENT_ID environment variable is used.
+   */
+  gaMeasurementId?: string | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "header_select".
  */
 export interface HeaderSelect<T extends boolean = true> {
@@ -3610,6 +3629,20 @@ export interface PageBannersSelect<T extends boolean = true> {
     | {
         media?: T;
       };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "cookie-consent_select".
+ */
+export interface CookieConsentSelect<T extends boolean = true> {
+  title?: T;
+  description?: T;
+  privacyPolicyUrl?: T;
+  cookiePolicyUrl?: T;
+  gaMeasurementId?: T;
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;

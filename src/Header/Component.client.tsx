@@ -60,7 +60,7 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
   }
 
   const topAddress = data?.topBarAddress || '2972 Westheimer Rd. Santa Ana, Illinois 85486'
-  const topEmail = data?.topBarEmail || 'info@allaw.co.uk'
+  const topEmail = data?.topBarEmail || 'info@al-lawassociates.com'
   const ctaText = data?.ctaButtonText || 'Free Consultation'
   const ctaLink = data?.ctaButtonLink || '/contact'
   const offcanvasDesc =
@@ -141,7 +141,10 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
   return (
     <>
       {/* Top Bar matching Conbix template 1-to-1: red clip-path bar on left, rotated white stripe divider */}
-      <div className="relative bg-black text-white text-xs hidden md:block overflow-hidden" style={{ padding: '7px 30px', zIndex: 1 }}>
+      <div
+        className="relative bg-black text-white text-xs hidden md:block overflow-hidden"
+        style={{ padding: '7px 30px', zIndex: 1 }}
+      >
         {/* Red bar covering left ~30% with slanted right edge (::before equivalent) */}
         <div
           className="absolute top-0 left-0 bottom-0 bg-brand-crimson"
@@ -184,7 +187,10 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
             </a>
 
             {/* Social Icons separated by border-left divider matching template */}
-            <div className="flex items-center gap-4 border-l border-white/20" style={{ paddingLeft: '30px', marginLeft: '30px' }}>
+            <div
+              className="flex items-center gap-4 border-l border-white/20"
+              style={{ paddingLeft: '30px', marginLeft: '30px' }}
+            >
               <a
                 href="https://facebook.com"
                 target="_blank"
@@ -340,7 +346,10 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
                 className="text-brand-crimson hover:scale-110 transition-transform flex items-center justify-center cursor-pointer"
                 aria-label="Open menu widget"
               >
-                <LucideIcons.LayoutGrid style={{ width: '25px', height: '25px' }} className="stroke-[2]" />
+                <LucideIcons.LayoutGrid
+                  style={{ width: '25px', height: '25px' }}
+                  className="stroke-[2]"
+                />
               </button>
             </div>
 
@@ -348,7 +357,12 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
             <Link
               href={ctaLink}
               className="hidden sm:inline-flex items-center gap-2 bg-brand-crimson hover:bg-black text-white font-heading uppercase tracking-wider transition-all shadow-md shrink-0 cursor-pointer ml-5 lg:ml-7"
-              style={{ padding: '17px 43px', fontSize: '16px', fontWeight: 700, borderRadius: '6px' }}
+              style={{
+                padding: '17px 43px',
+                fontSize: '16px',
+                fontWeight: 700,
+                borderRadius: '6px',
+              }}
             >
               <span>{ctaText}</span>
               <LucideIcons.ChevronsRight className="w-5 h-5" />
@@ -527,5 +541,3 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
     </>
   )
 }
-
-

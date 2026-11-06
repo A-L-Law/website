@@ -6,6 +6,7 @@ import { getCachedGlobal } from '@/utilities/getGlobals'
 import { CMSLink } from '@/components/Link'
 import { Logo } from '@/components/Logo/Logo'
 import RichText from '@/components/RichText'
+import { CookieSettingsButton } from '@/components/Consent/CookieSettingsButton'
 
 export async function Footer() {
   const footerData = await getCachedGlobal('footer', 1)()
@@ -171,6 +172,7 @@ export async function Footer() {
           )}
 
           <div className="flex items-center gap-6">
+            <CookieSettingsButton />
             {legalLinks.map(({ link }, i) => (
               <CMSLink
                 key={i}

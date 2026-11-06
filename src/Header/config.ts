@@ -20,7 +20,7 @@ export const Header: GlobalConfig = {
     {
       name: 'topBarEmail',
       type: 'text',
-      defaultValue: 'info@allaw.co.uk',
+      defaultValue: 'info@al-lawassociates.com',
       admin: {
         description: 'Contact email displayed in the header top bar',
       },
@@ -95,7 +95,8 @@ export const Header: GlobalConfig = {
     {
       name: 'offcanvasDescription',
       type: 'textarea',
-      defaultValue: 'A L Law provides top-tier advice and representation in Commercial Law, Litigation, Property & Private Client matters.',
+      defaultValue:
+        'A L Law provides top-tier advice and representation in Commercial Law, Litigation, Property & Private Client matters.',
       admin: {
         description: 'Flavor description text shown in the slide-out menu widget',
       },

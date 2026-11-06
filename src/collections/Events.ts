@@ -1,3 +1,4 @@
+import { richResultsField } from '@/fields/richResults'
 import type { CollectionConfig } from 'payload'
 
 import {
@@ -212,6 +213,7 @@ export const Events: CollectionConfig<'events'> = {
         position: 'sidebar',
       },
     },
+    richResultsField('events'),
     slugField({
       useAsSlug: 'title',
     }),

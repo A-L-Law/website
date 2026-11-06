@@ -10,6 +10,8 @@ import type { Media } from '@/payload-types'
 import RichText from '@/components/RichText'
 import { SkillBars, SkillItem } from './SkillBars.client'
 import { TeamContactForm } from './TeamContactForm.client'
+import { JsonLdScript, buildGraphSchema, getAttorneySchema } from '@/utilities/schemaGenerator'
+import { getServerSideURL } from '@/utilities/getURL'
 
 export const revalidate = 60
 
@@ -51,7 +53,7 @@ const fallbackTeamDetails: Record<string, TeamMemberDetail> = {
     jobRole: 'founder',
     imageUrl: '/assets/img/team/team-1.jpg',
     backgroundFallback: [
-      "Amelia Clover has over twenty years of distinguished practice advising multinational corporations, private equity firms, and high-net-worth individuals on complex corporate governance, mergers, and strategic cross-border disputes.",
+      'Amelia Clover has over twenty years of distinguished practice advising multinational corporations, private equity firms, and high-net-worth individuals on complex corporate governance, mergers, and strategic cross-border disputes.',
       'Known for her incisive legal acumen and steadfast advocacy, Amelia works closely with board members and general counsel to safeguard institutional value while navigating volatile regulatory landscapes across the UK and European jurisdictions.',
       'Prior to founding her senior advisory practice at A L Law, Amelia led the corporate litigation practice at a premier Magic Circle firm in the City of London and served on several legal oversight commissions.',
     ],
@@ -61,7 +63,7 @@ const fallbackTeamDetails: Record<string, TeamMemberDetail> = {
       { label: 'Strategic Cross-Border Disputes', percentage: 85 },
     ],
     contact: {
-      email: 'a.clover@allaw.co.uk',
+      email: 'a.clover@al-lawassociates.com',
       phone: '+44 (0) 20 7946 0128',
       officeLocation: '100 Pall Mall, St. James’s, London SW1Y 5NQ',
     },
@@ -89,7 +91,7 @@ const fallbackTeamDetails: Record<string, TeamMemberDetail> = {
       { label: 'Institutional Compliance', percentage: 80 },
     ],
     contact: {
-      email: 's.rhodes@allaw.co.uk',
+      email: 's.rhodes@al-lawassociates.com',
       phone: '+44 (0) 20 7946 0134',
       officeLocation: '100 Pall Mall, St. James’s, London SW1Y 5NQ',
     },
@@ -116,7 +118,7 @@ const fallbackTeamDetails: Record<string, TeamMemberDetail> = {
       { label: 'Financial Dispute Resolution', percentage: 82 },
     ],
     contact: {
-      email: 'g.elizabeth@allaw.co.uk',
+      email: 'g.elizabeth@al-lawassociates.com',
       phone: '+44 (0) 20 7946 0155',
       officeLocation: '100 Pall Mall, St. James’s, London SW1Y 5NQ',
     },
@@ -143,7 +145,7 @@ const fallbackTeamDetails: Record<string, TeamMemberDetail> = {
       { label: 'Arbitration', percentage: 76 },
     ],
     contact: {
-      email: 'm.james@allaw.co.uk',
+      email: 'm.james@al-lawassociates.com',
       phone: '+44 (0) 20 7946 0162',
       officeLocation: '100 Pall Mall, St. James’s, London SW1Y 5NQ',
     },
@@ -169,7 +171,7 @@ const fallbackTeamDetails: Record<string, TeamMemberDetail> = {
       { label: 'Copyright Protection', percentage: 82 },
     ],
     contact: {
-      email: 't.hilfiger@allaw.co.uk',
+      email: 't.hilfiger@al-lawassociates.com',
       phone: '+44 (0) 20 7946 0177',
       officeLocation: '100 Pall Mall, St. James’s, London SW1Y 5NQ',
     },
@@ -195,7 +197,7 @@ const fallbackTeamDetails: Record<string, TeamMemberDetail> = {
       { label: 'Corporate Dispute Strategy', percentage: 88 },
     ],
     contact: {
-      email: 'f.welch@allaw.co.uk',
+      email: 'f.welch@al-lawassociates.com',
       phone: '+44 (0) 20 7946 0199',
       officeLocation: '100 Pall Mall, St. James’s, London SW1Y 5NQ',
     },
@@ -292,15 +294,23 @@ export default async function TeamMemberProfilePage({ params: paramsPromise }: A
 
   return (
     <article className="team-detail font-body">
+      <JsonLdScript
+        schema={buildGraphSchema({
+          pageUrl: `${getServerSideURL()}/team/${slug}`,
+          pageTitle: `${member.name} | A L Law`,
+          primaryNode: getAttorneySchema(
+            member,
+            getServerSideURL(),
+            `${getServerSideURL()}/team/${slug}`,
+          ),
+        })}
+      />
       {/* 1. Medium Impact Hero Banner matching Conbix Breadcrumb */}
       <MediumImpactHero
         type="mediumImpact"
         title={member.name}
         innerTitle={member.name}
-        breadcrumbs={[
-          { label: 'Team', url: '/team' },
-          { label: member.name },
-        ]}
+        breadcrumbs={[{ label: 'Team', url: '/team' }, { label: member.name }]}
         media={bannerMedia}
       />
 
@@ -317,28 +327,48 @@ export default async function TeamMemberProfilePage({ params: paramsPromise }: A
                     <ul>
                       {fb && (
                         <li>
-                          <a href={fb} target="_blank" rel="noopener noreferrer" aria-label="Facebook">
+                          <a
+                            href={fb}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            aria-label="Facebook"
+                          >
                             <i className="fab fa-facebook-f"></i>
                           </a>
                         </li>
                       )}
                       {tw && (
                         <li>
-                          <a href={tw} target="_blank" rel="noopener noreferrer" aria-label="X / Twitter">
+                          <a
+                            href={tw}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            aria-label="X / Twitter"
+                          >
                             <i className="fa-brands fa-x-twitter"></i>
                           </a>
                         </li>
                       )}
                       {li && (
                         <li>
-                          <a href={li} target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+                          <a
+                            href={li}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            aria-label="LinkedIn"
+                          >
                             <i className="fab fa-linkedin-in"></i>
                           </a>
                         </li>
                       )}
                       {ig && (
                         <li>
-                          <a href={ig} target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+                          <a
+                            href={ig}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            aria-label="Instagram"
+                          >
                             <i className="fab fa-instagram"></i>
                           </a>
                         </li>
@@ -358,7 +388,9 @@ export default async function TeamMemberProfilePage({ params: paramsPromise }: A
                         <div className="team__single-left-info-contact-item-info">
                           <span>Quick Email</span>
                           <h5>
-                            <Link href={`mailto:${member.contact.email}`}>{member.contact.email}</Link>
+                            <Link href={`mailto:${member.contact.email}`}>
+                              {member.contact.email}
+                            </Link>
                           </h5>
                         </div>
                       </div>
@@ -412,7 +444,8 @@ export default async function TeamMemberProfilePage({ params: paramsPromise }: A
                         member.backgroundFallback.map((p, idx) => <p key={idx}>{p}</p>)
                       ) : (
                         <p>
-                          Experienced legal practitioner dedicated to delivering strategic, results-focused advice for clients across the UK and internationally.
+                          Experienced legal practitioner dedicated to delivering strategic,
+                          results-focused advice for clients across the UK and internationally.
                         </p>
                       )}
                     </div>
@@ -423,7 +456,8 @@ export default async function TeamMemberProfilePage({ params: paramsPromise }: A
                 <div className="team__single-right-skill">
                   <h3>Practice Areas</h3>
                   <p>
-                    Specialised expertise and strategic capabilities honed through extensive courtroom advocacy, transaction leadership, and advisory counsel.
+                    Specialised expertise and strategic capabilities honed through extensive
+                    courtroom advocacy, transaction leadership, and advisory counsel.
                   </p>
                   <SkillBars skills={member.practiceAreas} />
                 </div>

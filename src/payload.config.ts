@@ -21,10 +21,12 @@ import { Vacancies } from './collections/Vacancies'
 import { Footer } from './Footer/config'
 import { Header } from './Header/config'
 import { PageBanners } from './PageBanners/config'
+import { CookieConsent } from './globals/CookieConsent/config'
 import { plugins } from './plugins'
 import { defaultLexical } from '@/fields/defaultLexical'
 import { getServerSideURL } from './utilities/getURL'
 import { vercelBlobStorage } from '@payloadcms/storage-vercel-blob'
+import { resendAdapter } from '@payloadcms/email-resend'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -89,7 +91,6 @@ export default buildConfig({
     Team,
   ],
 
-
   cors: [getServerSideURL()].filter(Boolean),
   plugins: [
     ...plugins,
@@ -100,7 +101,12 @@ export default buildConfig({
       token: process.env.BLOB_READ_WRITE_TOKEN || '',
     }),
   ],
-  globals: [Header, Footer, PageBanners],
+  globals: [Header, Footer, PageBanners, CookieConsent],
+  email: resendAdapter({
+    defaultFromAddress: process.env.RESEND_DEFAULT_FROM || 'info@al-lawassociates.com',
+    defaultFromName: 'A L Law',
+    apiKey: process.env.RESEND_API_KEY || 're_placeholder_token',
+  }),
   secret: process.env.PAYLOAD_SECRET,
   sharp,
   typescript: {

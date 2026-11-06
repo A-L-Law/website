@@ -11,6 +11,8 @@ import { fileURLToPath } from 'url'
 import { anyone } from '../access/anyone'
 import { authenticated } from '../access/authenticated'
 
+import crypto from 'crypto'
+
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
@@ -18,10 +20,21 @@ export const Media: CollectionConfig = {
   slug: 'media',
   folders: true,
   access: {
-    create: authenticated,
+    create: anyone,
     delete: authenticated,
     read: anyone,
     update: authenticated,
+  },
+  hooks: {
+    beforeChange: [
+      ({ data, req, operation }) => {
+        if (operation === 'create' && !req.user && data?.filename) {
+          const ext = path.extname(data.filename)
+          data.filename = `${crypto.randomUUID()}${ext}`
+        }
+        return data
+      },
+    ],
   },
   fields: [
     {

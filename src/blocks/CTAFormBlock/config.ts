@@ -62,7 +62,7 @@ export const CTAFormBlock: Block = {
       name: 'emergencyEmail',
       type: 'text',
       label: 'Sitewide Support Email',
-      defaultValue: 'enquiries@allaw.co.uk',
+      defaultValue: 'enquiries@al-lawassociates.com',
     },
   ],
   labels: {

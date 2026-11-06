@@ -10,6 +10,7 @@ import {
   PreviewField,
 } from '@payloadcms/plugin-seo/fields'
 import { slugField } from 'payload'
+import { richResultsField } from '@/fields/richResults'
 
 export const PracticeAreas: CollectionConfig<'practice-areas'> = {
   slug: 'practice-areas',
@@ -232,6 +233,7 @@ export const PracticeAreas: CollectionConfig<'practice-areas'> = {
         ],
       },
     },
+    richResultsField('practice-areas'),
     slugField(),
   ],
   versions: {

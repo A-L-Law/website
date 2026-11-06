@@ -14,6 +14,8 @@ import RichText from '@/components/RichText'
 import { LivePreviewListener } from '@/components/LivePreviewListener'
 import { generateMeta } from '@/utilities/generateMeta'
 import { Subscribe } from '@/components/Subscribe'
+import { JsonLdScript, buildGraphSchema, getArticleSchema } from '@/utilities/schemaGenerator'
+import { getServerSideURL } from '@/utilities/getURL'
 
 export const revalidate = 60
 
@@ -120,6 +122,13 @@ export default async function NewsDetailPage({ params: paramsPromise }: Args) {
 
   return (
     <article className="news-detail font-body">
+      <JsonLdScript
+        schema={buildGraphSchema({
+          pageUrl: `${getServerSideURL()}/news/${slug}`,
+          pageTitle: `${item.title} | A L Law`,
+          primaryNode: getArticleSchema(item, getServerSideURL(), `${getServerSideURL()}/news/${slug}`),
+        })}
+      />
       {draft && <LivePreviewListener />}
 
       <MediumImpactHero

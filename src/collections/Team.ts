@@ -1,3 +1,4 @@
+import { richResultsField } from '@/fields/richResults'
 import type { CollectionConfig } from 'payload'
 
 import { anyone } from '../access/anyone'
@@ -251,6 +252,7 @@ export const Team: CollectionConfig<'team'> = {
         ],
       },
     },
+    richResultsField('team'),
     slugField({
       useAsSlug: 'name',
     }),

@@ -12,6 +12,8 @@ import RichText from '@/components/RichText'
 import EventsSidebar from '@/components/Blog/EventsSidebar'
 import { FormBlock } from '@/blocks/Form/Component'
 import { Subscribe } from '@/components/Subscribe'
+import { JsonLdScript, buildGraphSchema, getEventSchema } from '@/utilities/schemaGenerator'
+import { getServerSideURL } from '@/utilities/getURL'
 
 export const revalidate = 60
 
@@ -76,6 +78,13 @@ export default async function EventDetailsPage({ params: paramsPromise }: { para
 
   return (
     <article className="event-details">
+      <JsonLdScript
+        schema={buildGraphSchema({
+          pageUrl: `${getServerSideURL()}/events/${slug}`,
+          pageTitle: `${item.title} | A L Law`,
+          primaryNode: getEventSchema(item, getServerSideURL(), `${getServerSideURL()}/events/${slug}`),
+        })}
+      />
       <LivePreviewListener />
 
       <MediumImpactHero
