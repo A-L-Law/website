@@ -1,6 +1,10 @@
+import { getValidClioAccessToken, type ClioTokenStore } from './auth'
+
 /**
  * Clio API v4 REST Client
  * Implements one-way website intake push:
+ * - Automatic EU OAuth 2.0 token retrieval & rotating refresh via `getValidClioAccessToken()`
+ * - Single forced-refresh retry on HTTP 401 Unauthorized
  * - Contact search / creation with consent tracking (D-01, D-07)
  * - Pending Matter creation with department routing and UTM tracking (D-02, D-05, D-06)
  * - 3-step S3 document upload for form attachments (D-20)
@@ -29,19 +33,68 @@ export interface CreateMatterOptions {
   utmParams?: UtmParams
 }
 
+export interface ClioFetchOptions extends Omit<RequestInit, 'headers'> {
+  headers?: Record<string, string>
+  /** Optional overrides for testing */
+  store?: ClioTokenStore
+  fetchFn?: typeof fetch
+}
+
 const getBaseUrl = (): string => {
   return (process.env.CLIO_API_URL || 'https://eu.app.clio.com').replace(/\/+$/, '')
 }
 
-const getAuthHeaders = (): HeadersInit | null => {
-  const token = process.env.CLIO_ACCESS_TOKEN
-  if (!token || token.startsWith('mock_') || token === 'placeholder') {
+/**
+ * Authenticated Clio API v4 fetch wrapper.
+ * - Acquires a valid Bearer token (auto-refreshing within 5 minutes of expiry).
+ * - On HTTP 401 Unauthorized, forces a single token refresh and retries the request once.
+ * - Returns `null` if no valid Clio OAuth token is configured.
+ */
+export async function clioFetch(
+  pathOrUrl: string,
+  options: ClioFetchOptions = {},
+): Promise<Response | null> {
+  const { store, fetchFn = fetch, headers: customHeaders = {}, ...rest } = options
+  const url = pathOrUrl.startsWith('http')
+    ? pathOrUrl
+    : `${getBaseUrl()}${pathOrUrl.startsWith('/') ? '' : '/'}${pathOrUrl}`
+
+  const token = await getValidClioAccessToken({ store, fetchFn })
+  if (!token) {
     return null
   }
-  return {
-    Authorization: `Bearer ${token}`,
+
+  const buildHeaders = (accessToken: string): Record<string, string> => ({
     'Content-Type': 'application/json',
+    ...customHeaders,
+    Authorization: `Bearer ${accessToken}`,
+  })
+
+  const response = await fetchFn(url, {
+    ...rest,
+    headers: buildHeaders(token),
+  })
+
+  if (response.status !== 401) {
+    return response
   }
+
+  // Force a single token refresh and retry once on 401 Unauthorized
+  const refreshedToken = await getValidClioAccessToken({
+    forceRefresh: true,
+    failedToken: token,
+    store,
+    fetchFn,
+  })
+
+  if (!refreshedToken) {
+    return response
+  }
+
+  return fetchFn(url, {
+    ...rest,
+    headers: buildHeaders(refreshedToken),
+  })
 }
 
 /**
@@ -53,18 +106,16 @@ export async function findOrCreateContact(
   phone?: string,
   consentInfo?: ContactConsentInfo,
 ): Promise<{ success: boolean; contactId?: number | string; error?: string }> {
-  const headers = getAuthHeaders()
-  if (!headers) {
-    console.warn('[Clio API] CLIO_ACCESS_TOKEN not configured. Skipping Clio contact intake.')
-    return { success: false, error: 'CLIO_ACCESS_TOKEN not configured.' }
-  }
-
-  const baseUrl = getBaseUrl()
-
   try {
     // 1. Search existing contact by email
-    const searchUrl = `${baseUrl}/api/v4/contacts.json?query=${encodeURIComponent(email)}&type=Person`
-    const searchRes = await fetch(searchUrl, { headers })
+    const searchRes = await clioFetch(
+      `/api/v4/contacts.json?query=${encodeURIComponent(email)}&type=Person`,
+    )
+
+    if (!searchRes) {
+      console.warn('[Clio API] CLIO_ACCESS_TOKEN not configured. Skipping Clio contact intake.')
+      return { success: false, error: 'CLIO_ACCESS_TOKEN not configured.' }
+    }
 
     if (searchRes.ok) {
       const searchData = await searchRes.json()
@@ -113,15 +164,17 @@ export async function findOrCreateContact(
       ]
     }
 
-    const createRes = await fetch(`${baseUrl}/api/v4/contacts.json`, {
+    const createRes = await clioFetch('/api/v4/contacts.json', {
       method: 'POST',
-      headers,
       body: JSON.stringify(createPayload),
     })
 
+    if (!createRes) {
+      return { success: false, error: 'CLIO_ACCESS_TOKEN not configured.' }
+    }
+
     if (!createRes.ok) {
-      const errBody = await createRes.text()
-      console.error('[Clio API] Failed to create contact:', createRes.status, errBody)
+      console.error(`[Clio API] Failed to create contact: HTTP ${createRes.status}`)
       return { success: false, error: `Clio contact creation failed: ${createRes.status}` }
     }
 
@@ -140,14 +193,6 @@ export async function findOrCreateContact(
 export async function createMatter(
   options: CreateMatterOptions,
 ): Promise<{ success: boolean; matterId?: number | string; error?: string }> {
-  const headers = getAuthHeaders()
-  if (!headers) {
-    console.warn('[Clio API] CLIO_ACCESS_TOKEN not configured. Skipping Clio matter creation.')
-    return { success: false, error: 'CLIO_ACCESS_TOKEN not configured.' }
-  }
-
-  const baseUrl = getBaseUrl()
-
   try {
     // Build description with UTM details (D-06)
     const descriptionLines: string[] = []
@@ -176,15 +221,18 @@ export async function createMatter(
       },
     }
 
-    const res = await fetch(`${baseUrl}/api/v4/matters.json`, {
+    const res = await clioFetch('/api/v4/matters.json', {
       method: 'POST',
-      headers,
       body: JSON.stringify(payload),
     })
 
+    if (!res) {
+      console.warn('[Clio API] CLIO_ACCESS_TOKEN not configured. Skipping Clio matter creation.')
+      return { success: false, error: 'CLIO_ACCESS_TOKEN not configured.' }
+    }
+
     if (!res.ok) {
-      const errBody = await res.text()
-      console.error('[Clio API] Failed to create matter:', res.status, errBody)
+      console.error(`[Clio API] Failed to create matter: HTTP ${res.status}`)
       return { success: false, error: `Clio matter creation failed: ${res.status}` }
     }
 
@@ -200,7 +248,7 @@ export async function createMatter(
 /**
  * Uploads a document to Clio via the 3-step S3 flow (D-20):
  * 1. POST /api/v4/documents.json with metadata -> returns presigned `put_url`
- * 2. PUT binary to `put_url`
+ * 2. PUT binary to `put_url` (no Clio Bearer header; presigned URL auth)
  * 3. PATCH /api/v4/documents/{id}.json with { fully_uploaded: true }
  */
 export async function uploadMatterDocument(
@@ -209,18 +257,10 @@ export async function uploadMatterDocument(
   filename: string,
   mimeType: string,
 ): Promise<{ success: boolean; documentId?: number | string; error?: string }> {
-  const headers = getAuthHeaders()
-  if (!headers) {
-    return { success: false, error: 'CLIO_ACCESS_TOKEN not configured.' }
-  }
-
-  const baseUrl = getBaseUrl()
-
   try {
     // Step 1: Initialize document record
-    const initRes = await fetch(`${baseUrl}/api/v4/documents.json`, {
+    const initRes = await clioFetch('/api/v4/documents.json', {
       method: 'POST',
-      headers,
       body: JSON.stringify({
         data: {
           name: filename,
@@ -232,9 +272,12 @@ export async function uploadMatterDocument(
       }),
     })
 
+    if (!initRes) {
+      return { success: false, error: 'CLIO_ACCESS_TOKEN not configured.' }
+    }
+
     if (!initRes.ok) {
-      const errBody = await initRes.text()
-      console.error('[Clio API] Step 1 doc init failed:', initRes.status, errBody)
+      console.error(`[Clio API] Step 1 doc init failed: HTTP ${initRes.status}`)
       return { success: false, error: `Step 1 doc init failed: ${initRes.status}` }
     }
 
@@ -256,14 +299,13 @@ export async function uploadMatterDocument(
     })
 
     if (!putRes.ok) {
-      console.error('[Clio API] Step 2 S3 upload failed:', putRes.status)
+      console.error(`[Clio API] Step 2 S3 upload failed: HTTP ${putRes.status}`)
       return { success: false, error: `Step 2 S3 upload failed: ${putRes.status}` }
     }
 
     // Step 3: Mark document as fully uploaded
-    const patchRes = await fetch(`${baseUrl}/api/v4/documents/${documentId}.json`, {
+    const patchRes = await clioFetch(`/api/v4/documents/${documentId}.json`, {
       method: 'PATCH',
-      headers,
       body: JSON.stringify({
         data: {
           fully_uploaded: true,
@@ -271,9 +313,10 @@ export async function uploadMatterDocument(
       }),
     })
 
-    if (!patchRes.ok) {
-      console.error('[Clio API] Step 3 patch failed:', patchRes.status)
-      return { success: false, error: `Step 3 patch failed: ${patchRes.status}` }
+    if (!patchRes || !patchRes.ok) {
+      const status = patchRes?.status ?? 0
+      console.error(`[Clio API] Step 3 patch failed: HTTP ${status}`)
+      return { success: false, error: `Step 3 patch failed: ${status}` }
     }
 
     return { success: true, documentId }

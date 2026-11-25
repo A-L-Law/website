@@ -22,6 +22,7 @@ import { Footer } from './Footer/config'
 import { Header } from './Header/config'
 import { PageBanners } from './PageBanners/config'
 import { CookieConsent } from './globals/CookieConsent/config'
+import { ClioAuth } from './globals/ClioAuth/config'
 import { plugins } from './plugins'
 import { defaultLexical } from '@/fields/defaultLexical'
 import { getServerSideURL } from './utilities/getURL'
@@ -101,7 +102,7 @@ export default buildConfig({
       token: process.env.BLOB_READ_WRITE_TOKEN || '',
     }),
   ],
-  globals: [Header, Footer, PageBanners, CookieConsent],
+  globals: [Header, Footer, PageBanners, CookieConsent, ClioAuth],
   email: resendAdapter({
     defaultFromAddress: process.env.RESEND_DEFAULT_FROM || 'info@al-lawassociates.com',
     defaultFromName: 'A L Law',
