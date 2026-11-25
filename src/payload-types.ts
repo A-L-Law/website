@@ -132,12 +132,14 @@ export interface Config {
     footer: Footer;
     'page-banners': PageBanner;
     'cookie-consent': CookieConsent;
+    'clio-auth': ClioAuth;
   };
   globalsSelect: {
     header: HeaderSelect<false> | HeaderSelect<true>;
     footer: FooterSelect<false> | FooterSelect<true>;
     'page-banners': PageBannersSelect<false> | PageBannersSelect<true>;
     'cookie-consent': CookieConsentSelect<false> | CookieConsentSelect<true>;
+    'clio-auth': ClioAuthSelect<false> | ClioAuthSelect<true>;
   };
   locale: null;
   widgets: {
@@ -803,6 +805,10 @@ export interface FormBlock {
     [k: string]: unknown;
   } | null;
   form: number | Form;
+  /**
+   * Override layout arrangement for form fields on desktop viewports.
+   */
+  layout?: ('stacked' | 'grid-2col') | null;
   location?: {
     type?: ('googleMaps' | 'onlineLink' | 'remote') | null;
     mapEmbedUrl?: string | null;
@@ -926,6 +932,33 @@ export interface Form {
             blockName?: string | null;
             blockType: 'textarea';
           }
+        | {
+            name: string;
+            label?: string | null;
+            /**
+             * Select which upload collection to store files in
+             */
+            uploadCollection: 'media';
+            /**
+             * Restrict allowed file types (e.g., image/*, application/pdf). Leave empty to allow all types.
+             */
+            mimeTypes?:
+              | {
+                  mimeType: string;
+                  id?: string | null;
+                }[]
+              | null;
+            width?: number | null;
+            /**
+             * Maximum file size in bytes. Leave empty for no limit.
+             */
+            maxFileSize?: number | null;
+            required?: boolean | null;
+            multiple?: boolean | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'upload';
+          }
       )[]
     | null;
   submitButtonLabel?: string | null;
@@ -983,6 +1016,14 @@ export interface Form {
         id?: string | null;
       }[]
     | null;
+  /**
+   * Choose layout arrangement for form fields on desktop viewports.
+   */
+  layout?: ('stacked' | 'grid-2col') | null;
+  /**
+   * Target Resend Audience ID for contacts who opt-in to marketing updates (defaults to "General").
+   */
+  resendAudienceId?: string | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -1543,6 +1584,10 @@ export interface Event {
       [k: string]: unknown;
     } | null;
     form: number | Form;
+    /**
+     * Override layout arrangement for form fields on desktop viewports.
+     */
+    layout?: ('stacked' | 'grid-2col') | null;
     location?: {
       type?: ('googleMaps' | 'onlineLink' | 'remote') | null;
       mapEmbedUrl?: string | null;
@@ -1619,6 +1664,10 @@ export interface Vacancy {
       [k: string]: unknown;
     } | null;
     form: number | Form;
+    /**
+     * Override layout arrangement for form fields on desktop viewports.
+     */
+    layout?: ('stacked' | 'grid-2col') | null;
     location?: {
       type?: ('googleMaps' | 'onlineLink' | 'remote') | null;
       mapEmbedUrl?: string | null;
@@ -1683,6 +1732,16 @@ export interface FormSubmission {
     | {
         field: string;
         value: string;
+        id?: string | null;
+      }[]
+    | null;
+  submissionUploads?:
+    | {
+        field: string;
+        value: {
+          relationTo: 'media';
+          value: number | Media;
+        }[];
         id?: string | null;
       }[]
     | null;
@@ -2137,6 +2196,7 @@ export interface FormBlockSelect<T extends boolean = true> {
   formTitle?: T;
   content?: T;
   form?: T;
+  layout?: T;
   location?:
     | T
     | {
@@ -2709,6 +2769,7 @@ export interface EventsSelect<T extends boolean = true> {
         formTitle?: T;
         content?: T;
         form?: T;
+        layout?: T;
         location?:
           | T
           | {
@@ -2750,6 +2811,7 @@ export interface VacanciesSelect<T extends boolean = true> {
         formTitle?: T;
         content?: T;
         form?: T;
+        layout?: T;
         location?:
           | T
           | {
@@ -2946,6 +3008,25 @@ export interface FormsSelect<T extends boolean = true> {
               id?: T;
               blockName?: T;
             };
+        upload?:
+          | T
+          | {
+              name?: T;
+              label?: T;
+              uploadCollection?: T;
+              mimeTypes?:
+                | T
+                | {
+                    mimeType?: T;
+                    id?: T;
+                  };
+              width?: T;
+              maxFileSize?: T;
+              required?: T;
+              multiple?: T;
+              id?: T;
+              blockName?: T;
+            };
       };
   submitButtonLabel?: T;
   confirmationType?: T;
@@ -2967,6 +3048,8 @@ export interface FormsSelect<T extends boolean = true> {
         message?: T;
         id?: T;
       };
+  layout?: T;
+  resendAudienceId?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -2977,6 +3060,13 @@ export interface FormsSelect<T extends boolean = true> {
 export interface FormSubmissionsSelect<T extends boolean = true> {
   form?: T;
   submissionData?:
+    | T
+    | {
+        field?: T;
+        value?: T;
+        id?: T;
+      };
+  submissionUploads?:
     | T
     | {
         field?: T;
@@ -3437,6 +3527,20 @@ export interface CookieConsent {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "clio-auth".
+ */
+export interface ClioAuth {
+  id: number;
+  accessToken?: string | null;
+  refreshToken?: string | null;
+  expiresAt?: string | null;
+  lastRefreshedAt?: string | null;
+  status?: ('active' | 'reauth_required' | 'unconfigured') | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "header_select".
  */
 export interface HeaderSelect<T extends boolean = true> {
@@ -3643,6 +3747,20 @@ export interface CookieConsentSelect<T extends boolean = true> {
   privacyPolicyUrl?: T;
   cookiePolicyUrl?: T;
   gaMeasurementId?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "clio-auth_select".
+ */
+export interface ClioAuthSelect<T extends boolean = true> {
+  accessToken?: T;
+  refreshToken?: T;
+  expiresAt?: T;
+  lastRefreshedAt?: T;
+  status?: T;
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;
